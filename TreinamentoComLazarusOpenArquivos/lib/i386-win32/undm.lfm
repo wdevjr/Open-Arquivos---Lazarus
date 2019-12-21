@@ -1,0 +1,2022 @@
+object DM: TDM
+  OldCreateOrder = False
+  Height = 549
+  HorizontalOffset = 303
+  VerticalOffset = 127
+  Width = 988
+  PPI = 96
+  object ZConnection: TZConnection
+    ControlsCodePage = cCP_UTF8
+    ClientCodepage = 'NONE'
+    Catalog = 'opemarquivos'
+    Properties.Strings = (
+      ''
+      'codepage=NONE'
+      'controls_cp=CP_UTF8'
+      'AutoEncodeStrings='
+    )
+    TransactIsolationLevel = tiReadCommitted
+    BeforeConnect = ZConnectionBeforeConnect
+    HostName = '127.0.0.1'
+    Port = 3050
+    Database = 'D:\Bancos\OPENARQUIVOS.FDB'
+    User = 'SYSDBA'
+    Password = 'masterkey'
+    Protocol = 'firebird'
+    left = 56
+    top = 182
+  end
+  object ZQArquivo: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL1
+    CachedUpdates = True
+    BeforePost = ZQArquivoBeforePost
+    OnNewRecord = ZQArquivoNewRecord
+    SQL.Strings = (
+      'select AQ.*'
+      'from ARQUIVOLIST AQ'
+      'where ID=:ID'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        ParamType = ptUnknown
+      end>
+    left = 231
+    top = 104
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        ParamType = ptUnknown
+      end>
+    object ZQArquivoID: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQArquivoNOME_ARQUIVO: TStringField
+      DisplayLabel = 'Arquivo'
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+      Size = 1200
+    end
+    object ZQArquivoCOD_ASSUNTO: TLongintField
+      DisplayLabel = 'Nome Assunto'
+      FieldKind = fkData
+      FieldName = 'COD_ASSUNTO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQArquivoCOD_AUTOR: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_AUTOR'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQArquivoCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQArquivoTITULO: TStringField
+      DisplayLabel = 'Titulo do Arquivo'
+      FieldKind = fkData
+      FieldName = 'TITULO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+      Size = 560
+    end
+    object ZQArquivoEXTENCAO: TStringField
+      FieldKind = fkData
+      FieldName = 'EXTENCAO'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 24
+    end
+    object ZQArquivoDATA: TDateField
+      FieldKind = fkData
+      FieldName = 'DATA'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQArquivoDESCRICAO: TStringField
+      DisplayLabel = 'Descrição do Arquivo'
+      FieldKind = fkData
+      FieldName = 'DESCRICAO'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+      Size = 80000
+    end
+    object ZQArquivoHORA: TTimeField
+      FieldKind = fkData
+      FieldName = 'HORA'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQArquivoDADOS: TBlobField
+      FieldKind = fkData
+      FieldName = 'DADOS'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQArquivoTAMANHO: TStringField
+      FieldKind = fkData
+      FieldName = 'TAMANHO'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 320
+    end
+    object ZQArquivoINFORMACOES: TMemoField
+      FieldKind = fkData
+      FieldName = 'INFORMACOES'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      BlobType = ftMemo
+      Transliterate = False
+    end
+    object ZQArquivoSIZE_ARQUIVO: TFloatField
+      FieldKind = fkData
+      FieldName = 'SIZE_ARQUIVO'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = 2
+    end
+  end
+  object ZUpdateSQL1: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM ARQUIVOLIST'
+      'WHERE'
+      '  ARQUIVOLIST.ID = :OLD_ID'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO ARQUIVOLIST'
+      '  (ID, COD_USUARIO, COD_ASSUNTO, COD_AUTOR, TITULO, NOME_ARQUIVO, EXTENCAO, '
+      '   DATA, DESCRICAO, DADOS_WORD_DESCRICAO, HORA, DADOS, TAMANHO, INFORMACOES, '
+      '   SIZE_ARQUIVO)'
+      'VALUES'
+      '  (:ID, :COD_USUARIO, :COD_ASSUNTO, :COD_AUTOR, :TITULO, :NOME_ARQUIVO, '
+      '   :EXTENCAO, :DATA, :DESCRICAO, :DADOS_WORD_DESCRICAO, :HORA, :DADOS, '
+      '   :TAMANHO, :INFORMACOES, :SIZE_ARQUIVO)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE ARQUIVOLIST SET'
+      '  ID = :ID,'
+      '  COD_USUARIO = :COD_USUARIO,'
+      '  COD_ASSUNTO = :COD_ASSUNTO,'
+      '  COD_AUTOR = :COD_AUTOR,'
+      '  TITULO = :TITULO,'
+      '  NOME_ARQUIVO = :NOME_ARQUIVO,'
+      '  EXTENCAO = :EXTENCAO,'
+      '  DATA = :DATA,'
+      '  DESCRICAO = :DESCRICAO,'
+      '  DADOS_WORD_DESCRICAO = :DADOS_WORD_DESCRICAO,'
+      '  HORA = :HORA,'
+      '  DADOS = :DADOS,'
+      '  TAMANHO = :TAMANHO,'
+      '  INFORMACOES = :INFORMACOES,'
+      '  SIZE_ARQUIVO = :SIZE_ARQUIVO'
+      'WHERE'
+      '  ARQUIVOLIST.ID = :OLD_ID'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 345
+    top = 104
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_USUARIO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_ASSUNTO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_AUTOR'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'TITULO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'NOME_ARQUIVO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'EXTENCAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DATA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DESCRICAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DADOS_WORD_DESCRICAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'HORA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DADOS'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'TAMANHO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'INFORMACOES'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'SIZE_ARQUIVO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_ID'
+        ParamType = ptUnknown
+      end>
+  end
+  object sdt_Combo: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 238
+    top = 34
+  end
+  object dst_Login: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 344
+    top = 32
+  end
+  object cds_Log: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL4
+    CachedUpdates = True
+    BeforePost = cds_LogBeforePost
+    OnNewRecord = cds_LogNewRecord
+    SQL.Strings = (
+      'select * from LOG'
+      'where CODIGO = :CODIGO'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    left = 461
+    top = 32
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    object cds_LogCODIGO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_LogCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_LogINSERDATA: TDateField
+      FieldKind = fkData
+      FieldName = 'INSERDATA'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_LogHORA: TTimeField
+      FieldKind = fkData
+      FieldName = 'HORA'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object cds_LogCOD_ACAO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_ACAO'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_LogACAO: TStringField
+      FieldKind = fkData
+      FieldName = 'ACAO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 80
+    end
+    object cds_LogAPLICATIVO: TStringField
+      FieldKind = fkData
+      FieldName = 'APLICATIVO'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 280
+    end
+    object cds_LogCOD_REGISTRO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_REGISTRO'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_LogDISCRIMINACAO: TStringField
+      FieldKind = fkData
+      FieldName = 'DISCRIMINACAO'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
+  end
+  object sdt_Verif: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 664
+    top = 34
+  end
+  object cds_logados: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL2
+    CachedUpdates = True
+    BeforePost = cds_logadosBeforePost
+    OnNewRecord = cds_logadosNewRecord
+    SQL.Strings = (
+      'select NL.* from NUM_LOGADOS NL'
+      'where NL.CODIGO =:CODIGO'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'CODIGO'
+        ParamType = ptInput
+      end>
+    left = 231
+    top = 175
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'CODIGO'
+        ParamType = ptInput
+      end>
+    object cds_logadosCODIGO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_logadosORDEM: TLongintField
+      FieldKind = fkData
+      FieldName = 'ORDEM'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_logadosCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_logadosDATAATUAL: TDateField
+      FieldKind = fkData
+      FieldName = 'DATAATUAL'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+  end
+  object ZUpdateSQL2: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM NUM_LOGADOS'
+      'WHERE'
+      '  NUM_LOGADOS.CODIGO = :OLD_CODIGO'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO NUM_LOGADOS'
+      '  (CODIGO, ORDEM, COD_USUARIO, DATAATUAL)'
+      'VALUES'
+      '  (:CODIGO, :ORDEM, :COD_USUARIO, :DATAATUAL)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE NUM_LOGADOS SET'
+      '  CODIGO = :CODIGO,'
+      '  ORDEM = :ORDEM,'
+      '  COD_USUARIO = :COD_USUARIO,'
+      '  DATAATUAL = :DATAATUAL'
+      'WHERE'
+      '  NUM_LOGADOS.CODIGO = :OLD_CODIGO'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 344
+    top = 176
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'ORDEM'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_USUARIO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DATAATUAL'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_CODIGO'
+        ParamType = ptUnknown
+      end>
+  end
+  object cds_ExcRepetidos: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL3
+    CachedUpdates = True
+    OnNewRecord = cds_ExcRepetidosNewRecord
+    SQL.Strings = (
+      'select COD_USUARIO, CODIGO, DATAATUAL, ORDEM from NUM_LOGADOS'
+      'where COD_USUARIO = :COD_USUARIO'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'COD_USUARIO'
+        ParamType = ptInput
+      end>
+    left = 232
+    top = 248
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'COD_USUARIO'
+        ParamType = ptInput
+      end>
+    object cds_ExcRepetidosCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_ExcRepetidosCODIGO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_ExcRepetidosDATAATUAL: TDateField
+      FieldKind = fkData
+      FieldName = 'DATAATUAL'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_ExcRepetidosORDEM: TLongintField
+      FieldKind = fkData
+      FieldName = 'ORDEM'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+    end
+  end
+  object ZUpdateSQL3: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM NUM_LOGADOS'
+      'WHERE'
+      '  NUM_LOGADOS.CODIGO = :OLD_CODIGO'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO NUM_LOGADOS'
+      '  (CODIGO, ORDEM, COD_USUARIO, DATAATUAL)'
+      'VALUES'
+      '  (:CODIGO, :ORDEM, :COD_USUARIO, :DATAATUAL)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE NUM_LOGADOS SET'
+      '  CODIGO = :CODIGO,'
+      '  ORDEM = :ORDEM,'
+      '  COD_USUARIO = :COD_USUARIO,'
+      '  DATAATUAL = :DATAATUAL'
+      'WHERE'
+      '  NUM_LOGADOS.CODIGO = :OLD_CODIGO'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 344
+    top = 248
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'ORDEM'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_USUARIO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DATAATUAL'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_CODIGO'
+        ParamType = ptUnknown
+      end>
+  end
+  object ZUpdateSQL4: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM LOG'
+      'WHERE'
+      '  LOG.CODIGO = :OLD_CODIGO'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO LOG'
+      '  (CODIGO, COD_USUARIO, INSERDATA, HORA, COD_ACAO, ACAO, APLICATIVO, COD_REGISTRO, '
+      '   DISCRIMINACAO)'
+      'VALUES'
+      '  (:CODIGO, :COD_USUARIO, :INSERDATA, :HORA, :COD_ACAO, :ACAO, :APLICATIVO, '
+      '   :COD_REGISTRO, :DISCRIMINACAO)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE LOG SET'
+      '  CODIGO = :CODIGO,'
+      '  COD_USUARIO = :COD_USUARIO,'
+      '  INSERDATA = :INSERDATA,'
+      '  HORA = :HORA,'
+      '  COD_ACAO = :COD_ACAO,'
+      '  ACAO = :ACAO,'
+      '  APLICATIVO = :APLICATIVO,'
+      '  COD_REGISTRO = :COD_REGISTRO,'
+      '  DISCRIMINACAO = :DISCRIMINACAO'
+      'WHERE'
+      '  LOG.CODIGO = :OLD_CODIGO'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 568
+    top = 34
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_USUARIO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'INSERDATA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'HORA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_ACAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'ACAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'APLICATIVO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_REGISTRO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DISCRIMINACAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_CODIGO'
+        ParamType = ptUnknown
+      end>
+  end
+  object Qury: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 464
+    top = 184
+  end
+  object sdt_List: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 664
+    top = 104
+  end
+  object sds_Verif: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 744
+    top = 104
+  end
+  object sdt_ExcAtual: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 563
+    top = 182
+  end
+  object Qry_Secun: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 665
+    top = 182
+  end
+  object DtsrcExcLogados: TDataSource
+    DataSet = cds_ExcRepetidos
+    left = 464
+    top = 248
+  end
+  object Dtsrc_Logando: TDataSource
+    left = 568
+    top = 248
+  end
+  object sds_cont: TZQuery
+    Connection = ZConnection
+    Params = <>
+    left = 665
+    top = 248
+  end
+  object sds_Cont_Logar: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL5
+    SQL.Strings = (
+      'select * from NUM_LOGADOS'
+    )
+    Params = <>
+    UpdateMode = umUpdateAll
+    left = 744
+    top = 34
+  end
+  object sdt_Verif_Perfil: TZQuery
+    Connection = ZConnection
+    SQL.Strings = (
+      'select PL.*'
+      'from PERFIL PL'
+      'where PL.CODIGO = :CODIGO'
+    )
+    Params = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    left = 840
+    top = 104
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end>
+    object sdt_Verif_PerfilCODIGO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object sdt_Verif_PerfilNOMEL: TStringField
+      FieldKind = fkData
+      FieldName = 'NOMEL'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 70
+    end
+    object sdt_Verif_PerfilARQUI_INSERIR: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_INSERIR'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_EDITAR: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_EDITAR'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_EXCLUIR: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_EXCLUIR'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_CONSULTAR: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_CONSULTAR'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_USUARIO: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_USUARIO'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_ASSUNTOS: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_ASSUNTOS'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_AUTORES: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_AUTORES'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilARQUI_LOCALIZAR: TStringField
+      FieldKind = fkData
+      FieldName = 'ARQUI_LOCALIZAR'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilUSUARIO_INSERIR: TStringField
+      FieldKind = fkData
+      FieldName = 'USUARIO_INSERIR'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilUSUARIO_EDITAR: TStringField
+      FieldKind = fkData
+      FieldName = 'USUARIO_EDITAR'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilUSUARIO_EXCLUIR: TStringField
+      FieldKind = fkData
+      FieldName = 'USUARIO_EXCLUIR'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilUSUARIO_TRAZER: TStringField
+      FieldKind = fkData
+      FieldName = 'USUARIO_TRAZER'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilCONFIG_CONVERTER: TStringField
+      FieldKind = fkData
+      FieldName = 'CONFIG_CONVERTER'
+      Index = 14
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilCONFIG_BOTOES: TStringField
+      FieldKind = fkData
+      FieldName = 'CONFIG_BOTOES'
+      Index = 15
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilASSUNTOS_INSERIR: TStringField
+      FieldKind = fkData
+      FieldName = 'ASSUNTOS_INSERIR'
+      Index = 16
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilASSUNTOS_EDITAR: TStringField
+      FieldKind = fkData
+      FieldName = 'ASSUNTOS_EDITAR'
+      Index = 17
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilASSUNTOS_TRAZER: TStringField
+      FieldKind = fkData
+      FieldName = 'ASSUNTOS_TRAZER'
+      Index = 18
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilASSUNTOS_EXCLUIR: TStringField
+      FieldKind = fkData
+      FieldName = 'ASSUNTOS_EXCLUIR'
+      Index = 19
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilAUTORES_INSERIR: TStringField
+      FieldKind = fkData
+      FieldName = 'AUTORES_INSERIR'
+      Index = 20
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilAUTORES_EDITAR: TStringField
+      FieldKind = fkData
+      FieldName = 'AUTORES_EDITAR'
+      Index = 21
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilAUTORES_EXCLUIR: TStringField
+      FieldKind = fkData
+      FieldName = 'AUTORES_EXCLUIR'
+      Index = 22
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilAUTORES_TRAZER: TStringField
+      FieldKind = fkData
+      FieldName = 'AUTORES_TRAZER'
+      Index = 23
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_ARQUI_CONSULTAS: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_ARQUI_CONSULTAS'
+      Index = 24
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_ARQUI_ASSUNTOS: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_ARQUI_ASSUNTOS'
+      Index = 25
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_ARQUI_AUTORES: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_ARQUI_AUTORES'
+      Index = 26
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_USUARIO_CADASTRO: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_USUARIO_CADASTRO'
+      Index = 27
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_USUARIO_PERFIL: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_USUARIO_PERFIL'
+      Index = 28
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_MANUTENCAO_SQL: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_MANUTENCAO_SQL'
+      Index = 29
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+    object sdt_Verif_PerfilMENU_MANUTENCAO_TEMP: TStringField
+      FieldKind = fkData
+      FieldName = 'MENU_MANUTENCAO_TEMP'
+      Index = 30
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1
+    end
+  end
+  object ZUpdateSQL5: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM NUM_LOGADOS'
+      'WHERE'
+      '  NUM_LOGADOS.CODIGO = :OLD_CODIGO'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO NUM_LOGADOS'
+      '  (CODIGO, ORDEM, COD_USUARIO, DATAATUAL)'
+      'VALUES'
+      '  (:CODIGO, :ORDEM, :COD_USUARIO, :DATAATUAL)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE NUM_LOGADOS SET'
+      '  CODIGO = :CODIGO,'
+      '  ORDEM = :ORDEM,'
+      '  COD_USUARIO = :COD_USUARIO,'
+      '  DATAATUAL = :DATAATUAL'
+      'WHERE'
+      '  NUM_LOGADOS.CODIGO = :OLD_CODIGO'
+    )
+    RefreshSQL.Strings = (
+      'select * from NUM_LOGADOS'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 840
+    top = 40
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'CODIGO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'ORDEM'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_USUARIO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DATAATUAL'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_CODIGO'
+        ParamType = ptUnknown
+      end>
+  end
+  object sds_Arqu: TZQuery
+    Connection = ZConnection
+    SQL.Strings = (
+      'select AQ.ID,AQ.COD_ASSUNTO,AQ.COD_USUARIO,AQ.DESCRICAO, AQ.TITULO, AQ.NOME_ARQUIVO, PO.NOME, AQ.DATA, SS.TITULOASSUN,N.IDUSUARIOS,TT.NOME from ARQUIVOS_USUARIOS N '
+      'inner join ARQUIVOLIST AQ on (AQ.ID = N.IDARQUIVOS)'
+      'inner join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) '
+      'inner join USUARIO PO on (AQ.COD_USUARIO = PO.COD_USUARIO) '
+      'inner join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) '
+      'order by AQ.TITULO'
+    )
+    Params = <>
+    left = 465
+    top = 96
+    object sds_ArquID: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquCOD_ASSUNTO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_ASSUNTO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+    end
+    object sds_ArquCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquDESCRICAO: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 8191
+    end
+    object sds_ArquTITULO: TStringField
+      FieldKind = fkData
+      FieldName = 'TITULO'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+    object sds_ArquNOME_ARQUIVO: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 300
+    end
+    object sds_ArquNOME: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 70
+    end
+    object sds_ArquDATA: TDateField
+      FieldKind = fkData
+      FieldName = 'DATA'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquTITULOASSUN: TStringField
+      FieldKind = fkData
+      FieldName = 'TITULOASSUN'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+    object sds_ArquIDUSUARIOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'IDUSUARIOS'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquNOME_1: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_1'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+  end
+  object sds_ArquTodos: TZQuery
+    Connection = ZConnection
+    SQL.Strings = (
+      'select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,AQ.NOME_ARQUIVO_ESPECIAL,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES'
+      'from ARQUIVOLIST AQ'
+      ' inner join USUARIO UR on AQ.COD_USUARIO = UR.COD_USUARIO'
+      ' inner join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) '
+      ' inner join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) '
+      'order by AQ.DESCRICAO, AQ.TITULO desc '
+    )
+    Params = <>
+    left = 568
+    top = 96
+    object sds_ArquTodosID: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquTodosCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquTodosDESCRICAO: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1800
+    end
+    object sds_ArquTodosTITULO: TStringField
+      FieldKind = fkData
+      FieldName = 'TITULO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+    object sds_ArquTodosNOME_ARQUIVO: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 300
+    end
+    object sds_ArquTodosLOGIN: TStringField
+      FieldKind = fkData
+      FieldName = 'LOGIN'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+    object sds_ArquTodosNIVEL: TLongintField
+      FieldKind = fkData
+      FieldName = 'NIVEL'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+    end
+    object sds_ArquTodosNOME: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 70
+    end
+    object sds_ArquTodosTITULOASSUN: TStringField
+      FieldKind = fkData
+      FieldName = 'TITULOASSUN'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+    object sds_ArquTodosNOME_1: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_1'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+    object sds_ArquTodosINFORMACOES: TMemoField
+      FieldKind = fkData
+      FieldName = 'INFORMACOES'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      BlobType = ftMemo
+      Transliterate = False
+    end
+  end
+  object sds_Assunt: TZQuery
+    Connection = ZConnection
+    SQL.Strings = (
+      'select CODIGO,TITULOASSUN'
+      'from ASSUNTO'
+      'where TITULOASSUN like :TITULOASSUN'
+      'order by TITULOASSUN'
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'TITULOASSUN'
+        ParamType = ptInput
+      end>
+    left = 568
+    top = 328
+    ParamData = <    
+      item
+        DataType = ftString
+        Name = 'TITULOASSUN'
+        ParamType = ptInput
+      end>
+    object sds_AssuntCODIGO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Visible = False
+    end
+    object sds_AssuntTITULOASSUN: TStringField
+      FieldKind = fkData
+      FieldName = 'TITULOASSUN'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 140
+    end
+  end
+  object sds_Autores: TZQuery
+    Connection = ZConnection
+    SQL.Strings = (
+      'select AU.CODIGO,AU.NOME,AU.INSTITUICAO, AU.COD_DEPARTAMENTO,DE.NOME_DEP'
+      'from AUTORES AU'
+      'left join DEPARTAMENTOS DE on DE.CODIGO = AU.COD_DEPARTAMENTO'
+      'where NOME like :NOME'
+      'order by NOME'
+    )
+    Params = <    
+      item
+        DataType = ftString
+        Name = 'NOME'
+        ParamType = ptInput
+      end>
+    left = 568
+    top = 400
+    ParamData = <    
+      item
+        DataType = ftString
+        Name = 'NOME'
+        ParamType = ptInput
+      end>
+    object sds_AutoresCODIGO: TLongintField
+      FieldKind = fkData
+      FieldName = 'CODIGO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Visible = False
+    end
+    object sds_AutoresNOME: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 160
+    end
+    object sds_AutoresINSTITUICAO: TStringField
+      FieldKind = fkData
+      FieldName = 'INSTITUICAO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 160
+    end
+    object sds_AutoresCOD_DEPARTAMENTO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_DEPARTAMENTO'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Visible = False
+    end
+    object sds_AutoresNOME_DEP: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_DEP'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Size = 140
+    end
+  end
+  object cds_UserAdd: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL6
+    CachedUpdates = True
+    OnApplyUpdateError = cds_UserAddApplyUpdateError
+    SQL.Strings = (
+      'select A.*  from ARQUIVOS_USUARIOS A'
+      'where (A.IDARQUIVOS=:IDARQUIVOS) and (A.IDUSUARIOS=:IDUSUARIOS)'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'IDARQUIVOS'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'IDUSUARIOS'
+        ParamType = ptInput
+      end>
+    left = 768
+    top = 182
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'IDARQUIVOS'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftInteger
+        Name = 'IDUSUARIOS'
+        ParamType = ptInput
+      end>
+    object cds_UserAddIDARQUIVOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'IDARQUIVOS'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object cds_UserAddIDUSUARIOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'IDUSUARIOS'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+  end
+  object ZUpdateSQL6: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM ARQUIVOS_USUARIOS'
+      'WHERE'
+      '  ARQUIVOS_USUARIOS.IDARQUIVOS = :OLD_IDARQUIVOS AND'
+      '  ARQUIVOS_USUARIOS.IDUSUARIOS = :OLD_IDUSUARIOS'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO ARQUIVOS_USUARIOS'
+      '  (IDARQUIVOS, IDUSUARIOS)'
+      'VALUES'
+      '  (:IDARQUIVOS, :IDUSUARIOS)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE ARQUIVOS_USUARIOS SET'
+      '  IDARQUIVOS = :IDARQUIVOS,'
+      '  IDUSUARIOS = :IDUSUARIOS'
+      'WHERE'
+      '  ARQUIVOS_USUARIOS.IDARQUIVOS = :OLD_IDARQUIVOS AND'
+      '  ARQUIVOS_USUARIOS.IDUSUARIOS = :OLD_IDUSUARIOS'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 856
+    top = 182
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'IDARQUIVOS'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'IDUSUARIOS'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_IDARQUIVOS'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_IDUSUARIOS'
+        ParamType = ptUnknown
+      end>
+  end
+  object sds_lista_Usuarios: TZQuery
+    Connection = ZConnection
+    OnFilterRecord = sds_lista_UsuariosFilterRecord
+    SQL.Strings = (
+      'select U.COD_USUARIO, U.NOME,A.IDARQUIVOS,A.IDUSUARIOS  from USUARIO U'
+      'inner join  ARQUIVOS_USUARIOS A  on U.COD_USUARIO = A.IDUSUARIOS'
+      'where  (A.IDARQUIVOS=:IDARQUIVOS)'
+      'and (U.NOME like :nome)'
+      'order by U.NOME desc'
+    )
+    Params = <    
+      item
+        DataType = ftInteger
+        Name = 'IDARQUIVOS'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftString
+        Name = 'nome'
+        ParamType = ptInput
+      end>
+    left = 768
+    top = 256
+    ParamData = <    
+      item
+        DataType = ftInteger
+        Name = 'IDARQUIVOS'
+        ParamType = ptInput
+      end    
+      item
+        DataType = ftString
+        Name = 'nome'
+        ParamType = ptInput
+      end>
+    object sds_lista_UsuariosCOD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Visible = False
+    end
+    object sds_lista_UsuariosIDARQUIVOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'IDARQUIVOS'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Visible = False
+    end
+    object sds_lista_UsuariosIDUSUARIOS: TLongintField
+      FieldKind = fkData
+      FieldName = 'IDUSUARIOS'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = True
+      Visible = False
+    end
+    object sds_lista_UsuariosNOME: TStringField
+      DisplayLabel = 'Nome do Usuário do Arquivo'
+      DisplayWidth = 70
+      FieldKind = fkData
+      FieldName = 'NOME'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 70
+    end
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection
+    SQL.Strings = (
+      'select NOME_ARQUIVO from ARQUIVOLIST'
+      ''
+    )
+    Params = <>
+    left = 212
+    top = 475
+    object ZQuery1NOME_ARQUIVO: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
+  end
+  object ZUpdateSQL7: TZUpdateSQL
+    DeleteSQL.Strings = (
+      'DELETE FROM ARQUIVOLIST'
+      'WHERE'
+      '  ARQUIVOLIST.ID = :OLD_ID'
+    )
+    InsertSQL.Strings = (
+      'INSERT INTO ARQUIVOLIST'
+      '  (ID, COD_USUARIO, COD_ASSUNTO, COD_AUTOR, TITULO, NOME_ARQUIVO, NOME_ARQUIVO_ESPECIAL, '
+      '   EXTENCAO, DATA, DESCRICAO, HORA, DADOS, TAMANHO, INFORMACOES, SIZE_ARQUIVO)'
+      'VALUES'
+      '  (:ID, :COD_USUARIO, :COD_ASSUNTO, :COD_AUTOR, :TITULO, :NOME_ARQUIVO, '
+      '   :NOME_ARQUIVO_ESPECIAL, :EXTENCAO, :DATA, :DESCRICAO, :HORA, :DADOS, '
+      '   :TAMANHO, :INFORMACOES, :SIZE_ARQUIVO)'
+    )
+    ModifySQL.Strings = (
+      'UPDATE ARQUIVOLIST SET'
+      '  ID = :ID,'
+      '  COD_USUARIO = :COD_USUARIO,'
+      '  COD_ASSUNTO = :COD_ASSUNTO,'
+      '  COD_AUTOR = :COD_AUTOR,'
+      '  TITULO = :TITULO,'
+      '  NOME_ARQUIVO = :NOME_ARQUIVO,'
+      '  NOME_ARQUIVO_ESPECIAL = :NOME_ARQUIVO_ESPECIAL,'
+      '  EXTENCAO = :EXTENCAO,'
+      '  DATA = :DATA,'
+      '  DESCRICAO = :DESCRICAO,'
+      '  HORA = :HORA,'
+      '  DADOS = :DADOS,'
+      '  TAMANHO = :TAMANHO,'
+      '  INFORMACOES = :INFORMACOES,'
+      '  SIZE_ARQUIVO = :SIZE_ARQUIVO'
+      'WHERE'
+      '  ARQUIVOLIST.ID = :OLD_ID'
+    )
+    UseSequenceFieldForRefreshSQL = False
+    left = 376
+    top = 475
+    ParamData = <    
+      item
+        DataType = ftUnknown
+        Name = 'ID'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_USUARIO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_ASSUNTO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'COD_AUTOR'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'TITULO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'NOME_ARQUIVO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'NOME_ARQUIVO_ESPECIAL'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'EXTENCAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DATA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DESCRICAO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'HORA'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'DADOS'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'TAMANHO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'INFORMACOES'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'SIZE_ARQUIVO'
+        ParamType = ptUnknown
+      end    
+      item
+        DataType = ftUnknown
+        Name = 'OLD_ID'
+        ParamType = ptUnknown
+      end>
+  end
+  object ZQuery2: TZQuery
+    Connection = ZConnection
+    UpdateObject = ZUpdateSQL7
+    SQL.Strings = (
+      'select * from ARQUIVOLIST'
+    )
+    Params = <>
+    left = 296
+    top = 475
+    object ZQuery2ID: TLongintField
+      FieldKind = fkData
+      FieldName = 'ID'
+      Index = 0
+      LookupCache = False
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      ReadOnly = False
+      Required = True
+    end
+    object ZQuery2COD_USUARIO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_USUARIO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQuery2COD_ASSUNTO: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_ASSUNTO'
+      Index = 2
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQuery2COD_AUTOR: TLongintField
+      FieldKind = fkData
+      FieldName = 'COD_AUTOR'
+      Index = 3
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQuery2TITULO: TStringField
+      FieldKind = fkData
+      FieldName = 'TITULO'
+      Index = 4
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 560
+    end
+    object ZQuery2NOME_ARQUIVO: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO'
+      Index = 5
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
+    object ZQuery2NOME_ARQUIVO_ESPECIAL: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO_ESPECIAL'
+      Index = 6
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 1200
+    end
+    object ZQuery2EXTENCAO: TStringField
+      FieldKind = fkData
+      FieldName = 'EXTENCAO'
+      Index = 7
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 24
+    end
+    object ZQuery2DATA: TDateField
+      FieldKind = fkData
+      FieldName = 'DATA'
+      Index = 8
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQuery2DESCRICAO: TStringField
+      FieldKind = fkData
+      FieldName = 'DESCRICAO'
+      Index = 9
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 80000
+    end
+    object ZQuery2HORA: TTimeField
+      FieldKind = fkData
+      FieldName = 'HORA'
+      Index = 10
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+    end
+    object ZQuery2TAMANHO: TStringField
+      FieldKind = fkData
+      FieldName = 'TAMANHO'
+      Index = 11
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      Size = 320
+    end
+    object ZQuery2INFORMACOES: TMemoField
+      FieldKind = fkData
+      FieldName = 'INFORMACOES'
+      Index = 12
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      BlobType = ftMemo
+      Transliterate = False
+    end
+    object ZQuery2SIZE_ARQUIVO: TFloatField
+      FieldKind = fkData
+      FieldName = 'SIZE_ARQUIVO'
+      Index = 13
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = False
+      MaxValue = 0
+      MinValue = 0
+      Precision = 2
+    end
+  end
+  object frReport1: TfrReport
+    InitialZoom = pzDefault
+    Options = []
+    PreviewButtons = [pbZoom, pbLoad, pbSave, pbPrint, pbFind, pbHelp, pbExit]
+    DataType = dtDataSet
+    left = 232
+    top = 319
+  end
+  object frDBDataSet1: TfrDBDataSet
+    left = 344
+    top = 319
+  end
+end

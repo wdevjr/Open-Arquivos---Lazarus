@@ -1,0 +1,9 @@
+object FrmCadastrodeUsuarios: TFrmCadastrodeUsuarios
+  Left = 304
+  Height = 411
+  Top = 147
+  Width = 754
+  Caption = 'Cadastro de Usuários'
+  Position = poDesktopCenter
+  LCLVersion = '2.0.4.0'
+end
