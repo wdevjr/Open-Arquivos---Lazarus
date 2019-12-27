@@ -7,7 +7,7 @@
 <br />
 Projeto em Object Pascal - Lazarus.
 <br />
-<P>Pré requisitos:</p>
+Pré requisitos:
 <br />
 Banco de Dados Firebird 3.0
 <br />
