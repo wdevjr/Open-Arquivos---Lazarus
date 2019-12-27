@@ -10,9 +10,13 @@ Projeto em Object Pascal - Lazarus.
 <P>Pré requisitos:</p>
 <br />
 Banco de Dados Firebird 3.0
+<br />
 Lazarus IDE
+<br />
 Componente ZeosLib
+<br />
 LazReport
+<br />
 <p>Por Favor, mande seu FeedBack para avaliaçao do programas!</p>
 <p>Todos os Direitos Reservados a Walter Ribeiro Homem Junior. (c) </p>
 <p><b>Contato: </b><a href="mailto:warhjr@gmail.com?Subject=Olá%20Contato"">warhjr@gmail.com</a></p>
