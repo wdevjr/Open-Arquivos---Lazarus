@@ -13,7 +13,7 @@ Projeto em Object Pascal - Lazarus.
 <p>Lazarus IDE</p>
 <p>Componente ZeosLib</p>
 <p>LazReport</p>
-<p>Por Favor, mande seu FeedBack para avaliaçao e melhorar o programa!</p>
+<p>Por Favor, mande seu FeedBack para avaliaçao do programas!</p>
 <p>Todos os Direitos Reservados a Walter Ribeiro Homem Junior. (c) </p>
 <p><b>Contato: </b><a href="mailto:warhjr@gmail.com?Subject=Olá%20Contato"">warhjr@gmail.com</a></p>
 <p>Campo Grande - MS - Brasil.</p>
