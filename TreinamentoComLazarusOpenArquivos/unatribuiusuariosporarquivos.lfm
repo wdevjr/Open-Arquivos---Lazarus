@@ -324,7 +324,7 @@ object FrmAtribuiUser: TFrmAtribuiUser
     TitleFont.Height = -11
   end
   object Dtsrc: TDataSource
-    DataSet = DM.sds_lista_Usuarios
+    DataSet = DM.sds_User_Usuarios
     left = 424
     top = 102
   end

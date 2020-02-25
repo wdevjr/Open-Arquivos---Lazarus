@@ -309,7 +309,7 @@ object FrmAtribuiUser: TFrmAtribuiUser
     Top = 72
     Width = 602
     AlternateColor = 13363947
-    Color = 16774388
+    Color = 11206655
     Columns = <>
     DataSource = Dtsrc
     FixedColor = clForm
@@ -324,7 +324,7 @@ object FrmAtribuiUser: TFrmAtribuiUser
     TitleFont.Height = -11
   end
   object Dtsrc: TDataSource
-    DataSet = DM.sds_lista_Usuarios
+    DataSet = DM.sds_User_Usuarios
     left = 424
     top = 102
   end

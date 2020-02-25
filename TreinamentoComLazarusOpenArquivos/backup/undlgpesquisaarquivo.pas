@@ -221,7 +221,7 @@ begin
         begin
           DM.sds_ArquTodos.SQL.Clear;
           // DM.sds_ArquTodos.Params.Clear;
-            DM.sds_ArquTodos.SQL.Add('select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,AQ.NOME_ARQUIVO_ESPECIAL,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES'
+            DM.sds_ArquTodos.SQL.Add('select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES'
             + ' from ARQUIVOLIST AQ' +
             ' left join USUARIO UR on AQ.COD_USUARIO = UR.COD_USUARIO' +
             ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' +

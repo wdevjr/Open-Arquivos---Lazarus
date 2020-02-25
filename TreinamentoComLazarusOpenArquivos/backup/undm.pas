@@ -7,7 +7,7 @@ interface
 uses
     Windows, Messages, Classes, SysUtils, IBConnection, sqldb, db, FileUtil,
     LR_Class, LR_DBSet, LR_ChBox, Forms, Controls, Graphics, Dialogs, DBGrids,
-    ZConnection, ZDataset, ZSqlUpdate, IniFiles;
+    ZConnection, ZDataset, ZSqlUpdate, IniFiles, ZAbstractDataset;
 
 type
 
@@ -39,7 +39,6 @@ type
     frReport1: TfrReport;
     sds_ArquCOD_ASSUNTO: TLongintField;
     sds_ArquCOD_USUARIO: TLongintField;
-    sds_ArquDATA: TDateField;
     sds_ArquDESCRICAO: TStringField;
     sds_ArquID: TLongintField;
     sds_ArquIDUSUARIOS: TLongintField;
@@ -74,6 +73,10 @@ type
     sds_lista_UsuariosIDARQUIVOS: TLongintField;
     sds_lista_UsuariosIDUSUARIOS: TLongintField;
     sds_lista_UsuariosNOME: TStringField;
+    sds_User_UsuariosCOD_USUARIO: TLongintField;
+    sds_User_UsuariosIDARQUIVOS: TLongintField;
+    sds_User_UsuariosIDUSUARIOS: TLongintField;
+    sds_User_UsuariosNOME: TStringField;
     sdt_Verif_PerfilARQUI_ASSUNTOS: TStringField;
     sdt_Verif_PerfilARQUI_AUTORES: TStringField;
     sdt_Verif_PerfilARQUI_CONSULTAR: TStringField;
@@ -106,7 +109,6 @@ type
     sdt_Verif_PerfilUSUARIO_INSERIR: TStringField;
     sdt_Verif_PerfilUSUARIO_TRAZER: TStringField;
     ZConnection: TZConnection;
-    ZQArquivo: TZQuery;
     sdt_Combo: TZQuery;
     dst_Login: TZQuery;
     cds_Log: TZQuery;
@@ -150,7 +152,6 @@ type
     sds_Assunt: TZQuery;
     sds_Autores: TZQuery;
     cds_UserAdd: TZQuery;
-    sds_lista_Usuarios: TZQuery;
     ZQuery1: TZQuery;
     ZQuery1NOME_ARQUIVO: TStringField;
     ZQuery2: TZQuery;
@@ -168,6 +169,8 @@ type
     ZQuery2SIZE_ARQUIVO: TFloatField;
     ZQuery2TAMANHO: TStringField;
     ZQuery2TITULO: TStringField;
+    sds_User_Usuarios: TZQuery;
+    ZQArquivo: TZQuery;
     ZUpdateSQL1: TZUpdateSQL;
     ZUpdateSQL2: TZUpdateSQL;
     ZUpdateSQL3: TZUpdateSQL;
@@ -189,6 +192,7 @@ type
     procedure ZQArquivoBeforePost(DataSet: TDataSet);
     procedure ZQArquivoNewRecord(DataSet: TDataSet);
     procedure VerificaErroCount;
+
   private
 
   public
@@ -288,16 +292,17 @@ procedure TDM.ZQArquivoBeforePost(DataSet: TDataSet);
 var
   DataInserimento: String;
 begin
-  if ZQArquivo.State = dsInsert then
+  if FrPrincipal.Dtsrc.DataSet.State = dsInsert then
   begin
-    DataInserimento := DM.ZQArquivoDATA.AsString;
 
     ZQArquivoDATA.Value := Date;
     // FormatDateTime('dd/MM/yyyy',StrToDate(DataInserimento));
     ZQArquivoHORA.Value := Time;
    // ZQArquivoHORA.Value:=TimeToStr(Time);  SQL SERVER ...
+
     ZQArquivoCOD_USUARIO.AsInteger:=FrmLogin.COD_USUARIO;
   end;
+
 
 end;
 
@@ -321,11 +326,11 @@ end;
 procedure TDM.sds_lista_UsuariosFilterRecord(DataSet: TDataSet;
   var Accept: Boolean);
 begin
-    Accept := False;
-  if (sds_lista_Usuarios['IDUSUARIOS'] = frmlogin.COD_USUARIO) then
+  {  Accept := False;
+  if (sds_User_Usuarios['IDUSUARIOS'] = frmlogin.COD_USUARIO) then
   begin
     Accept := True;
-  end;
+  end; }
 end;
 
 procedure TDM.ZConnectionBeforeConnect(Sender: TObject);
@@ -345,9 +350,10 @@ begin
         ZConnection.ClientCodepage  := Ini.ReadString('ZConnection', 'Charset', '');
         ZConnection.AutoEncodeStrings  := False;
 
+
     except
          on E:Exception do
-         MessageDlg('Erro ao conectar!'#13'Erro: ' + e.Message, mtError, [mbOK], 0);
+         MessageDlg('Erro ao conectar Banco!'#13'Erro: ',mtError, [mbOK], 0);
     end;
 end;
 
@@ -481,6 +487,8 @@ begin
     end;
   end;
 end;
+
+
 
 Function TDM.COUNTDADOS: Integer;
 var

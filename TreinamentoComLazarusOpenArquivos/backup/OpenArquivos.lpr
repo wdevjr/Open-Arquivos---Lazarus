@@ -8,9 +8,9 @@ uses
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms, UnPrinc, UnDM, zcomponent, unDlgPesquisaArquivo, UnLogin, UnAbertura,
-  unDlgDescricao, UnDlgDialogAssunto, undlgpequisautores, UnProcessIndefinido,
+  unDlgDescricao, UnDlgDialogAssunto, undlgpesquisautores, UnProcessIndefinido,
   UnatribuiUsuariosPorArquivos, UnIncluirUsuarios, UnConsultaEspecial,
-  datetimectrls, uncadastrousuarios;
+  datetimectrls, uncadastrousuarios, pkg_gifanim;
 
 {$R *.res}
 

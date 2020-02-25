@@ -47,10 +47,10 @@ uses UnDM,UnIncluirUsuarios;
 
 procedure TFrmAtribuiUser.BitBtn1Click(Sender: TObject);
 begin
-  DM.sds_lista_Usuarios.Close;
-  DM.sds_lista_Usuarios.Params[0].AsInteger := DM.ZQArquivoID.AsInteger;
-  DM.sds_lista_Usuarios.Params[1].AsString := '%' + Edit1.Text + '%';
-  DM.sds_lista_Usuarios.Open;
+  DM.sds_User_Usuarios.Close;
+  DM.sds_User_Usuarios.Params[0].AsInteger := DM.ZQArquivoID.AsInteger;
+  DM.sds_User_Usuarios.Params[1].AsString := '%' + Edit1.Text + '%';
+  DM.sds_User_Usuarios.Open;
 end;
 
 procedure TFrmAtribuiUser.BitBtn2Click(Sender: TObject);
@@ -76,7 +76,7 @@ begin
           DM.cds_UserAdd.Post;
           DM.cds_UserAdd.ApplyUpdates;
           DM.cds_UserAdd.CommitUpdates;
-          DM.sds_lista_Usuarios.Refresh;
+          DM.sds_User_Usuarios.Refresh;
           excluir.Enabled := (not DM.cds_UserAdd.IsEmpty);
            end;
           Except
@@ -105,22 +105,22 @@ begin
     DM.cds_UserAdd.Close;
   // DM.cds_UserAdd.Params[0].Value:='';
   // DM.cds_UserAdd.Params[1].Value:='';
-  DM.cds_UserAdd.Params[0].Value := DM.sds_lista_UsuariosIDARQUIVOS.AsInteger;
+  DM.cds_UserAdd.Params[0].Value := DM.sds_User_UsuariosIDARQUIVOS.AsInteger;
   DM.cds_UserAdd.Params[1].Value := DM.sds_lista_UsuariosCOD_USUARIO.AsInteger;
   DM.cds_UserAdd.Open;
   DM.cds_UserAdd.Delete;
   DM.cds_UserAdd.ApplyUpdates;
   DM.cds_UserAdd.CommitUpdates;
-  DM.sds_lista_Usuarios.Refresh;
-  excluir.Enabled := (not DM.sds_lista_Usuarios.IsEmpty);
+  DM.sds_User_Usuarios.Refresh;
+  excluir.Enabled := (not DM.sds_User_Usuarios.IsEmpty);
 end;
 
 procedure TFrmAtribuiUser.FormCreate(Sender: TObject);
 begin
-  DM.sds_lista_Usuarios.Close;
-  DM.sds_lista_Usuarios.Params[0].AsInteger := DM.ZQArquivoID.AsInteger;
-  DM.sds_lista_Usuarios.Params[1].AsString := '%' + Edit1.Text + '%';
-  DM.sds_lista_Usuarios.Open;
+  DM.sds_User_Usuarios.Close;
+  DM.sds_User_Usuarios.Params[0].AsInteger := DM.ZQArquivoID.AsInteger;
+  DM.sds_User_Usuarios.Params[1].AsString := '%' + Edit1.Text + '%';
+  DM.sds_User_Usuarios.Open;
 end;
 
 procedure TFrmAtribuiUser.FormShow(Sender: TObject);

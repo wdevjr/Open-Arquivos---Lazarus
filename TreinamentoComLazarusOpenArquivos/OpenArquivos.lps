@@ -9,8 +9,8 @@
         <Filename Value="OpenArquivos.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="57" Y="11"/>
-        <UsageCount Value="116"/>
+        <CursorPos X="36" Y="18"/>
+        <UsageCount Value="123"/>
       </Unit0>
       <Unit1>
         <Filename Value="unprinc.pas"/>
@@ -20,9 +20,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnPrinc"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="1231"/>
-        <CursorPos X="6" Y="1242"/>
-        <UsageCount Value="116"/>
+        <TopLine Value="1255"/>
+        <CursorPos X="31" Y="1259"/>
+        <UsageCount Value="123"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -33,10 +33,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="UnDM"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="294"/>
-        <CursorPos X="35" Y="316"/>
-        <UsageCount Value="116"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="158"/>
+        <CursorPos X="24" Y="173"/>
+        <UsageCount Value="123"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -47,10 +47,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="unDlgPesquisaArquivo"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="72"/>
-        <CursorPos X="106" Y="224"/>
-        <UsageCount Value="116"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="190"/>
+        <CursorPos X="27" Y="153"/>
+        <UsageCount Value="123"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -60,10 +60,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnLogin"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="98"/>
-        <CursorPos X="26" Y="105"/>
-        <UsageCount Value="108"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="24" Y="190"/>
+        <UsageCount Value="115"/>
+        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="unabertura.pas"/>
@@ -74,7 +74,7 @@
         <UnitName Value="UnAbertura"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="30" Y="31"/>
-        <UsageCount Value="107"/>
+        <UsageCount Value="114"/>
       </Unit5>
       <Unit6>
         <Filename Value="undlgdescricao.pas"/>
@@ -86,7 +86,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="3" Y="28"/>
-        <UsageCount Value="70"/>
+        <UsageCount Value="77"/>
       </Unit6>
       <Unit7>
         <Filename Value="undlgdialogassunto.pas"/>
@@ -98,7 +98,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="49"/>
         <CursorPos Y="58"/>
-        <UsageCount Value="67"/>
+        <UsageCount Value="74"/>
       </Unit7>
       <Unit8>
         <Filename Value="unprocessindefinido.pas"/>
@@ -108,7 +108,7 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnProcessIndefinido"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="57"/>
+        <UsageCount Value="64"/>
       </Unit8>
       <Unit9>
         <Filename Value="unatribuiusuariosporarquivos.pas"/>
@@ -118,9 +118,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnatribuiUsuariosPorArquivos"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="56"/>
-        <CursorPos X="4" Y="58"/>
-        <UsageCount Value="57"/>
+        <TopLine Value="92"/>
+        <CursorPos X="48" Y="109"/>
+        <UsageCount Value="64"/>
       </Unit9>
       <Unit10>
         <Filename Value="unincluirusuarios.pas"/>
@@ -130,9 +130,9 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnIncluirUsuarios"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="28"/>
-        <CursorPos X="3" Y="38"/>
-        <UsageCount Value="52"/>
+        <TopLine Value="51"/>
+        <CursorPos X="14" Y="65"/>
+        <UsageCount Value="59"/>
       </Unit10>
       <Unit11>
         <Filename Value="unconsultaespecial.pas"/>
@@ -143,7 +143,7 @@
         <UnitName Value="UnConsultaEspecial"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="21" Y="3"/>
-        <UsageCount Value="27"/>
+        <UsageCount Value="34"/>
       </Unit11>
       <Unit12>
         <Filename Value="uncadastrousuarios.pas"/>
@@ -154,7 +154,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="35" Y="26"/>
-        <UsageCount Value="23"/>
+        <UsageCount Value="30"/>
       </Unit12>
       <Unit13>
         <Filename Value="undlgpesquisautores.pas"/>
@@ -163,8 +163,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
-        <CursorPos X="8" Y="4"/>
-        <UsageCount Value="22"/>
+        <CursorPos X="38" Y="9"/>
+        <UsageCount Value="29"/>
       </Unit13>
       <Unit14>
         <Filename Value="undlgpequisaautores.pas"/>
@@ -209,7 +209,7 @@
         <UsageCount Value="7"/>
       </Unit18>
       <Unit19>
-        <Filename Value="..\Projeto1deTeste\unit1.pas"/>
+        <Filename Value="D:\Projeto1deTeste\unit1.pas"/>
         <ComponentName Value="FrmPrinc"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -218,7 +218,7 @@
         <UsageCount Value="17"/>
       </Unit19>
       <Unit20>
-        <Filename Value="..\SCS\Source\pprinc.pas"/>
+        <Filename Value="D:\SCS\Source\pprinc.pas"/>
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -227,7 +227,7 @@
         <UsageCount Value="17"/>
       </Unit20>
       <Unit21>
-        <Filename Value="..\SCS\Source\unpprinc.pas"/>
+        <Filename Value="D:\SCS\Source\unpprinc.pas"/>
         <ComponentName Value="FrmPprinc"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
@@ -251,24 +251,132 @@
         <UsageCount Value="10"/>
       </Unit23>
     </Units>
-    <JumpHistory Count="4" HistoryIndex="3">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="undlgpesquisaarquivo.pas"/>
-        <Caret Line="69" Column="63" TopLine="139"/>
+        <Filename Value="undm.pas"/>
+        <Caret Line="296" Column="23" TopLine="287"/>
       </Position1>
       <Position2>
         <Filename Value="undm.pas"/>
-        <Caret Line="318" Column="35" TopLine="206"/>
+        <Caret Line="297" Column="9" TopLine="286"/>
       </Position2>
       <Position3>
         <Filename Value="undm.pas"/>
-        <Caret Line="317" Column="35" TopLine="295"/>
+        <Caret Line="296" Column="9" TopLine="285"/>
       </Position3>
       <Position4>
         <Filename Value="undm.pas"/>
-        <Caret Line="316" Column="35" TopLine="294"/>
+        <Caret Line="297" Column="9" TopLine="286"/>
       </Position4>
+      <Position5>
+        <Filename Value="undm.pas"/>
+        <Caret Line="296" Column="9" TopLine="285"/>
+      </Position5>
+      <Position6>
+        <Filename Value="undm.pas"/>
+        <Caret Line="297" Column="9" TopLine="286"/>
+      </Position6>
+      <Position7>
+        <Filename Value="undm.pas"/>
+        <Caret Line="298" Column="9" TopLine="287"/>
+      </Position7>
+      <Position8>
+        <Filename Value="undm.pas"/>
+        <Caret Line="299" Column="9" TopLine="288"/>
+      </Position8>
+      <Position9>
+        <Filename Value="undm.pas"/>
+        <Caret Line="300" Column="9" TopLine="289"/>
+      </Position9>
+      <Position10>
+        <Filename Value="undm.pas"/>
+        <Caret Line="301" Column="9" TopLine="290"/>
+      </Position10>
+      <Position11>
+        <Filename Value="undm.pas"/>
+        <Caret Line="302" Column="9" TopLine="291"/>
+      </Position11>
+      <Position12>
+        <Filename Value="undm.pas"/>
+        <Caret Line="303" Column="9" TopLine="292"/>
+      </Position12>
+      <Position13>
+        <Filename Value="undm.pas"/>
+        <Caret Line="304" Column="9" TopLine="293"/>
+      </Position13>
+      <Position14>
+        <Filename Value="undm.pas"/>
+        <Caret Line="305" Column="9" TopLine="294"/>
+      </Position14>
+      <Position15>
+        <Filename Value="undm.pas"/>
+        <Caret Line="306" Column="9" TopLine="295"/>
+      </Position15>
+      <Position16>
+        <Filename Value="undm.pas"/>
+        <Caret Line="307" Column="9" TopLine="296"/>
+      </Position16>
+      <Position17>
+        <Filename Value="undm.pas"/>
+        <Caret Line="308" Column="9" TopLine="297"/>
+      </Position17>
+      <Position18>
+        <Filename Value="undm.pas"/>
+        <Caret Line="309" Column="9" TopLine="298"/>
+      </Position18>
+      <Position19>
+        <Filename Value="undm.pas"/>
+        <Caret Line="310" Column="9" TopLine="299"/>
+      </Position19>
+      <Position20>
+        <Filename Value="undm.pas"/>
+        <Caret Line="311" Column="9" TopLine="300"/>
+      </Position20>
+      <Position21>
+        <Filename Value="undm.pas"/>
+        <Caret Line="325" Column="3" TopLine="323"/>
+      </Position21>
+      <Position22>
+        <Filename Value="undm.pas"/>
+        <Caret Line="309" Column="3" TopLine="305"/>
+      </Position22>
+      <Position23>
+        <Filename Value="undm.pas"/>
+        <Caret Line="175" Column="34" TopLine="175"/>
+      </Position23>
+      <Position24>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1262" Column="8" TopLine="1263"/>
+      </Position24>
+      <Position25>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="807" Column="52" TopLine="802"/>
+      </Position25>
+      <Position26>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1263" Column="8" TopLine="1251"/>
+      </Position26>
+      <Position27>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1014" Column="5" TopLine="1018"/>
+      </Position27>
+      <Position28>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1064" Column="3" TopLine="1062"/>
+      </Position28>
+      <Position29>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1263" Column="22" TopLine="1252"/>
+      </Position29>
+      <Position30>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="139" Column="15" TopLine="504"/>
+      </Position30>
     </JumpHistory>
+    <CustomSessionData Count="2">
+      <Item0 Name="SVN active" Value="-1"/>
+      <Item1 Name="SVN repository" Value="https://192.168.0.103/svn/RepositorioLazarus/trunk/TreinamentoComLazarusOpenArquivos"/>
+    </CustomSessionData>
     <RunParams>
       <FormatVersion Value="2"/>
       <Modes Count="0" ActiveMode=""/>

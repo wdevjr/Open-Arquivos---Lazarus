@@ -9,17 +9,15 @@ uses
   Dialogs, ExtCtrls, StdCtrls, ComCtrls, Buttons, Grids, DBGrids, DB,
   DBCtrls,ZDataset,
   ImgList, ToolWin,
-  Menus, DateUtils;
+  Menus, GifAnim, DateUtils,WinInet;
 
 type
 
   { TFrPrincipal }
 
   TFrPrincipal = class(TForm)
-    BitBtn1: TBitBtn;
+    DatadeCaD: TDBText;
     DtscLog: TDataSource;
-    Label13: TLabel;
-    ProgressBar1: TProgressBar;
     relatorio: TBitBtn;
     BitBtn2: TBitBtn;
     cancelar: TBitBtn;
@@ -34,7 +32,6 @@ type
     DBMemo2: TDBMemo;
     DBMemo3: TDBMemo;
     DBText1: TDBText;
-    DBText2: TDBText;
     DBText3: TDBText;
     DBText4: TDBText;
     DBText5: TDBText;
@@ -698,7 +695,7 @@ end;
 procedure TFrPrincipal.BitBtn1Click(Sender: TObject);
 var i,cont:Integer;
 begin
-  ProgressBar1.Min:=1;
+ {ProgressBar1.Min:=1;
   DM.ZQuery1.Open;
   DM.ZQuery2.Open;
   //cont:=DM.ZQuery1.RecordCount;
@@ -720,7 +717,7 @@ begin
       //Label13.Caption := IntToStr(ProgressBar1.Position);
     end;
    Label13.Caption:='Pronto!';
-   Label13.Visible:=true;
+   Label13.Visible:=true; }
 end;
 
 procedure TFrPrincipal.BtnLoc02Click(Sender: TObject);
@@ -863,7 +860,7 @@ begin
     end;
   MostrarEstatistica;
     // DM.sds_cont.Close;
-    //RegistroTemp := StrToInt(DBText2.Caption);
+    //RegistroTemp := StrToInt(DatadeCaD.Caption);
     Screen.Cursor := crDefault;
     ConfigGravar;
     MostrarIcon;
@@ -1011,6 +1008,8 @@ end;
 
 
 procedure TFrPrincipal.FormActivate(Sender: TObject);
+var
+ i:dword;
 begin
     StatusBar1.Panels[0].Text := Saudacao + ' Hoje é ' +
     formatdatetime('dddddd', Date);
@@ -1022,7 +1021,13 @@ begin
   begin
     lookUser.Visible := True;
   end;
-  //MostrarEstatistica;
+ { if InternetGetConnectedState(@i,0) then
+   GifAnim1.Animate:=True
+ // showmessage('esta conectado')
+    else
+   GifAnim1.Animate:=False;
+  //showmessage('nun ta não');
+  //MostrarEstatistica; }
 end;
 
 procedure TFrPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -1093,9 +1098,15 @@ end;
 
 procedure TFrPrincipal.gravarClick(Sender: TObject);
 begin
+ if (Label15.Caption = '') then
+  begin
+   ShowMessage('Preencha o Assunto!');
+   Abort;
+   end else
+  begin
   if Verifica_Campos_Em_Branco then
-begin
-  frmSplash := TfrmSplash.Create(Self);
+   begin
+    frmSplash := TfrmSplash.Create(Self);
     frmSplash.Show;
     frmSplash.Refresh;
     frmSplash.ProgressBar1.Position := 1;
@@ -1145,7 +1156,7 @@ begin
    end;
 
     // DM.sds_cont.Close;
-    //RegistroTemp := StrToInt(DBText2.Caption);
+    //RegistroTemp := StrToInt(DatadeCaD.Caption);
     Screen.Cursor := crDefault;
     ConfigGravar;
     MostrarEstatistica;
@@ -1170,16 +1181,13 @@ begin
     frmSplash.ProgressBar1.Position := 100;
     // espera...
     Sleep(2000);
-    if frmSplash.ProgressBar1.Position = 100 then
-    begin
-      frmSplash.Hide;
-      frmSplash.Free;
-
-    end;
-
-    end else Abort;
-
-
+     if frmSplash.ProgressBar1.Position = 100 then
+     begin
+       frmSplash.Hide;
+       frmSplash.Free;
+      end;
+     end else Abort;
+   end;
 end;
 
 procedure TFrPrincipal.IdleTimer1Timer(Sender: TObject);
@@ -1239,13 +1247,21 @@ begin
       DM.ZQArquivo.Edit;
     DM.ZQArquivoDADOS.LoadFromFile(OpenDialog1.FileName);
     DM.ZQArquivoNOME_ARQUIVO.AsString := TrocaCaracterEspecial(ExtractFileName(OpenDialog1.FileName),true);
-    DM.ZQArquivoNOME_ARQUIVO_ESPECIAL.AsString:= ExtractFileName(OpenDialog1.FileName);
+   // DM.ZQArquivoNOME_ARQUIVO_ESPECIAL.AsString:= ExtractFileName(OpenDialog1.FileName);
     DM.ZQArquivoEXTENCAO.AsString :=
       LowerCase(ExtractFileExt(OpenDialog1.FileName));
     AssignFile(F, OpenDialog1.FileName);
     Reset(F);
     Tamnh := FileSize(F);
-
+ if (Tamnh >= 125829120) then // 120MB
+  begin
+        MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 120 MB!',
+          mtError, [mbOK], 0);
+       //Abort;
+       Dtsrc.DataSet.Cancel;
+       ConfigInicial;
+  end else
+  begin
     if Tamnh <= 1024 then
     begin
       varifTempBytes := (FloatToStrF((Tamnh), ffNumber, 11, 0));
@@ -1276,13 +1292,15 @@ begin
     end;
 
       MostrarIcon;
-     if (Tamnh >= 125829120) then // 120MB
+    { if (Tamnh >= 125829120) then // 120MB
       begin
         Dtsrc.DataSet.Cancel;
         MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 120 MB!',
           mtError, [mbOK], 0);
-        MostrarIcon;
-      end;
+       // MostrarIcon;
+      end; }
+   end;
+
   end;
 
 end;
@@ -1320,7 +1338,7 @@ begin
           DM.ZQArquivo.Open;
           MostrarIcon;
            frmSplash := TfrmSplash.Create(Self);
-              frmSplash.Show;
+              frmSplash.ShowModal;
               frmSplash.Refresh;
               frmSplash.ProgressBar1.Position := 1;
               // espera...

@@ -8,7 +8,7 @@ object FrmDlgPesquisa: TFrmDlgPesquisa
   ClientWidth = 964
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object StsBr: TStatusBar
     Left = 0
     Height = 23
@@ -530,6 +530,10 @@ object FrmDlgPesquisa: TFrmDlgPesquisa
         Title.Caption = 'NOME'
         Width = 250
         FieldName = 'NOME'
+      end    
+      item
+        Title.Caption = 'DATA'
+        FieldName = 'DATA'
       end    
       item
         Title.Caption = 'TITULOASSUN'

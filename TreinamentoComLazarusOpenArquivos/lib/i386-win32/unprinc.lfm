@@ -1,11 +1,11 @@
 object FrPrincipal: TFrPrincipal
-  Left = 295
+  Left = 296
   Height = 649
-  Top = 114
-  Width = 834
+  Top = 121
+  Width = 833
   Caption = 'Tela Principal'
   ClientHeight = 629
-  ClientWidth = 834
+  ClientWidth = 833
   Menu = MainMenu1
   OnActivate = FormActivate
   OnClose = FormClose
@@ -298,7 +298,7 @@ object FrPrincipal: TFrPrincipal
     Left = 191
     Height = 51
     Top = 551
-    Width = 91
+    Width = 90
     Caption = 'Editar'
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
@@ -721,11 +721,11 @@ object FrPrincipal: TFrPrincipal
     Left = 0
     Height = 476
     Top = 72
-    Width = 834
+    Width = 833
     Align = alTop
     Caption = 'Cadastro de Arquivos'
     ClientHeight = 456
-    ClientWidth = 830
+    ClientWidth = 829
     Color = 14083559
     Font.Style = [fsBold]
     ParentColor = False
@@ -799,11 +799,11 @@ object FrPrincipal: TFrPrincipal
       Left = 0
       Height = 154
       Top = 0
-      Width = 830
+      Width = 829
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 154
-      ClientWidth = 830
+      ClientWidth = 829
       TabOrder = 3
       object Label6: TLabel
         Left = 8
@@ -834,18 +834,6 @@ object FrPrincipal: TFrPrincipal
         Top = 59
         Width = 29
         Caption = 'Data:'
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
-      end
-      object DBText2: TDBText
-        Left = 117
-        Height = 15
-        Top = 76
-        Width = 49
-        DataField = 'DATA'
-        DataSource = Dtsrc
-        Font.Color = 4227072
         Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
@@ -1252,16 +1240,28 @@ object FrPrincipal: TFrPrincipal
         Transparent = False
         Visible = False
       end
+      object DatadeCaD: TDBText
+        Left = 117
+        Height = 15
+        Top = 76
+        Width = 62
+        DataField = 'DATA'
+        DataSource = Dtsrc
+        Font.Color = clGreen
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+      end
     end
     object Panel3: TPanel
       Left = 0
       Height = 30
       Top = 154
-      Width = 830
+      Width = 829
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 30
-      ClientWidth = 830
+      ClientWidth = 829
       TabOrder = 4
       object Image4: TImage
         Left = 15
@@ -1325,11 +1325,11 @@ object FrPrincipal: TFrPrincipal
       Left = 0
       Height = 43
       Top = 184
-      Width = 830
+      Width = 829
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 43
-      ClientWidth = 830
+      ClientWidth = 829
       TabOrder = 5
       Visible = False
       object Label2: TLabel
@@ -1522,43 +1522,16 @@ object FrPrincipal: TFrPrincipal
       ParentColor = False
       ParentFont = False
     end
-    object BitBtn1: TBitBtn
-      Left = 712
-      Height = 30
-      Top = 228
-      Width = 75
-      Caption = 'Troca'
-      OnClick = BitBtn1Click
-      TabOrder = 7
-      Visible = False
-    end
-    object Label13: TLabel
-      Left = 760
-      Height = 15
-      Top = 271
-      Width = 43
-      Caption = 'Label13'
-      ParentColor = False
-      Visible = False
-    end
-    object ProgressBar1: TProgressBar
-      Left = 608
-      Height = 20
-      Top = 271
-      Width = 132
-      TabOrder = 8
-      Visible = False
-    end
   end
   object Panel1: TPanel
     Left = 0
     Height = 72
     Top = 0
-    Width = 834
+    Width = 833
     Align = alTop
     BevelColor = clBtnFace
     ClientHeight = 72
-    ClientWidth = 834
+    ClientWidth = 833
     Color = 14079702
     ParentColor = False
     TabOrder = 6
@@ -3622,7 +3595,7 @@ object FrPrincipal: TFrPrincipal
     Left = 0
     Height = 23
     Top = 606
-    Width = 834
+    Width = 833
     Panels = <    
       item
         ParentBiDiMode = False
@@ -3954,8 +3927,8 @@ object FrPrincipal: TFrPrincipal
   object Dtsrc: TDataSource
     DataSet = DM.ZQArquivo
     OnStateChange = DtsrcStateChange
-    left = 536
-    top = 200
+    left = 616
+    top = 160
   end
   object OpenDialog1: TOpenDialog
     left = 464

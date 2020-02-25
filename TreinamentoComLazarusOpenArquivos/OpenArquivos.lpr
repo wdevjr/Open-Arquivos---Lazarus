@@ -10,7 +10,7 @@ uses
   Forms, UnPrinc, UnDM, zcomponent, unDlgPesquisaArquivo, UnLogin, UnAbertura,
   unDlgDescricao, UnDlgDialogAssunto, undlgpesquisautores, UnProcessIndefinido,
   UnatribuiUsuariosPorArquivos, UnIncluirUsuarios, UnConsultaEspecial,
-  datetimectrls, uncadastrousuarios;
+  datetimectrls, uncadastrousuarios, pkg_gifanim;
 
 {$R *.res}
 

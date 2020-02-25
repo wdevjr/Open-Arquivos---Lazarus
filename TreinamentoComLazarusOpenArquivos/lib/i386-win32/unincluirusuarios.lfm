@@ -8,7 +8,7 @@ object frmIncluir: TfrmIncluir
   ClientWidth = 591
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object Panel1: TPanel
     Left = 0
     Height = 64
@@ -17,6 +17,8 @@ object frmIncluir: TfrmIncluir
     Align = alTop
     ClientHeight = 64
     ClientWidth = 591
+    Color = clWhite
+    ParentColor = False
     TabOrder = 0
     object Label1: TLabel
       Left = 8
@@ -93,6 +95,8 @@ object frmIncluir: TfrmIncluir
     Align = alBottom
     ClientHeight = 64
     ClientWidth = 591
+    Color = clWhite
+    ParentColor = False
     TabOrder = 1
     object BitBtnIncluir: TBitBtn
       Left = 400

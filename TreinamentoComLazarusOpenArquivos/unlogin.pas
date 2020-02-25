@@ -6,7 +6,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, ExtCtrls, DB, DBCtrls, ZDataset, process;
+  Dialogs, StdCtrls, Buttons, ExtCtrls, DB, DBCtrls, GifAnim, ZDataset, process,WinInet;
 
 type
 
@@ -20,15 +20,18 @@ type
     Dtsrc: TDataSource;
     Edtusuario: TComboBox;
     EdtSenha: TEdit;
-    Image2: TImage;
+    GifAnim1: TGifAnim;
     Image4: TImage;
     Image6: TImage;
     Label1: TLabel;
+    Label13: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    Timer2: TTimer;
     procedure BitBtn1Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
-
+    procedure Timer2Timer(Sender: TObject);
     private
 
     public
@@ -45,6 +48,7 @@ type
     THEMA_ATUAL: String;
     procedure IncrementaAdd;
     procedure CorrigeUserCod;
+    Procedure conection;
   end;
 
 var
@@ -182,6 +186,11 @@ begin
   end;
 end;
 
+procedure TFrmLogin.BitBtn2Click(Sender: TObject);
+begin
+  Application.Terminate;
+end;
+
 procedure TFrmLogin.FormShow(Sender: TObject);
 var
     cont, ForGlobal: Longint;
@@ -224,7 +233,30 @@ begin
 
 end;
 
-  procedure TFrmLogin.IncrementaAdd;
+procedure TFrmLogin.Timer2Timer(Sender: TObject);
+begin
+  conection;
+end;
+
+Procedure TFrmLogin.conection;
+var
+ conexao:dword;
+begin
+
+    if InternetGetConnectedState(@conexao,0) then
+    begin
+      GifAnim1.Animate:=True;
+      Label13.Font.Color:=clBlue;
+      Label13.Caption:=('Esta conectado em Rede!');
+  end else
+    begin
+        GifAnim1.Animate:=False;
+        Label13.Font.Color:=clRed;
+        Label13.Caption:=('Não esta conectado em Rede!');
+    end;
+end;
+
+procedure TFrmLogin.IncrementaAdd;
   var
     Qryorder: TZQuery;
   begin
