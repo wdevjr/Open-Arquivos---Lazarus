@@ -18,6 +18,7 @@ type
   TFrPrincipal = class(TForm)
     DatadeCaD: TDBText;
     DtscLog: TDataSource;
+    GifAnim1: TGifAnim;
     relatorio: TBitBtn;
     BitBtn2: TBitBtn;
     cancelar: TBitBtn;
@@ -53,7 +54,6 @@ type
     Label12: TLabel;
     Autor: TLabel;
     codigo13: TLabel;
-    Label14: TLabel;
     Label15: TLabel;
     Label16: TLabel;
     Label2: TLabel;
@@ -1257,7 +1257,6 @@ begin
   begin
         MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 120 MB!',
           mtError, [mbOK], 0);
-       //Abort;
        Dtsrc.DataSet.Cancel;
        ConfigInicial;
   end else
@@ -1566,6 +1565,13 @@ end;
 procedure TFrPrincipal.Timer1Timer(Sender: TObject);
 begin
     MostrarEstatistica;
+     if (StrToInt(codigo13.Caption) > 1) then
+   begin
+   GifAnim1.Visible:=true;
+   end else
+   begin
+   GifAnim1.Visible:=false;
+   end;
 end;
 
 procedure TFrPrincipal.IniciaAdministracao;

@@ -2,10 +2,10 @@ object FrPrincipal: TFrPrincipal
   Left = 296
   Height = 649
   Top = 121
-  Width = 833
+  Width = 864
   Caption = 'Tela Principal'
   ClientHeight = 629
-  ClientWidth = 833
+  ClientWidth = 864
   Menu = MainMenu1
   OnActivate = FormActivate
   OnClose = FormClose
@@ -721,11 +721,11 @@ object FrPrincipal: TFrPrincipal
     Left = 0
     Height = 476
     Top = 72
-    Width = 833
+    Width = 864
     Align = alTop
     Caption = 'Cadastro de Arquivos'
     ClientHeight = 456
-    ClientWidth = 829
+    ClientWidth = 860
     Color = 14083559
     Font.Style = [fsBold]
     ParentColor = False
@@ -799,11 +799,11 @@ object FrPrincipal: TFrPrincipal
       Left = 0
       Height = 154
       Top = 0
-      Width = 829
+      Width = 860
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 154
-      ClientWidth = 829
+      ClientWidth = 860
       TabOrder = 3
       object Label6: TLabel
         Left = 8
@@ -1257,11 +1257,11 @@ object FrPrincipal: TFrPrincipal
       Left = 0
       Height = 30
       Top = 154
-      Width = 829
+      Width = 860
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 30
-      ClientWidth = 829
+      ClientWidth = 860
       TabOrder = 4
       object Image4: TImage
         Left = 15
@@ -1325,11 +1325,11 @@ object FrPrincipal: TFrPrincipal
       Left = 0
       Height = 43
       Top = 184
-      Width = 829
+      Width = 860
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 43
-      ClientWidth = 829
+      ClientWidth = 860
       TabOrder = 5
       Visible = False
       object Label2: TLabel
@@ -1500,38 +1500,36 @@ object FrPrincipal: TFrPrincipal
     object codigo13: TLabel
       Left = 752
       Height = 21
-      Top = 425
-      Width = 56
+      Top = 431
+      Width = 48
       AutoSize = False
       Caption = 'codigo13'
       Font.Color = clRed
-      Font.Height = -16
+      Font.Height = -13
       Font.Style = [fsBold]
       ParentColor = False
       ParentFont = False
       Visible = False
     end
-    object Label14: TLabel
-      Left = 592
-      Height = 15
-      Top = 432
-      Width = 156
-      Caption = 'Conectados até o Momento:'
-      Font.Color = clBlue
-      Font.Style = [fsBold]
-      ParentColor = False
-      ParentFont = False
+    object GifAnim1: TGifAnim
+      Left = 806
+      Height = 24
+      Top = 428
+      Width = 40
+      AutoSize = False
+      FileName = 'anima\Infinity-1s-38px.gif'
+      Visible = False
     end
   end
   object Panel1: TPanel
     Left = 0
     Height = 72
     Top = 0
-    Width = 833
+    Width = 864
     Align = alTop
     BevelColor = clBtnFace
     ClientHeight = 72
-    ClientWidth = 833
+    ClientWidth = 864
     Color = 14079702
     ParentColor = False
     TabOrder = 6
@@ -3378,7 +3376,7 @@ object FrPrincipal: TFrPrincipal
       OnClick = btnextrairClick
     end
     object sair: TSpeedButton
-      Left = 717
+      Left = 776
       Height = 68
       Top = 1
       Width = 72
@@ -3595,7 +3593,7 @@ object FrPrincipal: TFrPrincipal
     Left = 0
     Height = 23
     Top = 606
-    Width = 833
+    Width = 864
     Panels = <    
       item
         ParentBiDiMode = False

@@ -20,8 +20,8 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnPrinc"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="1255"/>
-        <CursorPos X="31" Y="1259"/>
+        <TopLine Value="1565"/>
+        <CursorPos X="5" Y="1568"/>
         <UsageCount Value="123"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -38,7 +38,6 @@
         <CursorPos X="24" Y="173"/>
         <UsageCount Value="123"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="undlgpesquisaarquivo.pas"/>
@@ -64,6 +63,7 @@
         <CursorPos X="24" Y="190"/>
         <UsageCount Value="115"/>
         <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="unabertura.pas"/>
@@ -346,31 +346,31 @@
       </Position23>
       <Position24>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="1262" Column="8" TopLine="1263"/>
+        <Caret Line="807" Column="52" TopLine="802"/>
       </Position24>
       <Position25>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="807" Column="52" TopLine="802"/>
+        <Caret Line="1263" Column="8" TopLine="1251"/>
       </Position25>
       <Position26>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="1263" Column="8" TopLine="1251"/>
+        <Caret Line="1064" Column="3" TopLine="1062"/>
       </Position26>
       <Position27>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="1014" Column="5" TopLine="1018"/>
+        <Caret Line="1263" Column="22" TopLine="1252"/>
       </Position27>
       <Position28>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="1064" Column="3" TopLine="1062"/>
+        <Caret Line="1259" Column="31" TopLine="1255"/>
       </Position28>
       <Position29>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="1263" Column="22" TopLine="1252"/>
+        <Caret Line="1260" Column="31" TopLine="1256"/>
       </Position29>
       <Position30>
         <Filename Value="unprinc.pas"/>
-        <Caret Line="139" Column="15" TopLine="504"/>
+        <Caret Line="1575" Column="8" TopLine="1565"/>
       </Position30>
     </JumpHistory>
     <CustomSessionData Count="2">

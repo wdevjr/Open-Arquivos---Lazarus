@@ -8,7 +8,7 @@ object FrmLogin: TFrmLogin
   ClientWidth = 356
   Color = clWhite
   OnShow = FormShow
-  LCLVersion = '2.0.6.0'
+  LCLVersion = '2.0.4.0'
   object Label1: TLabel
     Left = 10
     Height = 15
@@ -552,7 +552,7 @@ object FrmLogin: TFrmLogin
     Top = 54
     Width = 42
     Animate = False
-    FileName = 'anima\Infinity-1s-38px.gif'
+    FileName = 'anima\transmitindo.gif'
   end
   object Dtsrc: TDataSource
     DataSet = DM.cds_Log

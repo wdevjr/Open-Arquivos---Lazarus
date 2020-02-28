@@ -18,6 +18,8 @@ type
   TFrPrincipal = class(TForm)
     DatadeCaD: TDBText;
     DtscLog: TDataSource;
+    GifAnim1: TGifAnim;
+    Label13: TLabel;
     relatorio: TBitBtn;
     BitBtn2: TBitBtn;
     cancelar: TBitBtn;
@@ -53,7 +55,6 @@ type
     Label12: TLabel;
     Autor: TLabel;
     codigo13: TLabel;
-    Label14: TLabel;
     Label15: TLabel;
     Label16: TLabel;
     Label2: TLabel;
@@ -1565,6 +1566,13 @@ end;
 procedure TFrPrincipal.Timer1Timer(Sender: TObject);
 begin
     MostrarEstatistica;
+     if (StrToInt(codigo13.Caption) > 1) then
+   begin
+   GifAnim1.Visible:=true;
+   end else
+   begin
+   GifAnim1.Visible:=false;
+   end;
 end;
 
 procedure TFrPrincipal.IniciaAdministracao;
