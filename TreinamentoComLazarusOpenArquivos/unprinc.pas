@@ -1099,9 +1099,15 @@ end;
 
 procedure TFrPrincipal.gravarClick(Sender: TObject);
 begin
+ if (DBMemo1.Text = '') then
+ begin
+   ShowMessage('Carregue o Arquivo!');
+   Abort;
+ end else
+ begin
  if (Label15.Caption = '') then
   begin
-   ShowMessage('Preencha o Assunto!');
+   ShowMessage('Preencha o Campo Assunto!');
    Abort;
    end else
   begin
@@ -1189,6 +1195,7 @@ begin
       end;
      end else Abort;
    end;
+ end;
 end;
 
 procedure TFrPrincipal.IdleTimer1Timer(Sender: TObject);

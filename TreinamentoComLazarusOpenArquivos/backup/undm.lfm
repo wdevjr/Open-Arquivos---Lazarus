@@ -7,13 +7,14 @@ object DM: TDM
   PPI = 96
   object ZConnection: TZConnection
     ControlsCodePage = cCP_UTF8
+    AutoEncodeStrings = True
     ClientCodepage = 'NONE'
     Catalog = 'opemarquivos'
     Properties.Strings = (
       ''
       'codepage=NONE'
       'controls_cp=CP_UTF8'
-      'AutoEncodeStrings='
+      'AutoEncodeStrings=ON'
     )
     TransactIsolationLevel = tiReadCommitted
     Connected = True
@@ -1838,6 +1839,7 @@ object DM: TDM
   object ZQArquivo: TZQuery
     Connection = ZConnection
     UpdateObject = ZUpdateSQL1
+    CachedUpdates = True
     BeforePost = ZQArquivoBeforePost
     OnNewRecord = ZQArquivoNewRecord
     SQL.Strings = (
@@ -1868,10 +1870,20 @@ object DM: TDM
       ReadOnly = False
       Required = True
     end
+    object ZQArquivoNOME_ARQUIVO: TStringField
+      FieldKind = fkData
+      FieldName = 'NOME_ARQUIVO'
+      Index = 1
+      LookupCache = False
+      ProviderFlags = [pfInUpdate]
+      ReadOnly = False
+      Required = True
+      Size = 300
+    end
     object ZQArquivoCOD_USUARIO: TLongintField
       FieldKind = fkData
       FieldName = 'COD_USUARIO'
-      Index = 1
+      Index = 2
       LookupCache = False
       ProviderFlags = [pfInUpdate]
       ReadOnly = False
@@ -1880,7 +1892,7 @@ object DM: TDM
     object ZQArquivoCOD_ASSUNTO: TLongintField
       FieldKind = fkData
       FieldName = 'COD_ASSUNTO'
-      Index = 2
+      Index = 3
       LookupCache = False
       ProviderFlags = [pfInUpdate]
       ReadOnly = False
@@ -1889,31 +1901,21 @@ object DM: TDM
     object ZQArquivoCOD_AUTOR: TLongintField
       FieldKind = fkData
       FieldName = 'COD_AUTOR'
-      Index = 3
-      LookupCache = False
-      ProviderFlags = [pfInUpdate]
-      ReadOnly = False
-      Required = False
-    end
-    object ZQArquivoTITULO: TStringField
-      FieldKind = fkData
-      FieldName = 'TITULO'
       Index = 4
       LookupCache = False
       ProviderFlags = [pfInUpdate]
       ReadOnly = False
-      Required = False
-      Size = 140
+      Required = True
     end
-    object ZQArquivoNOME_ARQUIVO: TStringField
+    object ZQArquivoTITULO: TStringField
       FieldKind = fkData
-      FieldName = 'NOME_ARQUIVO'
+      FieldName = 'TITULO'
       Index = 5
       LookupCache = False
       ProviderFlags = [pfInUpdate]
       ReadOnly = False
-      Required = False
-      Size = 300
+      Required = True
+      Size = 140
     end
     object ZQArquivoEXTENCAO: TStringField
       FieldKind = fkData
@@ -1941,7 +1943,7 @@ object DM: TDM
       LookupCache = False
       ProviderFlags = [pfInUpdate]
       ReadOnly = False
-      Required = False
+      Required = True
       Size = 20000
     end
     object ZQArquivoHORA: TTimeField
