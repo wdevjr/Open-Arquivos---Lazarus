@@ -5,7 +5,7 @@ unit UnatribuiUsuariosPorArquivos;
 interface
 
 uses
-  Classes, SysUtils, db, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
+  Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
   DBGrids;
 
 type
@@ -41,7 +41,7 @@ implementation
 
 {$R *.lfm}
 
-uses UnDM,UnIncluirUsuarios;
+uses UnDM, UnIncluirUsuarios;
 
 { TFrmAtribuiUser }
 
@@ -55,7 +55,7 @@ end;
 
 procedure TFrmAtribuiUser.BitBtn2Click(Sender: TObject);
 begin
-   try
+  try
     frmIncluir := TfrmIncluir.Create(self);
     with frmIncluir do
       if ShowModal = mrOk then
@@ -68,28 +68,29 @@ begin
           DM.cds_UserAdd.Open;
           DM.cds_UserAdd.Append;
 
-          DM.cds_UserAddIDUSUARIOS.Value := frmIncluir.sds_Pesq_UserCOD_USUARIO.AsInteger;
+          DM.cds_UserAddIDUSUARIOS.Value :=
+            frmIncluir.sds_Pesq_UserCOD_USUARIO.AsInteger;
           DM.cds_UserAddIDARQUIVOS.Value := DM.ZQArquivoID.Value;
 
           try
-          begin
-          DM.cds_UserAdd.Post;
-          DM.cds_UserAdd.ApplyUpdates;
-          DM.cds_UserAdd.CommitUpdates;
-          DM.sds_User_Usuarios.Refresh;
-          excluir.Enabled := (not DM.cds_UserAdd.IsEmpty);
-           end;
-          Except
+            begin
+              DM.cds_UserAdd.Post;
+              DM.cds_UserAdd.ApplyUpdates;
+              DM.cds_UserAdd.CommitUpdates;
+              DM.sds_User_Usuarios.Refresh;
+              excluir.Enabled := (not DM.cds_UserAdd.IsEmpty);
+            end;
+          except
             on E: Exception do
             begin
-            ShowMessage('Esse Usuário já Existe no Arquivo! ');
-            Abort;
+              ShowMessage('Esse Usuário já Existe no Arquivo! ');
+              Abort;
             end;
           end;
 
         end;
 
-     end;
+      end;
 
 
 
@@ -102,7 +103,7 @@ end;
 
 procedure TFrmAtribuiUser.excluirClick(Sender: TObject);
 begin
-    DM.cds_UserAdd.Close;
+  DM.cds_UserAdd.Close;
   // DM.cds_UserAdd.Params[0].Value:='';
   // DM.cds_UserAdd.Params[1].Value:='';
   DM.cds_UserAdd.Params[0].Value := DM.sds_User_UsuariosIDARQUIVOS.AsInteger;
@@ -131,4 +132,3 @@ begin
 end;
 
 end.
-

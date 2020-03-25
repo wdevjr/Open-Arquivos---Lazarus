@@ -106,7 +106,7 @@ begin
   // DM.cds_UserAdd.Params[0].Value:='';
   // DM.cds_UserAdd.Params[1].Value:='';
   DM.cds_UserAdd.Params[0].Value := DM.sds_User_UsuariosIDARQUIVOS.AsInteger;
-  DM.cds_UserAdd.Params[1].Value := DM.sds_lista_UsuariosCOD_USUARIO.AsInteger;
+  DM.cds_UserAdd.Params[1].Value := DM.sds_User_UsuariosCOD_USUARIO.AsInteger;
   DM.cds_UserAdd.Open;
   DM.cds_UserAdd.Delete;
   DM.cds_UserAdd.ApplyUpdates;

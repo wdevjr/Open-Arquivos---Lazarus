@@ -5,7 +5,7 @@ unit UnIncluirUsuarios;
 interface
 
 uses
-  Classes, SysUtils, db, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
+  Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, StdCtrls, Buttons,
   ExtCtrls, DBGrids, ZDataset;
 
 type
@@ -43,21 +43,21 @@ implementation
 
 { TfrmIncluir }
 
- uses UnDM;
+uses UnDM;
 
 procedure TfrmIncluir.BitBtn1Click(Sender: TObject);
 begin
-sds_Pesq_User.Close;
-sds_Pesq_User.Params[0].AsString := '%'+Edit1.Text+'%';
-sds_Pesq_User.Open;
+  sds_Pesq_User.Close;
+  sds_Pesq_User.Params[0].AsString := '%' + Edit1.Text + '%';
+  sds_Pesq_User.Open;
 end;
 
 procedure TfrmIncluir.DBGrid1CellClick(Column: TColumn);
 begin
-    with sds_Pesq_User do
-   begin
-      BitBtnIncluir.Enabled:= not IsEmpty;
-   end;
+  with sds_Pesq_User do
+  begin
+    BitBtnIncluir.Enabled := not IsEmpty;
+  end;
 end;
 
 procedure TfrmIncluir.FormShow(Sender: TObject);
@@ -66,4 +66,3 @@ begin
 end;
 
 end.
-

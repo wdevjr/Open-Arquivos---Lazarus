@@ -5,10 +5,9 @@ unit UnDM;
 interface
 
 uses
-    Windows, Messages, Classes, SysUtils, IBConnection, sqldb, db, FileUtil,
-    LR_Class, LR_DBSet, LR_ChBox, Forms, Controls, Graphics, Dialogs, DBGrids,
-    ZConnection, ZDataset, ZSqlUpdate, IniFiles, ZAbstractDataset;
-
+  Windows, Messages, Classes, SysUtils, IBConnection, sqldb, DB, FileUtil,
+  LR_Class, LR_DBSet, LR_ChBox, Forms, Controls, Graphics, Dialogs, DBGrids,
+  ZConnection, ZDataset, ZSqlUpdate, IniFiles, ZAbstractDataset, LR_DBSet, LR_Class, LR_BarC;
 type
 
   { TDM }
@@ -33,12 +32,14 @@ type
     cds_LogINSERDATA: TDateField;
     cds_UserAddIDARQUIVOS: TLongintField;
     cds_UserAddIDUSUARIOS: TLongintField;
+    DataSourceRelArquivo: TDataSource;
     Dtsrc_Logando: TDataSource;
     DtsrcExcLogados: TDataSource;
-    frDBDataSet1: TfrDBDataSet;
-    frReport1: TfrReport;
+    frDBDataSetArquivo: TfrDBDataSet;
+    frReportArquivo: TfrReport;
     sds_ArquCOD_ASSUNTO: TLongintField;
     sds_ArquCOD_USUARIO: TLongintField;
+    sds_ArquDATA: TDateField;
     sds_ArquDESCRICAO: TStringField;
     sds_ArquID: TLongintField;
     sds_ArquIDUSUARIOS: TLongintField;
@@ -48,6 +49,7 @@ type
     sds_ArquTITULO: TStringField;
     sds_ArquTITULOASSUN: TStringField;
     sds_ArquTodosCOD_USUARIO: TLongintField;
+    sds_ArquTodosDATA: TDateField;
     sds_ArquTodosDESCRICAO: TStringField;
     sds_ArquTodosID: TLongintField;
     sds_ArquTodosINFORMACOES: TMemoField;
@@ -171,6 +173,13 @@ type
     ZQuery2TITULO: TStringField;
     sds_User_Usuarios: TZQuery;
     ZQArquivo: TZQuery;
+    ZQueryRelatorioArquivo: TZQuery;
+    ZQueryRelatorioArquivoDATA: TDateField;
+    ZQueryRelatorioArquivoDESCRICAO: TStringField;
+    ZQueryRelatorioArquivoHORA: TTimeField;
+    ZQueryRelatorioArquivoID: TLongintField;
+    ZQueryRelatorioArquivoNOME_ARQUIVO: TStringField;
+    ZQueryRelatorioArquivoTITULO: TStringField;
     ZUpdateSQL1: TZUpdateSQL;
     ZUpdateSQL2: TZUpdateSQL;
     ZUpdateSQL3: TZUpdateSQL;
@@ -183,12 +192,12 @@ type
     procedure cds_logadosNewRecord(DataSet: TDataSet);
     procedure cds_LogBeforePost(DataSet: TDataSet);
     procedure cds_LogNewRecord(DataSet: TDataSet);
-    procedure cds_UserAddApplyUpdateError(DataSet: TDataSet; E: EDatabaseError;
-      var DataAction: TDataAction);
-     procedure ProgressBar1;
-     procedure sds_lista_UsuariosFilterRecord(DataSet: TDataSet;
-       var Accept: Boolean);
-     procedure ZConnectionBeforeConnect(Sender: TObject);
+    procedure cds_UserAddApplyUpdateError(DataSet: TDataSet;
+      E: EDatabaseError; var DataAction: TDataAction);
+    procedure ProgressBar1;
+    procedure sds_lista_UsuariosFilterRecord(DataSet: TDataSet;
+      var Accept: boolean);
+    procedure ZConnectionBeforeConnect(Sender: TObject);
     procedure ZQArquivoBeforePost(DataSet: TDataSet);
     procedure ZQArquivoNewRecord(DataSet: TDataSet);
     procedure VerificaErroCount;
@@ -197,24 +206,24 @@ type
 
   public
 
-    codigo: Integer;
-    codigoUser: Integer;
-    CodUser: Integer;
+    codigo: integer;
+    codigoUser: integer;
+    CodUser: integer;
     TipoUser: string;
-    condNivel: Integer;
-    checado: Integer;
-    adminis: Integer;
-    codigoArqui: Integer;
-    codigoLogado: Integer;
-    Function VerificaUser(codigoParam: Integer): Boolean;
-    Function Verifica(codigoParam: Integer): Boolean;
-    Function COUNTDADOS: Integer;
+    condNivel: integer;
+    checado: integer;
+    adminis: integer;
+    codigoArqui: integer;
+    codigoLogado: integer;
+    function VerificaUser(codigoParam: integer): boolean;
+    function Verifica(codigoParam: integer): boolean;
+    function COUNTDADOS: integer;
     function PreencheCombo: TStrings;
     function PreencheList: TStrings;
     //function receberValor: Integer;
-   // function receberUsuario: Integer;
-    procedure ExcluirAtual(CodUserUnic: Integer);
-    procedure IncrementaPersonalizado(Nome_Tabela: String; Chave_Primaria: TField);
+    // function receberUsuario: Integer;
+    procedure ExcluirAtual(CodUserUnic: integer);
+    procedure IncrementaPersonalizado(Nome_Tabela: string; Chave_Primaria: TField);
 
   end;
 
@@ -228,9 +237,7 @@ implementation
 
 uses UnPrinc, Unlogin, UnAbertura;
 
-
-procedure TDM.IncrementaPersonalizado(Nome_Tabela: String;
-  Chave_Primaria: TField);
+procedure TDM.IncrementaPersonalizado(Nome_Tabela: string; Chave_Primaria: TField);
 var
   Qry: TZQuery;
 begin
@@ -239,13 +246,12 @@ begin
   Qry := TZQuery.Create(nil); // cria uma instância do objeto
   try
     Qry.Connection := ZConnection; // componente de conexão
-    Qry.SQL.Add('SELECT MAX(' + Chave_Primaria.FieldName + ') FROM ' +
-      Nome_Tabela);
+    Qry.SQL.Add('SELECT MAX(' + Chave_Primaria.FieldName + ') FROM ' + Nome_Tabela);
     Qry.Open;
-    if (Qry.Fields[0].IsNull) OR (Qry.Fields[0].AsInteger = 0) then
+    if (Qry.Fields[0].IsNull) or (Qry.Fields[0].AsInteger = 0) then
       // se a tabela está vazia retornará nulo
       Chave_Primaria.AsInteger := 402585
-      // então este será o primeiro registro
+    // então este será o primeiro registro
     else
       Chave_Primaria.AsInteger := Qry.Fields[0].AsInteger + 1;
   finally
@@ -258,39 +264,39 @@ begin
   IncrementaPersonalizado('LOG', cds_LogCODIGO);
 end;
 
-procedure TDM.cds_UserAddApplyUpdateError(DataSet: TDataSet; E: EDatabaseError;
-  var DataAction: TDataAction);
+procedure TDM.cds_UserAddApplyUpdateError(DataSet: TDataSet;
+  E: EDatabaseError; var DataAction: TDataAction);
 begin
   ShowMessage('Esse Usuário já Existe no Arquivo! ');
 end;
 
 procedure TDM.cds_LogBeforePost(DataSet: TDataSet);
 begin
-    if cds_Log.State = dsInsert then
+  if cds_Log.State = dsInsert then
     IncrementaPersonalizado('LOG', cds_LogCODIGO);
   cds_LogINSERDATA.Value := Date;
 end;
 
 procedure TDM.cds_logadosBeforePost(DataSet: TDataSet);
 begin
-    if cds_Logados.State = dsInsert then
-   IncrementaPersonalizado('NUM_LOGADOS', cds_LogadosCODIGO);
+  if cds_Logados.State = dsInsert then
+    IncrementaPersonalizado('NUM_LOGADOS', cds_LogadosCODIGO);
   cds_LogadosDATAATUAL.Value := Date;
 end;
 
 procedure TDM.cds_logadosNewRecord(DataSet: TDataSet);
 begin
-     IncrementaPersonalizado('NUM_LOGADOS', cds_LogadosCODIGO);
+  IncrementaPersonalizado('NUM_LOGADOS', cds_LogadosCODIGO);
 end;
 
 procedure TDM.cds_ExcRepetidosNewRecord(DataSet: TDataSet);
 begin
-    IncrementaPersonalizado('NUM_LOGADOS', cds_LogadosCODIGO);
+  IncrementaPersonalizado('NUM_LOGADOS', cds_LogadosCODIGO);
 end;
 
 procedure TDM.ZQArquivoBeforePost(DataSet: TDataSet);
 var
-  DataInserimento: String;
+  DataInserimento: string;
 begin
   if FrPrincipal.Dtsrc.DataSet.State = dsInsert then
   begin
@@ -298,11 +304,10 @@ begin
     ZQArquivoDATA.Value := Date;
     // FormatDateTime('dd/MM/yyyy',StrToDate(DataInserimento));
     ZQArquivoHORA.Value := Time;
-   // ZQArquivoHORA.Value:=TimeToStr(Time);  SQL SERVER ...
+    // ZQArquivoHORA.Value:=TimeToStr(Time);  SQL SERVER ...
 
-    ZQArquivoCOD_USUARIO.AsInteger:=FrmLogin.COD_USUARIO;
+    ZQArquivoCOD_USUARIO.AsInteger := FrmLogin.COD_USUARIO;
   end;
-
 
 end;
 
@@ -311,20 +316,19 @@ begin
   IncrementaPersonalizado('ARQUIVOLIST', ZQArquivoID);
 end;
 
- procedure TDM.ProgressBar1;
+procedure TDM.ProgressBar1;
 begin
   Abertura.ProgressBar1.Max := sdt_Combo.RecordCount;
   sdt_Combo.First;
-  if not sdt_Combo.Eof then
+  if not sdt_Combo.EOF then
     repeat
       Abertura.ProgressBar1.Position := Abertura.ProgressBar1.Position + 1;
       Sleep(1000);
       sdt_Combo.Next
-    until sdt_Combo.Eof;
+    until sdt_Combo.EOF;
 end;
 
-procedure TDM.sds_lista_UsuariosFilterRecord(DataSet: TDataSet;
-  var Accept: Boolean);
+procedure TDM.sds_lista_UsuariosFilterRecord(DataSet: TDataSet; var Accept: boolean);
 begin
   {  Accept := False;
   if (sds_User_Usuarios['IDUSUARIOS'] = frmlogin.COD_USUARIO) then
@@ -337,24 +341,25 @@ procedure TDM.ZConnectionBeforeConnect(Sender: TObject);
 var
   Ini: TIniFile;
 begin
-    Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'String_Conexao.ini');
-    try
-        ZConnection.Connected       := False;
-        ZConnection.HostName        := Ini.ReadString('ZConnection', 'Hostname', '');
-        ZConnection.Port            := Ini.ReadInteger('ZConnection', 'Port', 0);
-        ZConnection.Protocol        := Ini.ReadString('ZConnection', 'Protocol', '');
-        ZConnection.LibraryLocation := Ini.ReadString('ZConnection', 'LibraryLocation', '');
-        ZConnection.User            := Ini.ReadString('ZConnection', 'User', '');
-        ZConnection.Password        := Ini.ReadString('ZConnection', 'Password', '');
-        ZConnection.Database        := Ini.ReadString('ZConnection', 'Database', '');
-        ZConnection.ClientCodepage  := Ini.ReadString('ZConnection', 'Charset', '');
-        ZConnection.AutoEncodeStrings  := False;
+  Ini := TIniFile.Create(ExtractFilePath(Application.ExeName) + 'String_Conexao.ini');
+  try
+    ZConnection.Connected := False;
+    ZConnection.HostName := Ini.ReadString('ZConnection', 'Hostname', '');
+    ZConnection.Port := Ini.ReadInteger('ZConnection', 'Port', 0);
+    ZConnection.Protocol := Ini.ReadString('ZConnection', 'Protocol', '');
+    ZConnection.LibraryLocation :=
+      Ini.ReadString('ZConnection', 'LibraryLocation', '');
+    ZConnection.User := Ini.ReadString('ZConnection', 'User', '');
+    ZConnection.Password := Ini.ReadString('ZConnection', 'Password', '');
+    ZConnection.Database := Ini.ReadString('ZConnection', 'Database', '');
+    ZConnection.ClientCodepage := Ini.ReadString('ZConnection', 'Charset', '');
+    ZConnection.AutoEncodeStrings := False;
 
 
-    except
-         on E:Exception do
-         MessageDlg('Erro ao conectar Banco!'#13'Erro: ',mtError, [mbOK], 0);
-    end;
+  except
+    on E: Exception do
+      MessageDlg('Erro ao conectar Banco!'#13'Erro: ', mtError, [mbOK], 0);
+  end;
 end;
 
 
@@ -367,9 +372,9 @@ begin
   sdt_Combo.SQL.Add('select LOGIN from USUARIO order by LOGIN');
   sdt_Combo.Open;
   sdt_Combo.First;
-  while not sdt_Combo.Eof do
+  while not sdt_Combo.EOF do
   begin
-    aStr.Add(sdt_Combo.FieldByname('LOGIN').AsString);
+    aStr.Add(sdt_Combo.FieldByName('LOGIN').AsString);
     sdt_Combo.Next;
   end;
   Result := aStr;
@@ -384,16 +389,16 @@ begin
   sdt_List.SQL.Add('select COD_USUARIO, NOME from USUARIO order by NOME');
   sdt_List.Open;
   sdt_List.First;
-  while not sdt_List.Eof do
+  while not sdt_List.EOF do
   begin
     // Str.Add(sdt_List.FieldByName('COD_USUARIO').AsString);
-    Str.Add(sdt_List.FieldByname('NOME').AsString);
+    Str.Add(sdt_List.FieldByName('NOME').AsString);
     sdt_List.Next;
   end;
   Result := Str;
 end;
 
-Function TDM.VerificaUser(codigoParam: Integer): Boolean;
+function TDM.VerificaUser(codigoParam: integer): boolean;
 begin
   Result := False;
   sdt_Verif.Close;
@@ -415,13 +420,13 @@ begin
   end;
 end;
 
-Function TDM.Verifica(codigoParam: Integer): Boolean;
+function TDM.Verifica(codigoParam: integer): boolean;
 begin
   Result := False;
   sds_Verif.Close;
   sds_Verif.SQL.Clear;
-  sds_Verif.SQL.Add('select CODIGO,COD_USUARIO from NUM_LOGADOS '
-    + ' where COD_USUARIO = ' + IntToStr(codigoParam));
+  sds_Verif.SQL.Add('select CODIGO,COD_USUARIO from NUM_LOGADOS ' +
+    ' where COD_USUARIO = ' + IntToStr(codigoParam));
 
   sds_Verif.Open;
 
@@ -434,25 +439,25 @@ begin
     else if (RecordCount >= 1) then
     begin
       Result := True;
-    end
+    end;
   end;
 end;
 
-procedure TDM.ExcluirAtual(CodUserUnic: Integer);
+procedure TDM.ExcluirAtual(CodUserUnic: integer);
 begin
   CodUserUnic := frmlogin.COD_USUARIO;
   try
     sdt_ExcAtual.Close;
     sdt_ExcAtual.SQL.Clear;
-    sdt_ExcAtual.SQL.Add('delete from NUM_LOGADOS ' +
-      ' where COD_USUARIO = ' + IntToStr(CodUser));
+    sdt_ExcAtual.SQL.Add('delete from NUM_LOGADOS ' + ' where COD_USUARIO = ' +
+      IntToStr(CodUser));
     sdt_ExcAtual.Open;
-  Except
+  except
     on E: Exception do
     begin
       MessageDlg
-        ('Erro de instrução SQL ou Algum problema no Banco ou Usuário inadequado !'
-        + #13 + 'Mensagem nativa do erro é : ' + E.Message, mtError, [mbOk], 0);
+      ('Erro de instrução SQL ou Algum problema no Banco ou Usuário inadequado !'
+        + #13 + 'Mensagem nativa do erro é : ' + E.Message, mtError, [mbOK], 0);
     end;
   end;
 end;
@@ -476,13 +481,13 @@ begin
         Dtsrc_Logando.DataSet.Delete;
         //(Dtsrc_Logando.DataSet as TClientDataSet).ApplyUpdates(0);
       end;
-    Except
+    except
       on E: Exception do
       begin
         MessageDlg
-          ('Algum procedimento falhou na procedure de verificar erros de Logandos !'
+        ('Algum procedimento falhou na procedure de verificar erros de Logandos !'
           + #13 + 'Mensagem nativa da procedure : ' + E.Message, mtError,
-          [mbOk], 0);
+          [mbOK], 0);
       end;
     end;
   end;
@@ -490,24 +495,24 @@ end;
 
 
 
-Function TDM.COUNTDADOS: Integer;
+function TDM.COUNTDADOS: integer;
 var
-  respMaxLogados: Integer;
+  respMaxLogados: integer;
 begin
   Result := 0;
   respMaxLogados := 0;
   try
-   // DM.sds_AnteCount.Close;
- //   DM.sds_AnteCount.DataSet.CommandText := '';
-  //  DM.sds_AnteCount.DataSet.CommandText := 'select COUNT(*) from NUM_LOGADOS ';
-  //  DM.sds_AnteCount.Open;
-   // respMaxLogados := DM.sds_AnteCount.Fields[0].AsInteger;
-  Except
+    // DM.sds_AnteCount.Close;
+    //   DM.sds_AnteCount.DataSet.CommandText := '';
+    //  DM.sds_AnteCount.DataSet.CommandText := 'select COUNT(*) from NUM_LOGADOS ';
+    //  DM.sds_AnteCount.Open;
+    // respMaxLogados := DM.sds_AnteCount.Fields[0].AsInteger;
+  except
     on E: Exception do
     begin
       MessageDlg
-        ('Erro ao montar a instrução SQL[MAX] ou algum parametro de linha inconsistente !'
-        + #13 + 'Mensagem Nativa do Erro : ' + E.Message, mtError, [mbOk], 0);
+      ('Erro ao montar a instrução SQL[MAX] ou algum parametro de linha inconsistente !'
+        + #13 + 'Mensagem Nativa do Erro : ' + E.Message, mtError, [mbOK], 0);
       Abort;
     end
     else
@@ -519,4 +524,3 @@ end;
 
 
 end.
-

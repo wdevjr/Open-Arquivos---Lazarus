@@ -62,7 +62,7 @@ end;
 
 procedure TfrmIncluir.FormShow(Sender: TObject);
 begin
-  DM.sds_lista_Usuarios.Open;
+  DM.sds_User_Usuarios.Open;
 end;
 
 end.

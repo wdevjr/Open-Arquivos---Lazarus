@@ -7,9 +7,8 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, ComCtrls, Buttons, Grids, DBGrids, DB,
-  DBCtrls,ZDataset,
-  ImgList, ToolWin,
-  Menus, GifAnim, DateUtils,WinInet;
+  DBCtrls, ZDataset, LResources, dbf, LR_DBSet, LR_Class, LR_BarC, ImgList, ToolWin,
+  Menus, GifAnim, DateUtils, WinInet;
 
 type
 
@@ -125,36 +124,37 @@ type
     procedure IdleTimer1Timer(Sender: TObject);
     procedure inserirClick(Sender: TObject);
     procedure carregarClick(Sender: TObject);
-    procedure ListView1CustomDrawItem(Sender: TCustomListView; Item: TListItem;
-      State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure ListView1CustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; var DefaultDraw: boolean);
     procedure btntrazerClick(Sender: TObject);
     procedure btnextrairClick(Sender: TObject);
     procedure lookUserClick(Sender: TObject);
+    procedure relatorioClick(Sender: TObject);
     procedure sairClick(Sender: TObject);
     procedure StatusBar1DrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel;
       const Rect: TRect);
     procedure Timer1Timer(Sender: TObject);
   private
-    buffer: array [0 .. 255] of Char;
-    Temp, tempNome: String;
+    buffer: array [0 .. 255] of char;
+    Temp, tempNome: string;
     procedure ConfigInserir;
     procedure ConfigGravar;
     procedure ConfigExcluir;
     procedure ConfigCancelar;
     procedure ConfigInicial;
-    function Verifica_Campos_Em_Branco: Boolean;
-    Function numLogados: Integer;
+    function Verifica_Campos_Em_Branco: boolean;
+    function numLogados: integer;
     procedure IniciaAdministracao;
     procedure InicializarComponentes;
 
   public
-    CodigoAssuntoTemp,CodigoAutorTemp : Integer;
-    Label15Temp,Label16Temp : String;
+    CodigoAssuntoTemp, CodigoAutorTemp: integer;
+    Label15Temp, Label16Temp: string;
     ext, nomeUser: string;
-    numCodigoII: Integer;
-    codigo, codigoII, UserTemp, RegistroTemp, RegistroMoment: Integer;
-    condNivelForm: Integer;
-    figTipo, codigoArqu, codigoArquSolteiro: Integer;
+    numCodigoII: integer;
+    codigo, codigoII, UserTemp, RegistroTemp, RegistroMoment: integer;
+    condNivelForm: integer;
+    figTipo, codigoArqu, codigoArquSolteiro: integer;
     procedure MostrarEstatistica;
     procedure MostrarIcon;
 
@@ -162,94 +162,103 @@ type
 
 var
   FrPrincipal: TFrPrincipal;
-    respArquivos, respUsuarios, respAssuntos, respAutores, respLog, spAutores,
-    respLogar : Integer;
-    respQtd : Integer = 0;
-    respLogados : Integer = 0;
-    NumLogados : Integer = 0;
+  respArquivos, respUsuarios, respAssuntos, respAutores, respLog,
+  spAutores, respLogar: integer;
+  respQtd: integer = 0;
+  respLogados: integer = 0;
+  NumLogados: integer = 0;
 
 
 implementation
 
 {$R *.lfm}
 
-uses UnDM,unDlgPesquisaArquivo,UnLogin, UnDlgDialogAssunto,
- UnDlgpesquisautores,UnProcessindefinido,UnatribuiUsuariosPorArquivos,UnConsultaEspecial;
+uses UnDM, unDlgPesquisaArquivo, UnLogin, UnDlgDialogAssunto,
+  UnDlgpesquisautores, UnProcessindefinido, UnatribuiUsuariosPorArquivos,
+  UnConsultaEspecial;
 
 { TFrPrincipal }
 
-function TrocaCaracterEspecial(aTexto : string; aLimExt : boolean) : string;
+function TrocaCaracterEspecial(aTexto: string; aLimExt: boolean): string;
 const
   //Lista de caracteres especiais
-  xCarEsp: array[1..38] of String = ('á', 'à', 'ã', 'â', 'ä','Á', 'À', 'Ã', 'Â', 'Ä',
-                                     'é', 'è','É', 'È','í', 'ì','Í', 'Ì',
-                                     'ó', 'ò', 'ö','õ', 'ô','Ó', 'Ò', 'Ö', 'Õ', 'Ô',
-                                     'ú', 'ù', 'ü','Ú','Ù', 'Ü','ç','Ç','ñ','Ñ');
+  xCarEsp: array[1..38] of string =
+    ('á', 'à', 'ã', 'â', 'ä', 'Á', 'À', 'Ã', 'Â', 'Ä',
+    'é', 'è', 'É', 'È', 'í', 'ì', 'Í', 'Ì',
+    'ó', 'ò', 'ö', 'õ', 'ô', 'Ó',
+    'Ò', 'Ö', 'Õ', 'Ô',
+    'ú', 'ù', 'ü', 'Ú', 'Ù',
+    'Ü', 'ç', 'Ç', 'ñ', 'Ñ');
   //Lista de caracteres para troca
-  xCarTro: array[1..38] of String = ('a', 'a', 'a', 'a', 'a','A', 'A', 'A', 'A', 'A',
-                                     'e', 'e','E', 'E','i', 'i','I', 'I',
-                                     'o', 'o', 'o','o', 'o','O', 'O', 'O', 'O', 'O',
-                                     'u', 'u', 'u','u','u', 'u','c','C','n', 'N');
+  xCarTro: array[1..38] of string = ('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A', 'A',
+    'e', 'e', 'E', 'E', 'i', 'i', 'I', 'I',
+    'o', 'o', 'o', 'o', 'o', 'O', 'O', 'O', 'O', 'O',
+    'u', 'u', 'u', 'u', 'u', 'u', 'c', 'C', 'n', 'N');
   //Lista de Caracteres Extras
-  xCarExt: array[1..48] of string = ('<','>','!','@','#','$','%','¨','&','*',
-                                     '(',')','_','+','=','{','}','[',']','?',
-                                     ';',':',',','|','*','"','~','^','´','`',
-                                     '¨','æ','Æ','ø','£','Ø','ƒ','ª','º','¿',
-                                     '®','½','¼','ß','µ','þ','ý','Ý');
+  xCarExt: array[1..48] of string = ('<', '>', '!', '@', '#', '$', '%', '¨', '&', '*',
+    '(', ')', '_', '+', '=', '{', '}', '[', ']', '?',
+    ';', ':', ',', '|', '*', '"', '~', '^', '´', '`',
+    '¨', 'æ', 'Æ', 'ø', '£', 'Ø', 'ƒ', 'ª', 'º', '¿',
+    '®', '½', '¼', 'ß', 'µ', 'þ', 'ý', 'Ý');
 var
-  xTexto : string;
-  i : Integer;
+  xTexto: string;
+  i: integer;
 begin
-   xTexto := aTexto;
-   for i:=1 to 38 do
-     xTexto := StringReplace(xTexto, xCarEsp[i], xCarTro[i], [rfreplaceall]);
-   //De acordo com o parâmetro aLimExt, elimina caracteres extras.
-   if (aLimExt) then
-     for i:=1 to 48 do
-       xTexto := StringReplace(xTexto, xCarExt[i], '', [rfreplaceall]);
-   Result := xTexto;
+  xTexto := aTexto;
+  for i := 1 to 38 do
+    xTexto := StringReplace(xTexto, xCarEsp[i], xCarTro[i], [rfreplaceall]);
+  //De acordo com o parâmetro aLimExt, elimina caracteres extras.
+  if (aLimExt) then
+    for i := 1 to 48 do
+      xTexto := StringReplace(xTexto, xCarExt[i], '', [rfreplaceall]);
+  Result := xTexto;
 end;
 
-Function RemoveCaracteresEspeciais(s: String) : String;
-var i, pos: Integer;
-const undesiredchars : String = '/ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ';
-const replaces : String = 'AAAAAAACEEEEIIIIDNOOOOOxOUUUbBaaaaaaaceeeeiiiionooooo ouuuby';
-Begin
+function RemoveCaracteresEspeciais(s: string): string;
+var
+  i, pos: integer;
+const
+  undesiredchars: string =
+    '/ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ';
+const
+  replaces: string = 'AAAAAAACEEEEIIIIDNOOOOOxOUUUbBaaaaaaaceeeeiiiionooooo ouuuby';
+begin
   SetLength(Result, Length(s));
   for i := 1 to Length(s) do
+  begin
+    pos := Ord(s[i]);
+    if (s[i] in [#32, #48..#57, #65..#90, #97..#122]) then
+      Result[i] := s[i]
+    else
     begin
-      pos := ord(s[i]);
-      if (s[i] in [#32, #48..#57, #65..#90, #97..#122]) then
-        Result[i] := s[i]
-      else
-        begin
-          pos := AnsiPos(s[i], undesiredchars);
-          Result[i] := replaces[pos + 1];
-        end;
+      pos := AnsiPos(s[i], undesiredchars);
+      Result[i] := replaces[pos + 1];
     end;
+  end;
 
 end;
 
-function TFrPrincipal.Verifica_Campos_Em_Branco: Boolean;
-var cont : integer;
+function TFrPrincipal.Verifica_Campos_Em_Branco: boolean;
+var
+  cont: integer;
 begin
-Result:=True; //assume que estão todos preenchidos
-  for cont:= 0 to DtSrc.DataSet.FieldCount - 1 do
+  Result := True;
+  for cont := 0 to DtSrc.DataSet.FieldCount - 1 do
     if DtSrc.DataSet.Fields[cont].Required then
       if (DtSrc.DataSet.Fields[cont].IsNull) or
-         (DtSrc.DataSet.Fields[cont].AsString='') then
+        (DtSrc.DataSet.Fields[cont].AsString = '') then
       begin
-        MessageDlg('Preencha o campo "'+DtSrc.DataSet.Fields[cont].DisplayLabel+'"',
-                   mtWarning,[mbOk],0,mbOk);
-        Result:=False;
+        MessageDlg('Preencha o campo "' + DtSrc.DataSet.Fields[cont].DisplayLabel + '"',
+          mtWarning, [mbOK], 0, mbOK);
+        Result := False;
         Break;
       end;
 
 end;
 
-Function TFrPrincipal.numLogados: Integer;
+function TFrPrincipal.numLogados: integer;
 var
-  numCount: Integer;
+  numCount: integer;
   respNumLogados: string;
 begin
   //Result := 0;
@@ -257,15 +266,15 @@ begin
   try
     DM.sds_Cont_Logar.Close;
     //DM.sds_Cont_Logar.Params.Clear;
-   // DM.sds_Cont_Logar.SQL.Clear;
+    // DM.sds_Cont_Logar.SQL.Clear;
     //DM.sds_Cont_Logar.SQL.Add('select * from NUM_LOGADOS');
     //DM.sds_Cont_Logar.SQL.Add('select ORDEM as NUM from NUM_LOGADOS where ORDEM = (select max(ORDEM) from NUM_LOGADOS)');
     DM.sds_Cont_Logar.Open;
     DM.sds_Cont_Logar.Refresh;
     //DM.ZUpdateSQL5.RefreshSQL;
     //DM.sds_Cont_Logar.Next;
-   // respQtd := DM.sds_Cont_Logar.FieldByName('NUM').AsInteger;
-   respQtd:= DM.sds_Cont_Logar.RecordCount;
+    // respQtd := DM.sds_Cont_Logar.FieldByName('NUM').AsInteger;
+    respQtd := DM.sds_Cont_Logar.RecordCount;
   except
     on E: Exception do
     begin
@@ -283,171 +292,133 @@ begin
   if (DM.ZQArquivoEXTENCAO.AsString = '.pdf  ') or (Edit1.Text = '.pdf') then
   begin
     // Image2.Picture.LoadFromFile('C:/OpenArquivos/Icon/pdfarqu.bmp');
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/pdfarqu.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/pdfarqu.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.ps   ') or (Edit1.Text = '.ps')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.ps   ') or (Edit1.Text = '.ps') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/ps.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.doc  ') or (Edit1.Text = '.doc')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.doc  ') or (Edit1.Text = '.doc') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
       'Icon/doc972003.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.docx ') or (Edit1.Text = '.docx')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.docx ') or (Edit1.Text = '.docx') then
   begin
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/word2007.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/word2007.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.xls  ') or (Edit1.Text = '.xls')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.xls  ') or (Edit1.Text = '.xls') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
       'Icon/excel972003.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.xlsx ') or (Edit1.Text = '.xlsx')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.xlsx ') or (Edit1.Text = '.xlsx') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/xls.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.accdb') or (Edit1.Text = '.accdb')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.accdb') or (Edit1.Text = '.accdb') then
   begin
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/access.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/access.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.mdb  ') or (Edit1.Text = '.mdb')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.mdb  ') or (Edit1.Text = '.mdb') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
       'Icon/access972003.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.pps  ') or (Edit1.Text = '.pps')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.pps  ') or (Edit1.Text = '.pps') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
       'Icon/pps972003.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.ppt  ') or (Edit1.Text = '.ppt')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.ppt  ') or (Edit1.Text = '.ppt') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/ppt.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.ppsx ') or (Edit1.Text = '.ppsx')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.ppsx ') or (Edit1.Text = '.ppsx') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/pps.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.pptx  ') or (Edit1.Text = '.ppt')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.pptx  ') or (Edit1.Text = '.ppt') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/ppt.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.mpg  ') or (Edit1.Text = '.mpg')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.mpg  ') or (Edit1.Text = '.mpg') then
   begin
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/avimpeg.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/avimpeg.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.avi  ') or (Edit1.Text = '.avi')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.avi  ') or (Edit1.Text = '.avi') then
   begin
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/avimpeg.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/avimpeg.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.mp3  ') or (Edit1.Text = '.mp3')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.mp3  ') or (Edit1.Text = '.mp3') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/mp3.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.wma  ') or (Edit1.Text = '.wma')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.wma  ') or (Edit1.Text = '.wma') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/mp3.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.wav  ') or (Edit1.Text = '.wav')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.wav  ') or (Edit1.Text = '.wav') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/mp3.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.ogg  ') or (Edit1.Text = '.ogg')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.ogg  ') or (Edit1.Text = '.ogg') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/mp3.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.bmp  ') or (Edit1.Text = '.bmp')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.bmp  ') or (Edit1.Text = '.bmp') then
   begin
-   Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/bmp.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/bmp.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.jpg  ') or (Edit1.Text = '.jpg')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.jpg  ') or (Edit1.Text = '.jpg') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/jpg.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.png  ') or (Edit1.Text = '.png')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.png  ') or (Edit1.Text = '.png') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/png.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.gif  ') or (Edit1.Text = '.gif')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.gif  ') or (Edit1.Text = '.gif') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/gif.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.tiff ') or (Edit1.Text = '.tiff')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.tiff ') or (Edit1.Text = '.tiff') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/tiff.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.html ') or (Edit1.Text = '.html')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.html ') or (Edit1.Text = '.html') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/html.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.htm  ') or (Edit1.Text = '.htm')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.htm  ') or (Edit1.Text = '.htm') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/html.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.mht  ') or (Edit1.Text = '.mht')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.mht  ') or (Edit1.Text = '.mht') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/mht.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.exe  ') or (Edit1.Text = '.exe')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.exe  ') or (Edit1.Text = '.exe') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/exe.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.java ') or (Edit1.Text = '.java')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.java ') or (Edit1.Text = '.java') then
   begin
-   Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/java.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/java.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.txt  ') or (Edit1.Text = '.txt')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.txt  ') or (Edit1.Text = '.txt') then
   begin
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/notpad.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/notpad.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.rtf  ') or (Edit1.Text = '.rtf')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.rtf  ') or (Edit1.Text = '.rtf') then
   begin
-   Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/doc972003.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/doc972003.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.zip  ') or (Edit1.Text = '.zip')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.zip  ') or (Edit1.Text = '.zip') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/zip.bmp');
   end
-  else if (DM.ZQArquivoEXTENCAO.AsString = '.rar  ') or (Edit1.Text = '.rar')
-  then
+  else if (DM.ZQArquivoEXTENCAO.AsString = '.rar  ') or (Edit1.Text = '.rar') then
   begin
     Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/rar.bmp');
   end
@@ -457,8 +428,7 @@ begin
   end
   else
   begin
-    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) +
-      'Icon/Default.bmp');
+    Image3.Picture.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Icon/Default.bmp');
   end;
 
 end;
@@ -476,7 +446,7 @@ begin
   btnvisualizar.Enabled := False;
   btnextrair.Enabled := False;
   ExcluirTemp.Enabled := False;
- // Image6.Visible := False;
+  // Image6.Visible := False;
 end;
 
 procedure TFrPrincipal.ConfigGravar;
@@ -514,7 +484,7 @@ begin
   btnextrair.Enabled := False;
   carregar.Enabled := False;
   ExcluirTemp.Enabled := False;
- // Image6.Visible := False;
+  // Image6.Visible := False;
   excluiAssunto.Enabled := False;
   excluiAutor.Enabled := False;
 
@@ -527,8 +497,8 @@ begin
   gravar.Enabled := False;
   excluir.Enabled := False;
   cancelar.Enabled := False;
-  btnvisualizar.Enabled:=false;
-  btnextrair.Enabled:=false;
+  btnvisualizar.Enabled := False;
+  btnextrair.Enabled := False;
   // DM.cds_arquivo.Close;
   ExcluirTemp.Enabled := False;
   excluiAssunto.Enabled := False;
@@ -568,16 +538,16 @@ begin
   DM.sds_cont.Open;
   respAutores := DM.sds_cont.FieldByName('contAut').AsInteger;
   respLogados := numLogados;
-  ListView1.Items.Add.Caption := 'Arquivos:                      ' +
-    IntToStr(respArquivos);
-  ListView1.Items.Add.Caption := 'Usuários:                      ' +
-    IntToStr(respUsuarios);
-  ListView1.Items.Add.Caption := 'Assuntos:                     ' +
-    IntToStr(respAssuntos);
-  ListView1.Items.Add.Caption := 'Autores :                      ' +
-    IntToStr(respAutores);
-  ListView1.Items.Add.Caption := 'Logs    :                        ' +
-    IntToStr(respLog);
+  ListView1.Items.Add.Caption :=
+    'Arquivos:                      ' + IntToStr(respArquivos);
+  ListView1.Items.Add.Caption :=
+    'Usuários:                      ' + IntToStr(respUsuarios);
+  ListView1.Items.Add.Caption :=
+    'Assuntos:                     ' + IntToStr(respAssuntos);
+  ListView1.Items.Add.Caption :=
+    'Autores :                      ' + IntToStr(respAutores);
+  ListView1.Items.Add.Caption :=
+    'Logs    :                        ' + IntToStr(respLog);
   codigo13.Caption := IntToStr(numLogados);
   codigo13.Visible := True;
   // ListView1.Items.Add.Caption := 'Logados :                     ' +IntToStr(respLogados);
@@ -586,23 +556,23 @@ end;
 
 procedure TFrPrincipal.cancelarClick(Sender: TObject);
 begin
-   Dtsrc.DataSet.Cancel;
+  Dtsrc.DataSet.Cancel;
   if Dtsrc.DataSet.State = dsBrowse then
+  begin
+    if Label15Temp <> '' then
     begin
-     if  Label15Temp  <> '' then
-      begin
-       Label15.Caption := Label15Temp;
-       DBEdit1.Text:= IntToStr(CodigoAssuntoTemp);
-       end;
-     if  Label16Temp <> '' then
-      begin
+      Label15.Caption := Label15Temp;
+      DBEdit1.Text := IntToStr(CodigoAssuntoTemp);
+    end;
+    if Label16Temp <> '' then
+    begin
       Label16.Caption := Label16Temp;
-      DBEdit2.Text:= IntToStr(CodigoAutorTemp);
-      end;
-
+      DBEdit2.Text := IntToStr(CodigoAutorTemp);
     end;
 
-    with Dtsrc.DataSet do
+  end;
+
+  with Dtsrc.DataSet do
   begin
     excluir.Enabled := not IsEmpty;
     btnextrair.Enabled := not IsEmpty;
@@ -617,23 +587,31 @@ begin
 
     // exclusão de campos recebendo 0
   end;
-   // ConfigCancelar;
+  // ConfigCancelar;
+  if (FrmLogin.TODOS = 0) then
+  begin
+    lookUser.Visible := False;
+  end
+  else
+  begin
+    lookUser.Visible := True;
+  end;
 end;
 
 procedure TFrPrincipal.cbconsultaClick(Sender: TObject);
 begin
-  FrmConsultaEspecial:=TFrmConsultaEspecial.Create(self);
+  FrmConsultaEspecial := TFrmConsultaEspecial.Create(self);
   try
-   FrmConsultaEspecial.ShowModal;
+    FrmConsultaEspecial.ShowModal;
   finally
-     FrmConsultaEspecial.Free;
+    FrmConsultaEspecial.Free;
   end;
 end;
 
 procedure TFrPrincipal.Button1Click(Sender: TObject);
 begin
-   MostrarEstatistica;
-   //Timer1.Enabled:= true;
+  MostrarEstatistica;
+  //Timer1.Enabled:= true;
 end;
 
 procedure TFrPrincipal.btnvisualizarClick(Sender: TObject);
@@ -649,17 +627,19 @@ begin
   else
   begin
     DM.ZQArquivoDADOS.SaveToFile
-      (Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true));
+    (Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString, True));
     x := nil;
     y := nil;
     Flag := ShellExecute(Application.Handle, 'OPEN',
-      PChar(Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true)), x, y, SW_SHOW);
+      PChar(Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString, True)),
+      x, y, SW_SHOW);
     if Flag <= 32 then
     begin
       ShowMessage('Erro ao Abrir ' + Temp + '\' +
-        TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true));
+        TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString, True));
     end;
-    if FileExists(Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true)) then
+    if FileExists(Temp + '\' + TrocaCaracterEspecial(
+      DM.ZQArquivoNOME_ARQUIVO.AsString, True)) then
     begin
       ExcluirTemp.Enabled := True;
       Image3.Visible := True;
@@ -681,20 +661,21 @@ begin
     if FrmPesquisaAssunto.ShowModal = mrOk then
     begin
       if (Dtsrc.State = dsbrowse) or (Dtsrc.State = dsInsert) then
-      DM.ZQArquivo.Edit;
+        DM.ZQArquivo.Edit;
       DM.ZQArquivoCOD_ASSUNTO.AsInteger := DM.sds_AssuntCODIGO.AsInteger;
-      Label15.Caption:=DM.sds_AssuntTITULOASSUN.AsString;
+      Label15.Caption := DM.sds_AssuntTITULOASSUN.AsString;
     end;
   finally
     DM.sds_assunt.Close;
     FrmPesquisaAssunto.Free;
-    end;
+  end;
 
-        //DM.ZQArquivoTITULOASSUN.AsString := DM.sds_AssuntTITULOASSUN.AsString;
+  //DM.ZQArquivoTITULOASSUN.AsString := DM.sds_AssuntTITULOASSUN.AsString;
 end;
 
 procedure TFrPrincipal.BitBtn1Click(Sender: TObject);
-var i,cont:Integer;
+var
+  i, cont: integer;
 begin
  {ProgressBar1.Min:=1;
   DM.ZQuery1.Open;
@@ -725,23 +706,23 @@ procedure TFrPrincipal.BtnLoc02Click(Sender: TObject);
 begin
   FrmPesquisaAutor := TFrmPesquisaAutor.Create(self);
   try
-  if (FrmPesquisaAutor.ShowModal = mrOK) then
-  begin
-        if Dtsrc.State = dsbrowse then
+    if (FrmPesquisaAutor.ShowModal = mrOk) then
+    begin
+      if Dtsrc.State = dsbrowse then
         DM.ZQArquivo.Edit;
-        DM.ZQArquivoCOD_AUTOR.AsInteger:=DM.sds_AutoresCODIGO.AsInteger;
-        Label16.Caption:=DM.sds_AutoresNOME.AsString;
-  end;
-     finally
-         DM.sds_Autores.Close;
-         FrmPesquisaAutor.Free;
+      DM.ZQArquivoCOD_AUTOR.AsInteger := DM.sds_AutoresCODIGO.AsInteger;
+      Label16.Caption := DM.sds_AutoresNOME.AsString;
+    end;
+  finally
+    DM.sds_Autores.Close;
+    FrmPesquisaAutor.Free;
 
   end;
 end;
 
 procedure TFrPrincipal.Button2Click(Sender: TObject);
 begin
- // Timer1.Enabled:= false;
+  // Timer1.Enabled:= false;
   MostrarEstatistica;
 end;
 
@@ -789,34 +770,34 @@ begin
   else
   begin
     PanelAutor.Visible := False;
-  //  Height := 568;
+    //  Height := 568;
   end;
 end;
 
 procedure TFrPrincipal.DtsrcStateChange(Sender: TObject);
 begin
-    with Dtsrc.DataSet do
-    begin
+  with Dtsrc.DataSet do
+  begin
 
-      excluir.Enabled := not IsEmpty;
-      inserir.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
-      btnvisualizar.Enabled := Dtsrc.State in [dsbrowse];
-      btnextrair.Enabled := Dtsrc.State in [dsbrowse];
-      gravar.Enabled := Dtsrc.State in [dsInsert];
-      editar.Enabled := Dtsrc.State in [dsEdit];
-      cancelar.Enabled := Dtsrc.State in [dsInsert, dsEdit];
-      excluir.Enabled := Dtsrc.State in [dsbrowse];
-      btntrazer.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
-      carregar.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse];
-      BtnLoc01.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse];
-      BtnLoc02.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse];
-      excluiAssunto.Enabled := Dtsrc.State in [dsInsert,dsEdit, dsbrowse, dsInactive];
-      excluiAutor.Enabled := Dtsrc.State in [dsInsert,dsEdit, dsbrowse, dsInactive];
-      lookUser.Enabled := Dtsrc.State in [dsbrowse, dsEdit];
-      relatorio.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
-      relatorios.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
+    excluir.Enabled := not IsEmpty;
+    inserir.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
+    btnvisualizar.Enabled := Dtsrc.State in [dsbrowse];
+    btnextrair.Enabled := Dtsrc.State in [dsbrowse];
+    gravar.Enabled := Dtsrc.State in [dsInsert];
+    editar.Enabled := Dtsrc.State in [dsEdit];
+    cancelar.Enabled := Dtsrc.State in [dsInsert, dsEdit];
+    excluir.Enabled := Dtsrc.State in [dsbrowse];
+    btntrazer.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
+    carregar.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse];
+    BtnLoc01.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse];
+    BtnLoc02.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse];
+    excluiAssunto.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse, dsInactive];
+    excluiAutor.Enabled := Dtsrc.State in [dsInsert, dsEdit, dsbrowse, dsInactive];
+    lookUser.Enabled := Dtsrc.State in [dsbrowse, dsEdit];
+    relatorio.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
+    relatorios.Enabled := Dtsrc.State in [dsbrowse, dsInactive];
 
-    end;
+  end;
 
 end;
 
@@ -824,122 +805,133 @@ procedure TFrPrincipal.editarClick(Sender: TObject);
 begin
   if (Label15.Caption = '') then
   begin
-   ShowMessage('Preencha o Assunto!');
-   Abort;
-   end else
+    ShowMessage('Preencha o Assunto!');
+    Abort;
+  end
+  else
   begin
-  if (Verifica_Campos_Em_Branco)  then
-  begin
-    frmSplash := TfrmSplash.Create(Self);
-    frmSplash.Show;
-    frmSplash.Refresh;
-    frmSplash.ProgressBar1.Position := 1;
-    // espera...
-    Sleep(100);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 8;
-    // espera...
-    Sleep(700);
-    //
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 34;
-    // espera...
-    Sleep(300);
-    Screen.Cursor := crHourGlass;
-     try
-      begin
-        Dtsrc.DataSet.Edit;
-        (Dtsrc.DataSet as TZQuery).ApplyUpdates;
-        (Dtsrc.DataSet as TZQuery).CommitUpdates;
-       end;
-       except
-         on E:Exception do
-         begin
-           MessageDlg('Erro ao Editar o Arquivo!',E.Message,mtError,[mbOK], 0);
-           Abort;
-         end;
-    end;
-  MostrarEstatistica;
-    // DM.sds_cont.Close;
-    //RegistroTemp := StrToInt(DatadeCaD.Caption);
-    Screen.Cursor := crDefault;
-    ConfigGravar;
-    MostrarIcon;
-     // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 51;
-    // espera...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 73;
-    // espera...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 85;
-    // espera ...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 99;
-    // espera ...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 100;
-    // espera...
-    Sleep(500);
-    if frmSplash.ProgressBar1.Position = 100 then
+    if (Verifica_Campos_Em_Branco) then
     begin
-      frmSplash.Hide;
-      frmSplash.Free;
-     end;
-    end else Abort;
+      frmSplash := TfrmSplash.Create(Self);
+      frmSplash.Show;
+      frmSplash.Refresh;
+      frmSplash.ProgressBar1.Position := 1;
+      // espera...
+      Sleep(100);
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 8;
+      // espera...
+      Sleep(700);
+
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 34;
+      // espera...
+      Sleep(300);
+      Screen.Cursor := crHourGlass;
+      try
+        begin
+          Dtsrc.DataSet.Edit;
+          (Dtsrc.DataSet as TZQuery).ApplyUpdates;
+          (Dtsrc.DataSet as TZQuery).CommitUpdates;
+        end;
+      except
+        on E: Exception do
+        begin
+          MessageDlg('Erro ao Editar o Arquivo!', E.Message, mtError, [mbOK], 0);
+          Abort;
+        end;
+      end;
+      MostrarEstatistica;
+      // DM.sds_cont.Close;
+      //RegistroTemp := StrToInt(DatadeCaD.Caption);
+      Screen.Cursor := crDefault;
+      ConfigGravar;
+      MostrarIcon;
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 51;
+      // espera...
+      Sleep(500);
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 73;
+      // espera...
+      Sleep(500);
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 85;
+      // espera ...
+      Sleep(500);
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 99;
+      // espera ...
+      Sleep(500);
+      // altera a ProgressBar
+      frmSplash.ProgressBar1.Position := 100;
+      // espera...
+      Sleep(500);
+      if frmSplash.ProgressBar1.Position = 100 then
+      begin
+        frmSplash.Hide;
+        frmSplash.Free;
+      end;
+    end
+    else
+      Abort;
+  end;
+  if (FrmLogin.TODOS = 0) then
+  begin
+    lookUser.Visible := False;
+  end
+  else
+  begin
+    lookUser.Visible := True;
   end;
 end;
 
 procedure TFrPrincipal.excluiAssuntoClick(Sender: TObject);
 begin
-   if Dtsrc.State = dsbrowse then
-   begin
+  if Dtsrc.State = dsbrowse then
+  begin
     DM.ZQArquivo.Edit;
-   CodigoAssuntoTemp:=DM.ZQArquivoCOD_ASSUNTO.Value;
-   Label15Temp:=Label15.Caption;
-   DBEdit1.Text:='';
-   Label15.Caption:='';
+    CodigoAssuntoTemp := DM.ZQArquivoCOD_ASSUNTO.Value;
+    Label15Temp := Label15.Caption;
+    DBEdit1.Text := '';
+    Label15.Caption := '';
     FrPrincipal.MostrarIcon;
-   end;
+  end;
 end;
 
 procedure TFrPrincipal.excluiAutorClick(Sender: TObject);
 begin
-   if Dtsrc.State = dsbrowse then
+  if Dtsrc.State = dsbrowse then
     DM.ZQArquivo.Edit;
-   CodigoAutorTemp:=DM.ZQArquivoCOD_AUTOR.AsInteger;
-   Label16Temp:=Label16.Caption;
-   DBEdit2.Text:='';
-   //DM.ZQArquivoCOD_AUTOR.Value := 0;
-   Label16.Caption:='';
-
+  CodigoAutorTemp := DM.ZQArquivoCOD_AUTOR.AsInteger;
+  Label16Temp := Label16.Caption;
+  DBEdit2.Text := '';
+  //DM.ZQArquivoCOD_AUTOR.Value := 0;
+  Label16.Caption := '';
 
 end;
 
 procedure TFrPrincipal.excluirClick(Sender: TObject);
 begin
- if (MessageDlg('Deseja excluir este Arquivo e Informações?', mtConfirmation,[mbYes, mbNo], 0) = mrYes) then
+  if (MessageDlg('Deseja excluir este Arquivo e Informações?',
+    mtConfirmation, [mbYes, mbNo], 0) = mrYes) then
   begin
-   try
-     begin
-      Dtsrc.DataSet.Delete;
-      (Dtsrc.DataSet as TZQuery).ApplyUpdates;
-      (Dtsrc.DataSet as TZQuery).CommitUpdates;
-     end;
-    except
-      on E:Exception do
+    try
       begin
-       MessageDlg('Erro ao Excluir o Arquivo!',E.Message,mtError,[mbOK],0);
-       Abort;
-       end;
+        Dtsrc.DataSet.Delete;
+        (Dtsrc.DataSet as TZQuery).ApplyUpdates;
+        (Dtsrc.DataSet as TZQuery).CommitUpdates;
+      end;
+    except
+      on E: Exception do
+      begin
+        MessageDlg('Erro ao Excluir o Arquivo!', E.Message, mtError, [mbOK], 0);
+        Abort;
+      end;
     end;
 
     try
-       begin
+      begin
         DtscLog.DataSet.Open;
         DtscLog.DataSet.Append;
         DM.cds_LogCOD_USUARIO.Value := FrmLogin.COD_USUARIO;
@@ -950,55 +942,58 @@ begin
         DM.cds_LogAPLICATIVO.Value := 'CADASTRO DE ARQUIVOS';
         DM.cds_LogCOD_REGISTRO.Value := DM.ZQArquivoID.AsInteger;
         DM.cds_LogDISCRIMINACAO.Value := tempNome;
-          DtscLog.DataSet.Post;
-          (DtscLog.DataSet as TZQuery).ApplyUpdates;
-          (DtscLog.DataSet as TZQuery).CommitUpdates;
+        DtscLog.DataSet.Post;
+        (DtscLog.DataSet as TZQuery).ApplyUpdates;
+        (DtscLog.DataSet as TZQuery).CommitUpdates;
       end;
-     Except
-       on E:Exception do
-       begin
-         MessageDlg('Erro ao gravar Log!',e.Message,mtError,[mbOk],0);
-         Abort;
-       end;
+    except
+      on E: Exception do
+      begin
+        MessageDlg('Erro ao gravar Log!', e.Message, mtError, [mbOK], 0);
+        Abort;
+      end;
     end;
-   Label15.Caption:='';
-   Label16.Caption:='';
-  // DM.ZQArquivo.Refresh;
-   ConfigExcluir;
-   MostrarEstatistica;
-   MostrarIcon;
-  CheckBox1.Checked := False;
+    Label15.Caption := '';
+    Label16.Caption := '';
+    // DM.ZQArquivo.Refresh;
+    ConfigExcluir;
+    MostrarEstatistica;
+    MostrarIcon;
+    CheckBox1.Checked := False;
 
-  with Dtsrc.DataSet do
-  begin
-    excluir.Enabled := not IsEmpty;
-    btnvisualizar.Enabled := not IsEmpty;
-    btnextrair.Enabled := not IsEmpty;
-    BtnLoc01.Enabled := not IsEmpty;
-    BtnLoc02.Enabled := not IsEmpty;
-    excluiAssunto.Enabled := not IsEmpty;
-    excluiAutor.Enabled := not IsEmpty;
-  end;
-  if (FrmLogin.TODOS = 0) then
-  begin
-    lookUser.Visible := False;
+    with Dtsrc.DataSet do
+    begin
+      excluir.Enabled := not IsEmpty;
+      btnvisualizar.Enabled := not IsEmpty;
+      btnextrair.Enabled := not IsEmpty;
+      BtnLoc01.Enabled := not IsEmpty;
+      BtnLoc02.Enabled := not IsEmpty;
+      excluiAssunto.Enabled := not IsEmpty;
+      excluiAutor.Enabled := not IsEmpty;
+    end;
+    if (FrmLogin.TODOS = 0) then
+    begin
+      lookUser.Visible := False;
+    end
+    else
+    begin
+      lookUser.Visible := True;
+    end;
+
   end
   else
-  begin
-    lookUser.Visible := True;
-  end;
-
-  end else Abort;
+    Abort;
 
 end;
 
 procedure TFrPrincipal.ExcluirTempClick(Sender: TObject);
 begin
-  DeleteFile(Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true));
+  DeleteFile(Temp + '\' + TrocaCaracterEspecial(
+    DM.ZQArquivoNOME_ARQUIVO.AsString, True));
   ExcluirTemp.Enabled := False;
 end;
 
-Function Saudacao: string;
+function Saudacao: string;
 begin
   Result := ' Boa-Noite!';
   if (Time >= 0.25) and (Time < 0.5) then
@@ -1010,11 +1005,11 @@ end;
 
 procedure TFrPrincipal.FormActivate(Sender: TObject);
 var
- i:dword;
+  i: dword;
 begin
-    StatusBar1.Panels[0].Text := Saudacao + ' Hoje é ' +
-    formatdatetime('dddddd', Date);
- if (FrmLogin.TODOS = 0) then
+  StatusBar1.Panels[0].Text :=
+    Saudacao + ' Hoje é ' + formatdatetime('dddddd', Date);
+  if (FrmLogin.TODOS = 0) then
   begin
     lookUser.Visible := False;
   end
@@ -1022,20 +1017,14 @@ begin
   begin
     lookUser.Visible := True;
   end;
- { if InternetGetConnectedState(@i,0) then
-   GifAnim1.Animate:=True
- // showmessage('esta conectado')
-    else
-   GifAnim1.Animate:=False;
-  //showmessage('nun ta não');
-  //MostrarEstatistica; }
+
 end;
 
 procedure TFrPrincipal.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-  if (MessageDlg('Deseja Sair do Sistema ?', mtConfirmation, [mbYes, mbNo], 0)
-    = mrYes) then
-  BEGIN
+  if (MessageDlg('Deseja Sair do Sistema ?', mtConfirmation, [mbYes, mbNo], 0) =
+    mrYes) then
+  begin
     try
       try
         DM.cds_ExcRepetidos.Close;
@@ -1047,23 +1036,23 @@ begin
         (DM.DtsrcExcLogados.DataSet as TZQuery).CommitUpdates;
 
       end;
-    Except
+    except
       on E: Exception do
       begin
         MessageDlg('Houve um problema no termino do aplicativo !', mtWarning,
           [mbOK], 0);
-        // Application.Terminate;
+
       end;
     end;
 
     Application.Terminate;
-  END;
+  end;
 end;
 
 procedure TFrPrincipal.FormShow(Sender: TObject);
 begin
-  Label15.Caption:='';
-  Label16.Caption:='';
+  Label15.Caption := '';
+  Label16.Caption := '';
   //Dtsrc.DataSet.Open;
   FrmLogin.Visible := False;
   InicializarComponentes;
@@ -1099,127 +1088,141 @@ end;
 
 procedure TFrPrincipal.gravarClick(Sender: TObject);
 begin
- if (DBMemo1.Text = '') then
- begin
-   ShowMessage('Carregue o Arquivo!');
-   Abort;
- end else
- begin
- if (Label15.Caption = '') then
+  if (DBMemo1.Text = '') then
   begin
-   ShowMessage('Preencha o Campo Assunto!');
-   Abort;
-   end else
+    ShowMessage('Carregue o Arquivo!');
+    Abort;
+  end
+  else
   begin
-  if Verifica_Campos_Em_Branco then
-   begin
-    frmSplash := TfrmSplash.Create(Self);
-    frmSplash.Show;
-    frmSplash.Refresh;
-    frmSplash.ProgressBar1.Position := 1;
-    // espera...
-    Sleep(100);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 8;
-    // espera...
-    Sleep(700);
-    //
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 34;
-    // espera...
-    Sleep(300);
-    Screen.Cursor := crHourGlass;
-    try
-   begin
-    Dtsrc.DataSet.Post;
-    (Dtsrc.DataSet as TZQuery).ApplyUpdates;
-     (Dtsrc.DataSet as TZQuery).CommitUpdates;
-    end;
-    except
-      on E: Exception do
-      begin
-        MessageDlg('Erro no de inserimento do Arquivo!',E.Message,mtError,[mbOK],0);
-       Abort;
-      end;
-
-    end;
-    try
+    if (Label15.Caption = '') then
     begin
-    DM.cds_UserAdd.Open;
-    DM.cds_UserAdd.Append;
-    DM.cds_UserAddIDUSUARIOS.Value := FrmLogin.COD_USUARIO;
-    DM.cds_UserAddIDARQUIVOS.Value := DM.ZQArquivoID.AsInteger;
-    DM.cds_UserAdd.Post;
-    DM.cds_UserAdd.ApplyUpdates;
-    DM.cds_UserAdd.CommitUpdates;
-    end;
-
-    except
-      on E:Exception do
+      ShowMessage('Preencha o Campo Assunto!');
+      Abort;
+    end
+    else
+    begin
+      if Verifica_Campos_Em_Branco then
       begin
-        MessageDlg('Erro no de inserimento de Proprietário de Arquivo!',E.Message,mtError,[mbOK],0);
-        Abort;
-      end;
-   end;
+        frmSplash := TfrmSplash.Create(Self);
+        frmSplash.Show;
+        frmSplash.Refresh;
+        frmSplash.ProgressBar1.Position := 1;
+        // espera...
+        Sleep(100);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 8;
+        // espera...
+        Sleep(700);
 
-    // DM.sds_cont.Close;
-    //RegistroTemp := StrToInt(DatadeCaD.Caption);
-    Screen.Cursor := crDefault;
-    ConfigGravar;
-    MostrarEstatistica;
-    MostrarIcon;
-     // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 51;
-    // espera...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 73;
-    // espera...
-    Sleep(2000);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 85;
-    // espera ...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 99;
-    // espera ...
-    Sleep(500);
-    // altera a ProgressBar
-    frmSplash.ProgressBar1.Position := 100;
-    // espera...
-    Sleep(2000);
-     if frmSplash.ProgressBar1.Position = 100 then
-     begin
-       frmSplash.Hide;
-       frmSplash.Free;
-      end;
-     end else Abort;
-   end;
- end;
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 34;
+        // espera...
+        Sleep(300);
+        Screen.Cursor := crHourGlass;
+        try
+          begin
+            Dtsrc.DataSet.Post;
+            (Dtsrc.DataSet as TZQuery).ApplyUpdates;
+            (Dtsrc.DataSet as TZQuery).CommitUpdates;
+          end;
+        except
+          on E: Exception do
+          begin
+            MessageDlg('Erro no de inserimento do Arquivo!', E.Message,
+              mtError, [mbOK], 0);
+            Abort;
+          end;
+
+        end;
+        try
+          begin
+            DM.cds_UserAdd.Open;
+            DM.cds_UserAdd.Append;
+            DM.cds_UserAddIDUSUARIOS.Value := FrmLogin.COD_USUARIO;
+            DM.cds_UserAddIDARQUIVOS.Value := DM.ZQArquivoID.AsInteger;
+            DM.cds_UserAdd.Post;
+            DM.cds_UserAdd.ApplyUpdates;
+            DM.cds_UserAdd.CommitUpdates;
+          end;
+
+        except
+          on E: Exception do
+          begin
+            MessageDlg('Erro no de inserimento de Proprietário de Arquivo!',
+              E.Message, mtError, [mbOK], 0);
+            Abort;
+          end;
+        end;
+
+        // DM.sds_cont.Close;
+        //RegistroTemp := StrToInt(DatadeCaD.Caption);
+        Screen.Cursor := crDefault;
+        ConfigGravar;
+        MostrarEstatistica;
+        MostrarIcon;
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 51;
+        // espera...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 73;
+        // espera...
+        Sleep(2000);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 85;
+        // espera ...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 99;
+        // espera ...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 100;
+        // espera...
+        Sleep(2000);
+        if frmSplash.ProgressBar1.Position = 100 then
+        begin
+          frmSplash.Hide;
+          frmSplash.Free;
+        end;
+      end
+      else
+        Abort;
+    end;
+  end;
+  if (FrmLogin.TODOS = 0) then
+  begin
+    lookUser.Visible := False;
+  end
+  else
+  begin
+    lookUser.Visible := True;
+  end;
 end;
 
 procedure TFrPrincipal.IdleTimer1Timer(Sender: TObject);
 begin
-    MostrarEstatistica;
+  MostrarEstatistica;
 end;
 
 procedure TFrPrincipal.inserirClick(Sender: TObject);
 begin
-   CodigoAssuntoTemp:=DM.ZQArquivoCOD_ASSUNTO.Value;
-   Label15Temp:=Label15.Caption;
-   Label15.Caption:='';
-   CodigoAssuntoTemp := DM.ZQArquivoCOD_ASSUNTO.Value;
+  CodigoAssuntoTemp := DM.ZQArquivoCOD_ASSUNTO.Value;
+  Label15Temp := Label15.Caption;
+  Label15.Caption := '';
+  CodigoAssuntoTemp := DM.ZQArquivoCOD_ASSUNTO.Value;
 
-   CodigoAutorTemp:=DM.ZQArquivoCOD_AUTOR.AsInteger;
-   Label16Temp:=Label16.Caption;
-   CodigoAutorTemp:=DM.ZQArquivoCOD_AUTOR.Value;
-   Label16.Caption:='';
+  CodigoAutorTemp := DM.ZQArquivoCOD_AUTOR.AsInteger;
+  Label16Temp := Label16.Caption;
+  CodigoAutorTemp := DM.ZQArquivoCOD_AUTOR.Value;
+  Label16.Caption := '';
 
-    if not Dtsrc.DataSet.Active then
+  if not Dtsrc.DataSet.Active then
     Dtsrc.DataSet.Open;
-    Dtsrc.DataSet.Append;
+  Dtsrc.DataSet.Append;
 
- if (FrmLogin.TODOS = 0) then
+  if (FrmLogin.TODOS = 0) then
   begin
     lookUser.Visible := False;
   end
@@ -1231,8 +1234,8 @@ end;
 
 procedure TFrPrincipal.carregarClick(Sender: TObject);
 var
-  F: File of Byte;
-  Tamnh, TamnhBytes, TamnhMB, TamnhKB, Temp2: Double;
+  F: file of byte;
+  Tamnh, TamnhBytes, TamnhMB, TamnhKB, Temp2: double;
   varifTempBytes, varifTempKB, varifTempMB: string;
 begin
   Tamnh := 0.0;
@@ -1241,81 +1244,81 @@ begin
   TamnhKB := 0.0;
   OpenDialog1.FileName := '';
   OpenDialog1.Files.Clear;
-  AssignFile(F, OpenDialog1.FileName);
-  if FileExists(Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true)) then
-  begin
-    DeleteFile(Temp + '\' +TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true));
-    ExcluirTemp.Enabled := False;
-    Image3.Visible := False;
-  end
-  else if OpenDialog1.Execute then
-  begin
-
-    if Dtsrc.State = dsbrowse then
-      DM.ZQArquivo.Edit;
-    DM.ZQArquivoDADOS.LoadFromFile(OpenDialog1.FileName);
-    DM.ZQArquivoNOME_ARQUIVO.AsString := TrocaCaracterEspecial(ExtractFileName(OpenDialog1.FileName),true);
-   // DM.ZQArquivoNOME_ARQUIVO_ESPECIAL.AsString:= ExtractFileName(OpenDialog1.FileName);
-    DM.ZQArquivoEXTENCAO.AsString :=
-      LowerCase(ExtractFileExt(OpenDialog1.FileName));
+  try
     AssignFile(F, OpenDialog1.FileName);
-    Reset(F);
-    Tamnh := FileSize(F);
- if (Tamnh >= 125829120) then // 120MB
-  begin
-        MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 120 MB!',
-          mtError, [mbOK], 0);
-       Dtsrc.DataSet.Cancel;
-       ConfigInicial;
-  end else
-  begin
-    if Tamnh <= 1024 then
+    if FileExists(Temp + '\' + TrocaCaracterEspecial(
+      DM.ZQArquivoNOME_ARQUIVO.AsString, True)) then
     begin
-      varifTempBytes := (FloatToStrF((Tamnh), ffNumber, 11, 0));
-      DM.ZQArquivoTAMANHO.AsString := varifTempBytes + ' Bytes';
-      DM.ZQArquivoSIZE_ARQUIVO.AsFloat := StrToFloat(varifTempBytes);
+      DeleteFile(Temp + '\' + TrocaCaracterEspecial(
+        DM.ZQArquivoNOME_ARQUIVO.AsString, True));
+      ExcluirTemp.Enabled := False;
+      Image3.Visible := False;
     end
-    else if (Tamnh > 1024) then
+    else if OpenDialog1.Execute then
     begin
-      varifTempBytes := (FloatToStrF((Tamnh), ffNumber, 11, 0));
-      TamnhKB := (Tamnh / 1024);
-      Temp2 := (Tamnh / 1024);
-      TamnhMB := (Temp2 / 1024);
-      if (TamnhKB <= 1024) then
+
+      if Dtsrc.State = dsbrowse then
+        //  try
+        DM.ZQArquivo.Edit;
+      DM.ZQArquivoDADOS.LoadFromFile(OpenDialog1.FileName);
+      DM.ZQArquivoNOME_ARQUIVO.AsString :=
+        TrocaCaracterEspecial(ExtractFileName(OpenDialog1.FileName), True);
+      // DM.ZQArquivoNOME_ARQUIVO_ESPECIAL.AsString:= ExtractFileName(OpenDialog1.FileName);
+      DM.ZQArquivoEXTENCAO.AsString :=
+        LowerCase(ExtractFileExt(OpenDialog1.FileName));
+      AssignFile(F, OpenDialog1.FileName);
+      Reset(F);
+      Tamnh := FileSize(F);
+
+      if (Tamnh > 1024) then
       begin
-        varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
-        DM.ZQArquivoTAMANHO.AsString := varifTempKB + ' (KB)-' + '(' +
-          varifTempBytes + ' Bytes)';
-        DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
-      end
-      else
-      begin
-        varifTempMB := (FloatToStrF((TamnhMB), ffNumber, 11, 1));
-        varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
-        DM.ZQArquivoTAMANHO.AsString := varifTempMB + ' (MB)-' + varifTempKB +
-          ' (KB)-' + '(' + varifTempBytes + ' Bytes)';
-        DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+        varifTempBytes := (FloatToStrF((Tamnh), ffNumber, 11, 0));
+        TamnhKB := (Tamnh / 1024);
+        Temp2 := (Tamnh / 1024);
+        TamnhMB := (Temp2 / 1024);
+        if (TamnhKB <= 1024) then
+        begin
+          varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
+          DM.ZQArquivoTAMANHO.AsString :=
+            varifTempKB + ' (KB)-' + '(' + varifTempBytes + ' Bytes)';
+          DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+        end
+        else
+        begin
+          varifTempMB := (FloatToStrF((TamnhMB), ffNumber, 11, 1));
+          varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
+          DM.ZQArquivoTAMANHO.AsString :=
+            varifTempMB + ' (MB)-' + varifTempKB + ' (KB)-' + '(' +
+            varifTempBytes + ' Bytes)';
+          DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+        end;
       end;
-    end;
 
       MostrarIcon;
-    { if (Tamnh >= 125829120) then // 120MB
+
+    end;
+  except
+    on E: Exception do
+    begin
+      if (Tamnh >= 125829120) then // 120MB
       begin
-        Dtsrc.DataSet.Cancel;
         MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 120 MB!',
           mtError, [mbOK], 0);
-       // MostrarIcon;
-      end; }
-   end;
+        Dtsrc.DataSet.Cancel;
+        ConfigInicial;
+        lookUser.Enabled := False;
+        // MostrarIcon;
+      end;
+    end;
 
   end;
 
 end;
 
 procedure TFrPrincipal.ListView1CustomDrawItem(Sender: TCustomListView;
-  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: boolean);
 begin
-   with ListView1 do
+  with ListView1 do
   begin
     if (Item.Index mod 2) = 0 then
     begin
@@ -1332,140 +1335,156 @@ end;
 
 procedure TFrPrincipal.btntrazerClick(Sender: TObject);
 var
-  DataInserimento: String;
+  DataInserimento: string;
 begin
-    FrmDlgPesquisa := TFrmDlgPesquisa.Create(Self);
+  FrmDlgPesquisa := TFrmDlgPesquisa.Create(Self);
 
-      if FrmDlgPesquisa.ShowModal = mrOk then
+  if FrmDlgPesquisa.ShowModal = mrOk then
+    if (FrmLogin.TODOS = 0) then
+    begin
+      try
+        DM.ZQArquivo.Close;
+        DM.ZQArquivo.Params[0].Value := DM.sds_ArquID.AsInteger;
+        DM.ZQArquivo.Open;
+        MostrarIcon;
+        frmSplash := TfrmSplash.Create(Self);
+        frmSplash.Show;
+        frmSplash.Refresh;
+        frmSplash.ProgressBar1.Position := 1;
+        // espera...
+        Sleep(100);
+        Sleep(100);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 8;
+        // espera...
+        Sleep(700);
+
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 34;
+        // espera...
+        Sleep(300);
+
+
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 51;
+        // espera...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 73;
+        // espera...
+        Sleep(2000);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 85;
+        // espera ...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 99;
+        // espera ...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 100;
+        // espera...
+        Sleep(2000);
+        if frmSplash.ProgressBar1.Position = 100 then
+        begin
+          frmSplash.Hide;
+          frmSplash.Free;
+
+        end;
+        MostrarIcon;
+      finally
+        DM.sds_Arqu.Close;
+        FrmDlgPesquisa.Free;
+      end;
       if (FrmLogin.TODOS = 0) then
       begin
-        try
-          DM.ZQArquivo.Close;
-          DM.ZQArquivo.Params[0].Value := DM.sds_ArquID.AsInteger;
-          DM.ZQArquivo.Open;
-          MostrarIcon;
-           frmSplash := TfrmSplash.Create(Self);
-              frmSplash.ShowModal;
-              frmSplash.Refresh;
-              frmSplash.ProgressBar1.Position := 1;
-              // espera...
-              Sleep(100);
-              Sleep(100);
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 8;
-              // espera...
-              Sleep(700);
-              //
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 34;
-              // espera...
-              Sleep(300);
-
-
-               // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 51;
-              // espera...
-              Sleep(500);
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 73;
-              // espera...
-              Sleep(2000);
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 85;
-              // espera ...
-              Sleep(500);
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 99;
-              // espera ...
-              Sleep(500);
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 100;
-              // espera...
-              Sleep(2000);
-              if frmSplash.ProgressBar1.Position = 100 then
-              begin
-                frmSplash.Hide;
-                frmSplash.Free;
-
-              end;
-              MostrarIcon;
-        finally
-          DM.sds_Arqu.Close;
-          FrmDlgPesquisa.Free;
-        end;
-
+        lookUser.Visible := False;
       end
-      else if FrmLogin.TODOS = 1 then
+      else
       begin
-        try
-          DM.ZQArquivo.Close;
-          DM.ZQArquivo.Params[0].AsInteger := DM.sds_ArquTodosID.AsInteger;
-          DM.ZQArquivo.Open;
-
-           frmSplash := TfrmSplash.Create(Self);
-              frmSplash.Show;
-              frmSplash.Refresh;
-              frmSplash.ProgressBar1.Position := 1;
-              // espera...
-              Sleep(100);
-              Sleep(100);
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 8;
-              // espera...
-              Sleep(700);
-              //
-              // altera a ProgressBar
-              frmSplash.ProgressBar1.Position := 34;
-              // espera...
-              Sleep(300);
-
-
-                        // altera a ProgressBar
-                       frmSplash.ProgressBar1.Position := 51;
-                       // espera...
-                       Sleep(500);
-                       // altera a ProgressBar
-                       frmSplash.ProgressBar1.Position := 73;
-                       // espera...
-                       Sleep(2000);
-                       // altera a ProgressBar
-                       frmSplash.ProgressBar1.Position := 85;
-                       // espera ...
-                       Sleep(500);
-                       // altera a ProgressBar
-                       frmSplash.ProgressBar1.Position := 99;
-                       // espera ...
-                       Sleep(500);
-                       // altera a ProgressBar
-                       frmSplash.ProgressBar1.Position := 100;
-                       // espera...
-                       Sleep(2000);
-                       if frmSplash.ProgressBar1.Position = 100 then
-                       begin
-                         frmSplash.Hide;
-                         frmSplash.Free;
-
-                       end;
-
-        finally
-          DM.sds_ArquTodos.Close;
-          FrmDlgPesquisa.Free;
-        end;
-           MostrarIcon;
+        lookUser.Visible := True;
       end;
-      lookUser.Visible:=true;
-      MostrarIcon;
-    IniciaAdministracao;
-    if not DM.ZQArquivo.IsEmpty then
-    begin
-      //Edit1.Text := DBText1.Caption;
-      tempNome := DBMemo2.Lines.Text;
-    end;
-    if FileExists(Temp + '\' + TrocaCaracterEspecial(DM.ZQArquivoNOME_ARQUIVO.AsString,true)) = True then
-    begin
-      ExcluirTemp.Enabled := True;
-      Image3.Visible := True;
     end
+    else if FrmLogin.TODOS = 1 then
+    begin
+      try
+        DM.ZQArquivo.Close;
+        DM.ZQArquivo.Params[0].AsInteger := DM.sds_ArquTodosID.AsInteger;
+        DM.ZQArquivo.Open;
+
+        frmSplash := TfrmSplash.Create(Self);
+        frmSplash.Show;
+        frmSplash.Refresh;
+        frmSplash.ProgressBar1.Position := 1;
+        // espera...
+        Sleep(100);
+        Sleep(100);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 8;
+        // espera...
+        Sleep(700);
+
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 34;
+        // espera...
+        Sleep(300);
+
+
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 51;
+        // espera...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 73;
+        // espera...
+        Sleep(2000);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 85;
+        // espera ...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 99;
+        // espera ...
+        Sleep(500);
+        // altera a ProgressBar
+        frmSplash.ProgressBar1.Position := 100;
+        // espera...
+        Sleep(2000);
+        if frmSplash.ProgressBar1.Position = 100 then
+        begin
+          frmSplash.Hide;
+          frmSplash.Free;
+
+        end;
+
+      finally
+        DM.sds_ArquTodos.Close;
+        FrmDlgPesquisa.Free;
+      end;
+      MostrarIcon;
+      if (FrmLogin.TODOS = 0) then
+      begin
+        lookUser.Visible := False;
+      end
+      else
+      begin
+        lookUser.Visible := True;
+      end;
+    end;
+  //lookUser.Visible:=true;
+  MostrarIcon;
+  IniciaAdministracao;
+  if not DM.ZQArquivo.IsEmpty then
+  begin
+    //Edit1.Text := DBText1.Caption;
+    tempNome := DBMemo2.Lines.Text;
+  end;
+  if FileExists(Temp + '\' + TrocaCaracterEspecial(
+    DM.ZQArquivoNOME_ARQUIVO.AsString, True)) = True then
+  begin
+    ExcluirTemp.Enabled := True;
+    Image3.Visible := True;
+  end;
    { else if not(FileExists(Temp + '\' + DM.ZQArquivoNOME_ARQUIVO.AsString)) then
     begin
       ExcluirTemp.Enabled := False;
@@ -1478,26 +1497,26 @@ end;
 procedure TFrPrincipal.btnextrairClick(Sender: TObject);
 begin
   if DM.ZQArquivo.IsEmpty then
+  begin
+    MessageDlg('Não ha Arquivo no cadastro, consulte ou localize primeiro !',
+      mtWarning, [mbOK], 0);
+  end
+  else
+  begin
+    with SaveDialog1 do
     begin
-      MessageDlg('Não ha Arquivo no cadastro, consulte ou localize primeiro !',
-        mtWarning, [mbOK], 0);
-    end
-    else
-    begin
-      with SaveDialog1 do
+      FileName := DM.ZQArquivo['NOME_ARQUIVO'];
+      if Execute then
       begin
-        FileName := DM.ZQArquivo['NOME_ARQUIVO'];
-        if Execute then
-        begin
-          DM.ZQArquivoDADOS.SaveToFile(FileName);
-        end;
+        DM.ZQArquivoDADOS.SaveToFile(FileName);
       end;
     end;
+  end;
 end;
 
 procedure TFrPrincipal.lookUserClick(Sender: TObject);
 begin
-    FrmAtribuiUser := TFrmAtribuiUser.Create(Self);
+  FrmAtribuiUser := TFrmAtribuiUser.Create(Self);
   try
     FrmAtribuiUser.ShowModal;
   finally
@@ -1505,11 +1524,31 @@ begin
   end;
 end;
 
+procedure TFrPrincipal.relatorioClick(Sender: TObject);
+begin
+  try
+    try
+     DM.ZQueryRelatorioArquivo.Close;
+     DM.ZQueryRelatorioArquivo.Params[0].Value:=DM.ZQArquivoID.AsInteger;
+     DM.ZQueryRelatorioArquivo.Open;
+    Except
+      on E:Exception do
+      begin
+        MessageDlg('Erro de Consulta de Arquivo!',E.Message,mtError,[mbOK],0);
+      end;
+    end;
+  finally
+  DM.frReportArquivo.LoadFromFile('Reports/RelConsultaArquivos.lrf');
+  DM.frReportArquivo.showReport;
+  end;
+
+end;
+
 procedure TFrPrincipal.sairClick(Sender: TObject);
 begin
-   if (MessageDlg('Deseja Sair do Sistema ?', mtConfirmation, [mbYes, mbNo], 0)
-    = mrYes) then
-  BEGIN
+  if (MessageDlg('Deseja Sair do Sistema ?', mtConfirmation, [mbYes, mbNo], 0) =
+    mrYes) then
+  begin
     try
       try
         DM.cds_ExcRepetidos.Close;
@@ -1521,23 +1560,21 @@ begin
         (DM.DtsrcExcLogados.DataSet as TZQuery).CommitUpdates;
 
       end;
-    Except
+    except
       on E: Exception do
       begin
         MessageDlg('Houve um problema no termino do aplicativo !', mtWarning,
           [mbOK], 0);
-        // Application.Terminate;
       end;
     end;
-
     Application.Terminate;
-  END;
+  end;
 end;
 
 procedure TFrPrincipal.StatusBar1DrawPanel(StatusBar: TStatusBar;
   Panel: TStatusPanel; const Rect: TRect);
 begin
-   if Panel.ID = 1 then
+  if Panel.ID = 1 then
   begin
     StatusBar1.Canvas.Brush.Color := clWhite;
     StatusBar.Canvas.Font.Color := clBlue;
@@ -1572,14 +1609,15 @@ end;
 
 procedure TFrPrincipal.Timer1Timer(Sender: TObject);
 begin
-    MostrarEstatistica;
-     if (StrToInt(codigo13.Caption) > 1) then
-   begin
-   GifAnim1.Visible:=true;
-   end else
-   begin
-   GifAnim1.Visible:=false;
-   end;
+  MostrarEstatistica;
+  if (StrToInt(codigo13.Caption) > 1) then
+  begin
+    GifAnim1.Visible := True;
+  end
+  else
+  begin
+    GifAnim1.Visible := False;
+  end;
 end;
 
 procedure TFrPrincipal.IniciaAdministracao;
@@ -1610,7 +1648,7 @@ begin
         begin
           cbconsulta.Enabled := False;
         end; }
-              // averiguar depois ...
+        // averiguar depois ...
        { if DM.sdt_Verif_Perfil.FieldByName('MENU_ARQUI_ASSUNTOS').AsString = 'S'
         then
         begin
@@ -1710,8 +1748,7 @@ begin
         end;
         // if FrmLogin.NIVEL = 1 then
         // begin
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_CONSULTAR').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_CONSULTAR').AsString = 'S' then
         begin
           FrPrincipal.cbtconsulta.Visible := True;
         end
@@ -1724,8 +1761,7 @@ begin
         // begin
         // FrPrincipal.cbconsulta.visible := False;
         // end;
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_USUARIO').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_USUARIO').AsString = 'S' then
         begin
           FrPrincipal.usuarios.Visible := True;
         end
@@ -1733,8 +1769,7 @@ begin
         begin
           FrPrincipal.usuarios.Visible := False;
         end;
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_ASSUNTOS').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_ASSUNTOS').AsString = 'S' then
         begin
           FrPrincipal.Assuntos.Visible := True;
         end
@@ -1742,8 +1777,7 @@ begin
         begin
           FrPrincipal.Assuntos.Visible := False;
         end;
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_AUTORES').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_AUTORES').AsString = 'S' then
         begin
           FrPrincipal.autores.Visible := True;
         end
@@ -1759,8 +1793,7 @@ begin
         begin
           FrPrincipal.log.Visible := False;
         end;
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_LOCALIZAR').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_LOCALIZAR').AsString = 'S' then
         begin
           FrPrincipal.btntrazer.Visible := True;
         end
@@ -1769,8 +1802,7 @@ begin
           FrPrincipal.btntrazer.Visible := False;
         end;
         // Sessão Botões de Cadastro
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_INSERIR').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_INSERIR').AsString = 'S' then
         begin
           FrPrincipal.inserir.Visible := True;
         end
@@ -1786,8 +1818,7 @@ begin
         begin
           FrPrincipal.editar.Visible := False;
         end;
-        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_EXCLUIR').AsString = 'S'
-        then
+        if DM.sdt_Verif_Perfil.FieldByName('ARQUI_EXCLUIR').AsString = 'S' then
         begin
           FrPrincipal.excluir.Visible := True;
         end
@@ -1803,4 +1834,3 @@ end;
 
 
 end.
-

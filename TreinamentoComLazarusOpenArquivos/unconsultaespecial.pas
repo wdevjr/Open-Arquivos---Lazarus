@@ -5,7 +5,7 @@ unit UnConsultaEspecial;
 interface
 
 uses
-  Classes, SysUtils, db, Forms, Controls, Graphics, Dialogs, ExtCtrls, DBGrids,
+  Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, ExtCtrls, DBGrids,
   StdCtrls, Buttons, DBCtrls, DateTimePicker;
 
 type
@@ -86,4 +86,3 @@ implementation
 {$R *.lfm}
 
 end.
-

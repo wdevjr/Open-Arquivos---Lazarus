@@ -128,9 +128,10 @@ object frmIncluir: TfrmIncluir
     Width = 591
     Align = alClient
     AlternateColor = 13363947
-    Color = 16774388
+    Color = 16764108
     Columns = <>
     DataSource = DtsrcAdionar
+    FixedHotColor = 14024661
     Flat = True
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit]
     TabOrder = 2

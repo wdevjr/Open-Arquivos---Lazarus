@@ -5,7 +5,7 @@ unit unDlgDescricao;
 interface
 
 uses
-  Classes, SysUtils, db, Forms, Controls, Graphics, Dialogs, DBCtrls, Buttons,
+  Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, DBCtrls, Buttons,
   ExtCtrls, StdCtrls;
 
 type
@@ -18,6 +18,8 @@ type
     DBMemo1: TDBMemo;
     Image1: TImage;
     Label1: TLabel;
+    Panel1: TPanel;
+    Panel2: TPanel;
   private
 
   public
@@ -34,4 +36,3 @@ implementation
 uses UnDM;
 
 end.
-

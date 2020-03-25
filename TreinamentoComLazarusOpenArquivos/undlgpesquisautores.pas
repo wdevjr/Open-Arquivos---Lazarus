@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, Buttons,
-  DBGrids, StdCtrls, ZDataset, db;
+  DBGrids, StdCtrls, ZDataset, DB;
 
 type
 
@@ -37,13 +37,13 @@ implementation
 
 {$R *.lfm}
 
-uses UnDM,UnPrinc;
+uses UnDM, UnPrinc;
 
 { TFrmPesquisaAutor }
 
 procedure TFrmPesquisaAutor.FormShow(Sender: TObject);
 begin
-with Dtsrc.DataSet as TZQuery do
+  with Dtsrc.DataSet as TZQuery do
   begin
     BtnOk.Enabled := not IsEmpty;
   end;
@@ -52,7 +52,7 @@ end;
 procedure TFrmPesquisaAutor.BitBtn1Click(Sender: TObject);
 begin
   DM.sds_Autores.Close;
-  DM.sds_Autores.Params[0].Value:='%'+Edit1.Text+'%';
+  DM.sds_Autores.Params[0].Value := '%' + Edit1.Text + '%';
   DM.sds_Autores.Open;
 
   with Dtsrc.DataSet as TZQuery do
@@ -63,15 +63,14 @@ end;
 
 procedure TFrmPesquisaAutor.btnOkClick(Sender: TObject);
 begin
-  FrPrincipal.Label16.Caption:='';
+  FrPrincipal.Label16.Caption := '';
 
   FrPrincipal.Label16.Caption := DM.sds_AutoresNOME.AsString;
 
-      if FrPrincipal.Label16.Caption <> '' then
-     begin
-      FrPrincipal.Label16.Visible:= true;
-     end;
+  if FrPrincipal.Label16.Caption <> '' then
+  begin
+    FrPrincipal.Label16.Visible := True;
+  end;
 end;
 
 end.
-
