@@ -7,7 +7,8 @@ interface
 uses
   Windows, Messages, Classes, SysUtils, IBConnection, sqldb, DB, FileUtil,
   LR_Class, LR_DBSet, LR_ChBox, Forms, Controls, Graphics, Dialogs, DBGrids,
-  ZConnection, ZDataset, ZSqlUpdate, IniFiles, ZAbstractDataset, LR_DBSet, LR_Class, LR_BarC;
+  ZConnection, ZDataset, ZSqlUpdate, IniFiles, ZAbstractDataset, LR_BarC;
+
 type
 
   { TDM }
@@ -173,6 +174,9 @@ type
     ZQuery2TITULO: TStringField;
     sds_User_Usuarios: TZQuery;
     ZQArquivo: TZQuery;
+    ZQuery3: TZQuery;
+    ZQuery4: TZQuery;
+    ZQuery5: TZQuery;
     ZQueryRelatorioArquivo: TZQuery;
     ZQueryRelatorioArquivoDATA: TDateField;
     ZQueryRelatorioArquivoDESCRICAO: TStringField;
@@ -249,7 +253,7 @@ begin
     Qry.SQL.Add('SELECT MAX(' + Chave_Primaria.FieldName + ') FROM ' + Nome_Tabela);
     Qry.Open;
     if (Qry.Fields[0].IsNull) or (Qry.Fields[0].AsInteger = 0) then
-      // se a tabela está vazia retornará nulo
+      // se a tabela está vazia retornará um valor inicial...
       Chave_Primaria.AsInteger := 402585
     // então este será o primeiro registro
     else

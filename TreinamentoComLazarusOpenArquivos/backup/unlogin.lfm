@@ -2,10 +2,10 @@ object FrmLogin: TFrmLogin
   Left = 582
   Height = 230
   Top = 311
-  Width = 356
+  Width = 394
   Caption = 'Login de Acesso'
   ClientHeight = 230
-  ClientWidth = 356
+  ClientWidth = 394
   Color = clWhite
   OnShow = FormShow
   LCLVersion = '2.0.6.0'
@@ -33,7 +33,7 @@ object FrmLogin: TFrmLogin
     Left = 48
     Height = 23
     Top = 160
-    Width = 272
+    Width = 328
     Color = 14939380
     EchoMode = emPassword
     Font.Color = clGreen
@@ -45,7 +45,7 @@ object FrmLogin: TFrmLogin
     Left = 48
     Height = 27
     Top = 128
-    Width = 272
+    Width = 328
     Color = 13434828
     Font.CharSet = ANSI_CHARSET
     Font.Color = 16757007
@@ -537,7 +537,7 @@ object FrmLogin: TFrmLogin
     }
   end
   object Label13: TLabel
-    Left = 160
+    Left = 184
     Height = 15
     Top = 32
     Width = 104
@@ -552,7 +552,7 @@ object FrmLogin: TFrmLogin
     Top = 54
     Width = 42
     Animate = False
-    FileName = 'anima\Infinity-1s-38px.gif'
+    FileName = 'anima\transmitindo.gif'
   end
   object Dtsrc: TDataSource
     DataSet = DM.cds_Log

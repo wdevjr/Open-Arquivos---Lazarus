@@ -1528,18 +1528,18 @@ procedure TFrPrincipal.relatorioClick(Sender: TObject);
 begin
   try
     try
-     DM.ZQueryRelatorioArquivo.Close;
-     DM.ZQueryRelatorioArquivo.Params[0].Value:=DM.ZQArquivoID.AsInteger;
-     DM.ZQueryRelatorioArquivo.Open;
-    Except
-      on E:Exception do
+      DM.ZQueryRelatorioArquivo.Close;
+      DM.ZQueryRelatorioArquivo.Params[0].Value := DM.ZQArquivoID.AsInteger;
+      DM.ZQueryRelatorioArquivo.Open;
+    except
+      on E: Exception do
       begin
-        MessageDlg('Erro de Consulta de Arquivo!',E.Message,mtError,[mbOK],0);
+        MessageDlg('Erro de Consulta de Arquivo!', E.Message, mtError, [mbOK], 0);
       end;
     end;
   finally
-  DM.frReportArquivo.LoadFromFile('Reports/RelConsultaArquivos.lrf');
-  DM.frReportArquivo.showReport;
+    DM.frReportArquivo.LoadFromFile('Reports/RelConsultaArquivos.lrf');
+    DM.frReportArquivo.showReport;
   end;
 
 end;

@@ -9,16 +9,14 @@ uses
   Classes, Graphics,
   Controls, Forms, Dialogs, Grids, DBGrids, DB, DBCtrls,
   Buttons, ExtCtrls, ComCtrls,
-  StdCtrls,LR_BarC;
+  StdCtrls, LR_BarC;
 
 type
 
   { TFrmDlgPesquisa }
 
   TFrmDlgPesquisa = class(TForm)
-    BitBtn1: TBitBtn;
     BitBtn2: TBitBtn;
-    BitBtn3: TBitBtn;
     BtnOk: TBitBtn;
     DBGrid1: TDBGrid;
     DBMemo1: TDBMemo;
@@ -32,15 +30,17 @@ type
     Panel2: TPanel;
     Panel3: TPanel;
     SpeedButton1: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    SpeedButton3: TSpeedButton;
     StsBr: TStatusBar;
-    procedure BitBtn1Click(Sender: TObject);
     procedure BtnOkClick(Sender: TObject);
-    procedure BitBtn3Click(Sender: TObject);
     procedure DBGrid1CellClick(Column: TColumn);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: integer; Column: TColumn; State: TGridDrawState);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
     procedure StsBrDrawPanel(StatusBar: TStatusBar; Panel: TStatusPanel;
       const Rect: TRect);
   private
@@ -106,173 +106,6 @@ begin
 
 
   FrPrincipal.MostrarIcon;
-end;
-
-procedure TFrmDlgPesquisa.BitBtn1Click(Sender: TObject);
-begin
-    try
-    try
-      if (FrmLogin.TODOS = 0) then
-      begin
-     DM.ZQueryRelatorioArquivo.Close;
-     DM.ZQueryRelatorioArquivo.Params[0].Value:=DM.sds_ArquID.AsInteger;
-     DM.ZQueryRelatorioArquivo.Open;
-      end else
-      if (FrmLogin.TODOS = 1) then
-      begin
-     DM.ZQueryRelatorioArquivo.Close;
-     DM.ZQueryRelatorioArquivo.Params[0].Value:=DM.sds_ArquTodosID.AsInteger;
-     DM.ZQueryRelatorioArquivo.Open;
-      end;
-    Except
-      on E:Exception do
-      begin
-        MessageDlg('Erro de Consulta de Arquivo!',E.Message,mtError,[mbOK],0);
-      end;
-    end;
-  finally
-  DM.frReportArquivo.LoadFromFile('Reports/RelConsultaArquivos.lrf');
-  DM.frReportArquivo.showReport;
-  end;
-end;
-
-procedure TFrmDlgPesquisa.BitBtn3Click(Sender: TObject);
-var
-  sSQL, Texto: string;
-begin
-  if (FrmLogin.TODOS = 0) then
-  begin
-    if (EditProc2.Text <> '') and (EditProc1.Text = '') then
-    begin
-      with DM.sds_Arqu do
-      begin
-        Close;
-        if tag = 0 then
-        begin
-          DM.sds_Arqu.Close;
-          DM.sds_Arqu.SQL.Clear;
-          DM.sds_Arqu.SQL.Add(
-            'select AQ.ID,AQ.COD_ASSUNTO,AQ.COD_USUARIO, AQ.DESCRICAO, AQ.TITULO,AQ.NOME_ARQUIVO,PO.NOME, AQ.DATA,N.IDUSUARIOS,SS.TITULOASSUN,TT.NOME from ARQUIVOS_USUARIOS N ' + ' left join ARQUIVOLIST AQ on (AQ.ID = N.IDARQUIVOS) ' + ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' + ' left join USUARIO PO on (AQ.COD_USUARIO = PO.COD_USUARIO) ' + ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' + ' where AQ.DESCRICAO like ' + QuotedStr('%' + EditProc2.Text + '%') + ' and N.IDUSUARIOS=' + IntToStr(FrmLogin.COD_USUARIO) + ' order by AQ.DESCRICAO');
-
-        end;
-        DBGrid1.DataSource := Dtsrc;
-        DBMemo1.DataSource := Dtsrc;
-        Open;
-        Refresh;
-        BtnOk.Enabled := not IsEmpty;
-
-        if (EditProc2.Text <> '') then
-        begin
-          if IsEmpty then
-            StsBr.Panels[0].Text :=
-              format('Nenhum registro foi encontrado com "%s"', [EditProc2.Text])
-          else
-            StsBr.Panels[0].Text :=
-              format('%d registros encontrados com "%s"', [RecordCount, EditProc2.Text]);
-        end;
-
-      end;
-    end
-    else if (EditProc1.Text <> '') and (EditProc2.Text = '') then
-    begin
-      with DM.sds_Arqu do
-      begin
-        if tag = 0 then
-        begin
-
-          DM.sds_Arqu.Close;
-          DM.sds_Arqu.SQL.Clear;
-          DM.sds_Arqu.SQL.Add(
-            'select AQ.ID,AQ.COD_ASSUNTO,AQ.COD_USUARIO,AQ.DESCRICAO, AQ.TITULO, AQ.NOME_ARQUIVO, PO.NOME, AQ.DATA, SS.TITULOASSUN,N.IDUSUARIOS,TT.NOME from ARQUIVOS_USUARIOS N ' + 'left join ARQUIVOLIST AQ on (AQ.ID = N.IDARQUIVOS)' + ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' + ' left join USUARIO PO on (AQ.COD_USUARIO = PO.COD_USUARIO) ' + ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' + ' where AQ.TITULO like ' + QuotedStr('%' + EditProc1.Text + '%') + ' and N.IDUSUARIOS=' + IntToStr(FrmLogin.COD_USUARIO) + ' order by AQ.TITULO');
-
-        end;
-        DBGrid1.DataSource := Dtsrc;
-        DBMemo1.DataSource := Dtsrc;
-        Open;
-        BtnOk.Enabled := not IsEmpty;
-        if (EditProc1.Text <> '') then
-        begin
-          if IsEmpty then
-            StsBr.Panels[0].Text :=
-              format('Nenhum registro foi encontrado com "%s"', [EditProc1.Text])
-          else
-            StsBr.Panels[0].Text :=
-              format('%d registros encontrados com "%s"', [RecordCount, EditProc1.Text]);
-        end;
-      end;
-    end;
-  end
-  else if (FrmLogin.TODOS = 1) then
-  begin
-    with DM.sds_ArquTodos do
-    begin
-      Close;
-      if tag = 0 then
-      begin
-        if (EditProc1.Text <> '') and (EditProc2.Text = '') then
-        begin
-          DM.sds_ArquTodos.SQL.Clear;
-          // DM.sds_ArquTodos.Params.Clear;
-          DM.sds_ArquTodos.SQL.Add(
-            'select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES,AQ.DATA'
-            + ' from ARQUIVOLIST AQ' +
-            ' left join USUARIO UR on AQ.COD_USUARIO = UR.COD_USUARIO' +
-            ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' +
-            ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' +
-            ' where AQ.TITULO like ' + QuotedStr('%' + EditProc1.Text + '%') +
-            ' order by AQ.DESCRICAO, AQ.TITULO desc');
-          // Params[0].AsString := '%' + EditProc1.Text + '%';
-          DBGrid1.DataSource := DtsrcTodos;
-          DBMemo1.DataSource := DtsrcTodos;
-          Open;
-          if (EditProc1.Text <> '') then
-          begin
-            if IsEmpty then
-              StsBr.Panels[0].Text :=
-                format('Nenhum registro foi encontrado com "%s"',
-                [EditProc1.Text])
-            else
-              StsBr.Panels[0].Text :=
-                format('%d registros encontrados com "%s"',
-                [RecordCount, EditProc1.Text]);
-          end;
-        end
-        else if (EditProc2.Text <> '') and (EditProc1.Text = '') then
-        begin
-          DM.sds_ArquTodos.SQL.Clear;
-          // DM.sds_ArquTodos.Params.Clear;
-          DM.sds_ArquTodos.SQL.Add(
-            'select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES,AQ.DATA'
-            + ' from ARQUIVOLIST AQ' +
-            ' left join USUARIO UR on AQ.COD_USUARIO = UR.COD_USUARIO' +
-            ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' +
-            ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' +
-            ' where AQ.DESCRICAO like ' + QuotedStr('%' + EditProc2.Text +
-            '%') + ' order by AQ.DESCRICAO, AQ.TITULO desc');
-          // Params[0].AsString := '%' + EditProc2.Text + '%';
-          DBGrid1.DataSource := DtsrcTodos;
-          DBMemo1.DataSource := DtsrcTodos;
-          Open;
-          if (EditProc2.Text <> '') then
-          begin
-            if IsEmpty then
-              StsBr.Panels[0].Text :=
-                format('Nenhum registro foi encontrado com "%s"',
-                [EditProc2.Text])
-            else
-              StsBr.Panels[0].Text :=
-                format('%d registros encontrados com "%s"',
-                [RecordCount, EditProc2.Text]);
-          end;
-        end;
-      end;
-
-      BtnOk.Enabled := not IsEmpty;
-
-    end;
-
-  end;
-
 end;
 
 procedure TFrmDlgPesquisa.DBGrid1CellClick(Column: TColumn);
@@ -420,6 +253,162 @@ begin
     FrmDlgDescricao.ShowModal;
   finally
     FrmDlgDescricao.Free;
+  end;
+end;
+
+procedure TFrmDlgPesquisa.SpeedButton2Click(Sender: TObject);
+var
+  sSQL, Texto: string;
+begin
+  if (FrmLogin.TODOS = 0) then
+  begin
+    if (EditProc2.Text <> '') and (EditProc1.Text = '') then
+    begin
+      with DM.sds_Arqu do
+      begin
+        Close;
+        if tag = 0 then
+        begin
+          DM.sds_Arqu.Close;
+          DM.sds_Arqu.SQL.Clear;
+          DM.sds_Arqu.SQL.Add(
+            'select AQ.ID,AQ.COD_ASSUNTO,AQ.COD_USUARIO, AQ.DESCRICAO, AQ.TITULO,AQ.NOME_ARQUIVO,PO.NOME, AQ.DATA,N.IDUSUARIOS,SS.TITULOASSUN,TT.NOME from ARQUIVOS_USUARIOS N ' + ' left join ARQUIVOLIST AQ on (AQ.ID = N.IDARQUIVOS) ' + ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' + ' left join USUARIO PO on (AQ.COD_USUARIO = PO.COD_USUARIO) ' + ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' + ' where AQ.DESCRICAO like ' + QuotedStr('%' + EditProc2.Text + '%') + ' and N.IDUSUARIOS=' + IntToStr(FrmLogin.COD_USUARIO) + ' order by AQ.DESCRICAO');
+
+        end;
+        DBGrid1.DataSource := Dtsrc;
+        DBMemo1.DataSource := Dtsrc;
+        Open;
+        Refresh;
+        BtnOk.Enabled := not IsEmpty;
+
+        if (EditProc2.Text <> '') then
+        begin
+          if IsEmpty then
+            StsBr.Panels[0].Text :=
+              format('Nenhum registro foi encontrado com "%s"', [EditProc2.Text])
+          else
+            StsBr.Panels[0].Text :=
+              format('%d registros encontrados com "%s"', [RecordCount, EditProc2.Text]);
+        end;
+
+      end;
+    end
+    else if (EditProc1.Text <> '') and (EditProc2.Text = '') then
+    begin
+      with DM.sds_Arqu do
+      begin
+        if tag = 0 then
+        begin
+
+          DM.sds_Arqu.Close;
+          DM.sds_Arqu.SQL.Clear;
+          DM.sds_Arqu.SQL.Add(
+            'select AQ.ID,AQ.COD_ASSUNTO,AQ.COD_USUARIO,AQ.DESCRICAO, AQ.TITULO, AQ.NOME_ARQUIVO, PO.NOME, AQ.DATA, SS.TITULOASSUN,N.IDUSUARIOS,TT.NOME from ARQUIVOS_USUARIOS N ' + 'left join ARQUIVOLIST AQ on (AQ.ID = N.IDARQUIVOS)' + ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' + ' left join USUARIO PO on (AQ.COD_USUARIO = PO.COD_USUARIO) ' + ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' + ' where AQ.TITULO like ' + QuotedStr('%' + EditProc1.Text + '%') + ' and N.IDUSUARIOS=' + IntToStr(FrmLogin.COD_USUARIO) + ' order by AQ.TITULO');
+
+        end;
+        DBGrid1.DataSource := Dtsrc;
+        DBMemo1.DataSource := Dtsrc;
+        Open;
+        BtnOk.Enabled := not IsEmpty;
+        if (EditProc1.Text <> '') then
+        begin
+          if IsEmpty then
+            StsBr.Panels[0].Text :=
+              format('Nenhum registro foi encontrado com "%s"', [EditProc1.Text])
+          else
+            StsBr.Panels[0].Text :=
+              format('%d registros encontrados com "%s"', [RecordCount, EditProc1.Text]);
+        end;
+      end;
+    end;
+  end
+  else if (FrmLogin.TODOS = 1) then
+  begin
+    with DM.sds_ArquTodos do
+    begin
+      Close;
+      if tag = 0 then
+      begin
+        if (EditProc1.Text <> '') and (EditProc2.Text = '') then
+        begin
+          DM.sds_ArquTodos.SQL.Clear;
+          // DM.sds_ArquTodos.Params.Clear;
+          DM.sds_ArquTodos.SQL.Add(
+            'select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES,AQ.DATA' + ' from ARQUIVOLIST AQ' + ' left join USUARIO UR on AQ.COD_USUARIO = UR.COD_USUARIO' + ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' + ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' + ' where AQ.TITULO like ' + QuotedStr('%' + EditProc1.Text + '%') + ' order by AQ.DESCRICAO, AQ.TITULO desc');
+          // Params[0].AsString := '%' + EditProc1.Text + '%';
+          DBGrid1.DataSource := DtsrcTodos;
+          DBMemo1.DataSource := DtsrcTodos;
+          Open;
+          if (EditProc1.Text <> '') then
+          begin
+            if IsEmpty then
+              StsBr.Panels[0].Text :=
+                format('Nenhum registro foi encontrado com "%s"',
+                [EditProc1.Text])
+            else
+              StsBr.Panels[0].Text :=
+                format('%d registros encontrados com "%s"',
+                [RecordCount, EditProc1.Text]);
+          end;
+        end
+        else if (EditProc2.Text <> '') and (EditProc1.Text = '') then
+        begin
+          DM.sds_ArquTodos.SQL.Clear;
+          // DM.sds_ArquTodos.Params.Clear;
+          DM.sds_ArquTodos.SQL.Add(
+            'select AQ.ID,AQ.COD_USUARIO,AQ.DESCRICAO,AQ.TITULO,AQ.NOME_ARQUIVO,UR.LOGIN,UR.NIVEL,UR.NOME,SS.TITULOASSUN,TT.NOME,AQ.INFORMACOES,AQ.DATA' + ' from ARQUIVOLIST AQ' + ' left join USUARIO UR on AQ.COD_USUARIO = UR.COD_USUARIO' + ' left join ASSUNTO SS on (AQ.COD_ASSUNTO = SS.CODIGO) ' + ' left join AUTORES TT on (TT.CODIGO = AQ.COD_AUTOR) ' + ' where AQ.DESCRICAO like ' + QuotedStr('%' + EditProc2.Text + '%') + ' order by AQ.DESCRICAO, AQ.TITULO desc');
+          // Params[0].AsString := '%' + EditProc2.Text + '%';
+          DBGrid1.DataSource := DtsrcTodos;
+          DBMemo1.DataSource := DtsrcTodos;
+          Open;
+          if (EditProc2.Text <> '') then
+          begin
+            if IsEmpty then
+              StsBr.Panels[0].Text :=
+                format('Nenhum registro foi encontrado com "%s"',
+                [EditProc2.Text])
+            else
+              StsBr.Panels[0].Text :=
+                format('%d registros encontrados com "%s"',
+                [RecordCount, EditProc2.Text]);
+          end;
+        end;
+      end;
+
+      BtnOk.Enabled := not IsEmpty;
+
+    end;
+
+  end;
+
+end;
+
+procedure TFrmDlgPesquisa.SpeedButton3Click(Sender: TObject);
+begin
+    try
+    try
+      if (FrmLogin.TODOS = 0) then
+      begin
+        DM.ZQueryRelatorioArquivo.Close;
+        DM.ZQueryRelatorioArquivo.Params[0].Value := DM.sds_ArquID.AsInteger;
+        DM.ZQueryRelatorioArquivo.Open;
+      end
+      else
+      if (FrmLogin.TODOS = 1) then
+      begin
+        DM.ZQueryRelatorioArquivo.Close;
+        DM.ZQueryRelatorioArquivo.Params[0].Value := DM.sds_ArquTodosID.AsInteger;
+        DM.ZQueryRelatorioArquivo.Open;
+      end;
+    except
+      on E: Exception do
+      begin
+        MessageDlg('Erro de Consulta de Arquivo!', E.Message, mtError, [mbOK], 0);
+      end;
+    end;
+  finally
+    DM.frReportArquivo.LoadFromFile('Reports/RelConsultaArquivos.lrf');
+    DM.frReportArquivo.showReport;
   end;
 end;
 

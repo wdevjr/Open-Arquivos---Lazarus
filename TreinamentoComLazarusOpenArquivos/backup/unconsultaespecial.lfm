@@ -1,22 +1,22 @@
 object FrmConsultaEspecial: TFrmConsultaEspecial
-  Left = 406
+  Left = 356
   Height = 683
-  Top = 35
-  Width = 718
+  Top = 12
+  Width = 731
   Caption = 'Consulta Especial'
   ClientHeight = 683
-  ClientWidth = 718
+  ClientWidth = 731
   Color = 14083559
   Position = poDesktopCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object Panel1: TPanel
     Left = 0
     Height = 82
     Top = 601
-    Width = 718
+    Width = 731
     Align = alBottom
     ClientHeight = 82
-    ClientWidth = 718
+    ClientWidth = 731
     TabOrder = 0
     object SpeedButton7: TSpeedButton
       Left = 16
@@ -147,6 +147,7 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
         52B57D52B57D52B57D52B57D52B57E52B57E52B57D52B57D52B57D52B57D52B5
         7D52B57D52B57D52B57D52B57D52B57D52B57D52B57D52FFFFFF
       }
+      OnClick = SpeedButton8Click
     end
     object SpeedButton11: TSpeedButton
       Left = 280
@@ -332,11 +333,11 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 40
     Top = 0
-    Width = 718
+    Width = 731
     Align = alTop
     BevelColor = clWhite
     ClientHeight = 40
-    ClientWidth = 718
+    ClientWidth = 731
     Color = clWhite
     ParentColor = False
     TabOrder = 1
@@ -413,7 +414,7 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 8
     Top = 40
-    Width = 718
+    Width = 731
     Align = alTop
     Color = 12615680
     ParentColor = False
@@ -423,10 +424,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 49
     Top = 48
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 49
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 16772810
     ParentColor = False
     TabOrder = 3
@@ -690,10 +691,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 48
     Top = 97
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 48
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 15531993
     ParentColor = False
     TabOrder = 4
@@ -957,10 +958,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 47
     Top = 145
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 47
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 14939380
     ParentColor = False
     TabOrder = 5
@@ -1329,10 +1330,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 47
     Top = 192
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 47
-    ClientWidth = 718
+    ClientWidth = 731
     TabOrder = 6
     Visible = False
     object SpeedButton4: TSpeedButton
@@ -1542,7 +1543,7 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
       Left = 64
       Height = 15
       Top = 16
-      Width = 496
+      Width = 512
       AutoSize = False
       Caption = 'Arquivos que irão Aparecer por Usuário de Critério:'
       Font.Color = clMaroon
@@ -1565,7 +1566,7 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 135
     Top = 466
-    Width = 718
+    Width = 731
     Align = alClient
     Color = clWindow
     Columns = <>
@@ -1575,10 +1576,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 50
     Top = 239
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 50
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 13828095
     ParentColor = False
     TabOrder = 8
@@ -1609,10 +1610,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 46
     Top = 289
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 46
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 16774388
     ParentColor = False
     TabOrder = 9
@@ -1789,10 +1790,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 89
     Top = 335
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 89
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 14083559
     ParentColor = False
     TabOrder = 10
@@ -1921,10 +1922,10 @@ object FrmConsultaEspecial: TFrmConsultaEspecial
     Left = 0
     Height = 42
     Top = 424
-    Width = 718
+    Width = 731
     Align = alTop
     ClientHeight = 42
-    ClientWidth = 718
+    ClientWidth = 731
     Color = 14155775
     ParentColor = False
     TabOrder = 11

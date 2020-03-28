@@ -2,7 +2,7 @@ object DM: TDM
   OldCreateOrder = False
   Height = 549
   HorizontalOffset = 311
-  VerticalOffset = 198
+  VerticalOffset = 169
   Width = 984
   PPI = 96
   object ZConnection: TZConnection
@@ -1335,8 +1335,8 @@ object DM: TDM
         Name = 'NOME'
         ParamType = ptInput
       end>
-    left = 784
-    top = 391
+    left = 787
+    top = 472
     ParamData = <    
       item
         DataType = ftString
@@ -1499,8 +1499,8 @@ object DM: TDM
       ''
     )
     Params = <>
-    left = 237
-    top = 400
+    left = 240
+    top = 481
     object ZQuery1NOME_ARQUIVO: TStringField
       FieldKind = fkData
       FieldName = 'NOME_ARQUIVO'
@@ -1548,8 +1548,8 @@ object DM: TDM
       '  ARQUIVOLIST.ID = :OLD_ID'
     )
     UseSequenceFieldForRefreshSQL = False
-    left = 401
-    top = 400
+    left = 404
+    top = 481
     ParamData = <    
       item
         DataType = ftUnknown
@@ -1639,8 +1639,8 @@ object DM: TDM
       'select * from ARQUIVOLIST'
     )
     Params = <>
-    left = 321
-    top = 400
+    left = 324
+    top = 481
     object ZQuery2ID: TLongintField
       FieldKind = fkData
       FieldName = 'ID'
@@ -1791,7 +1791,6 @@ object DM: TDM
   end
   object frDBDataSetArquivo: TfrDBDataSet
     DataSet = ZQueryRelatorioArquivo
-    DataSource = DataSourceRelArquivo
     left = 344
     top = 317
   end
@@ -2116,5 +2115,20 @@ object DM: TDM
     DataSet = ZQueryRelatorioArquivo
     left = 480
     top = 319
+  end
+  object ZQuery3: TZQuery
+    Params = <>
+    left = 237
+    top = 400
+  end
+  object ZQuery4: TZQuery
+    Params = <>
+    left = 345
+    top = 400
+  end
+  object ZQuery5: TZQuery
+    Params = <>
+    left = 456
+    top = 400
   end
 end

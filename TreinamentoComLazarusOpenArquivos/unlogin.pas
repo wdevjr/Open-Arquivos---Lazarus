@@ -229,13 +229,13 @@ begin
   begin
     GifAnim1.Animate := True;
     Label13.Font.Color := clBlue;
-    Label13.Caption := ('Esta conectado em Rede!');
+    Label13.Caption := ('Você esta conectado em Rede!');
   end
   else
   begin
     GifAnim1.Animate := False;
     Label13.Font.Color := clRed;
-    Label13.Caption := ('Não esta conectado em Rede!');
+    Label13.Caption := ('Você não esta conectado em Rede!');
   end;
 end;
 

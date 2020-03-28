@@ -5,7 +5,7 @@ unit UnConsultaEspecial;
 interface
 
 uses
-  Classes, SysUtils, db, Forms, Controls, Graphics, Dialogs, ExtCtrls, DBGrids,
+  Classes, SysUtils, DB, Forms, Controls, Graphics, Dialogs, ExtCtrls, DBGrids,
   StdCtrls, Buttons, DBCtrls, DateTimePicker;
 
 type
@@ -72,6 +72,7 @@ type
     SpeedButton5: TSpeedButton;
     SpeedButton6: TSpeedButton;
     StaticText1: TStaticText;
+    procedure SpeedButton8Click(Sender: TObject);
   private
 
   public
@@ -85,5 +86,27 @@ implementation
 
 {$R *.lfm}
 
-end.
+{ TFrmConsultaEspecial }
 
+uses UnDM;
+
+procedure TFrmConsultaEspecial.SpeedButton8Click(Sender: TObject);
+begin
+  try
+    try
+      DM.ZQueryRelatorioArquivo.Close;
+      DM.ZQueryRelatorioArquivo.Params[0].Value := DM.ZQArquivoID.AsInteger;
+      DM.ZQueryRelatorioArquivo.Open;
+    except
+      on E: Exception do
+      begin
+        MessageDlg('Erro de Consulta de Arquivo!', E.Message, mtError, [mbOK], 0);
+      end;
+    end;
+  finally
+    DM.frReportArquivo.LoadFromFile('Reports/RelConsultaArquivos.lrf');
+    DM.frReportArquivo.showReport;
+  end;
+end;
+
+end.
