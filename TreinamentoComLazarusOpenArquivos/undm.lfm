@@ -1781,7 +1781,6 @@ object DM: TDM
   end
   object frReportArquivo: TfrReport
     Dataset = frDBDataSetArquivo
-    GrayedButtons = True
     InitialZoom = pzDefault
     Options = []
     PreviewButtons = [pbZoom, pbLoad, pbSave, pbPrint, pbFind, pbHelp, pbExit]

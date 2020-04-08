@@ -3,6 +3,7 @@ object Abertura: TAbertura
   Height = 219
   Top = 227
   Width = 538
+  BorderStyle = bsNone
   Caption = 'Abertura'
   ClientHeight = 219
   ClientWidth = 538
@@ -145,7 +146,7 @@ object Abertura: TAbertura
     E3FF
   }
   Position = poDesktopCenter
-  LCLVersion = '2.0.4.0'
+  LCLVersion = '2.0.6.0'
   object ProgressBar1: TProgressBar
     Left = 0
     Height = 14
@@ -730,9 +731,9 @@ object Abertura: TAbertura
   object Label3: TLabel
     Left = 16
     Height = 15
-    Top = 63
+    Top = 64
     Width = 28
-    Caption = '2019'
+    Caption = '2020'
     Font.Color = clRed
     Font.Style = [fsBold]
     ParentColor = False

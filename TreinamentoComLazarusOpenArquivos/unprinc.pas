@@ -1272,25 +1272,37 @@ begin
 
       if (Tamnh > 1024) then
       begin
-        varifTempBytes := (FloatToStrF((Tamnh), ffNumber, 11, 0));
-        TamnhKB := (Tamnh / 1024);
-        Temp2 := (Tamnh / 1024);
-        TamnhMB := (Temp2 / 1024);
-        if (TamnhKB <= 1024) then
+        if (Tamnh >= 167772160) then // 160MB
         begin
-          varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
-          DM.ZQArquivoTAMANHO.AsString :=
-            varifTempKB + ' (KB)-' + '(' + varifTempBytes + ' Bytes)';
-          DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+          MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 160 MB!',
+            mtError, [mbOK], 0);
+          Dtsrc.DataSet.Cancel;
+          ConfigInicial;
+          lookUser.Enabled := False;
+          // MostrarIcon;
         end
         else
         begin
-          varifTempMB := (FloatToStrF((TamnhMB), ffNumber, 11, 1));
-          varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
-          DM.ZQArquivoTAMANHO.AsString :=
-            varifTempMB + ' (MB)-' + varifTempKB + ' (KB)-' + '(' +
-            varifTempBytes + ' Bytes)';
-          DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+          varifTempBytes := (FloatToStrF((Tamnh), ffNumber, 11, 0));
+          TamnhKB := (Tamnh / 1024);
+          Temp2 := (Tamnh / 1024);
+          TamnhMB := (Temp2 / 1024);
+          if (TamnhKB <= 1024) then
+          begin
+            varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
+            DM.ZQArquivoTAMANHO.AsString :=
+              varifTempKB + ' (KB)-' + '(' + varifTempBytes + ' Bytes)';
+            DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+          end
+          else
+          begin
+            varifTempMB := (FloatToStrF((TamnhMB), ffNumber, 11, 1));
+            varifTempKB := (FloatToStrF((TamnhKB), ffNumber, 11, 2));
+            DM.ZQArquivoTAMANHO.AsString :=
+              varifTempMB + ' (MB)-' + varifTempKB + ' (KB)-' + '(' +
+              varifTempBytes + ' Bytes)';
+            DM.ZQArquivoSIZE_ARQUIVO.AsFloat := TamnhKB;
+          end;
         end;
       end;
 
@@ -1300,15 +1312,7 @@ begin
   except
     on E: Exception do
     begin
-      if (Tamnh >= 125829120) then // 120MB
-      begin
-        MessageDlg('Memória insuficiente no Banco!, Ultrapassou os 120 MB!',
-          mtError, [mbOK], 0);
-        Dtsrc.DataSet.Cancel;
-        ConfigInicial;
-        lookUser.Enabled := False;
-        // MostrarIcon;
-      end;
+      MessageDlg('Erro ao ler o arquivo!', E.Message, mtError, [mbOK], 0);
     end;
 
   end;
@@ -1534,7 +1538,7 @@ begin
     except
       on E: Exception do
       begin
-        MessageDlg('Erro de Consulta de Arquivo!', E.Message, mtError, [mbOK], 0);
+        MessageDlg('Erro na Consulta de Arquivo!', E.Message, mtError, [mbOK], 0);
       end;
     end;
   finally

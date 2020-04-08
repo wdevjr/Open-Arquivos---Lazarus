@@ -177,6 +177,7 @@ type
     ZQuery3: TZQuery;
     ZQuery4: TZQuery;
     ZQuery5: TZQuery;
+    ZQuery6: TZQuery;
     ZQueryRelatorioArquivo: TZQuery;
     ZQueryRelatorioArquivoDATA: TDateField;
     ZQueryRelatorioArquivoDESCRICAO: TStringField;

@@ -38,4 +38,3 @@ implementation
 {$R *.lfm}
 
 end.
-

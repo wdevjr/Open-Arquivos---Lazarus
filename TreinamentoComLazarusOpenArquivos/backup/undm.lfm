@@ -2131,4 +2131,9 @@ object DM: TDM
     left = 456
     top = 400
   end
+  object ZQuery6: TZQuery
+    Params = <>
+    left = 544
+    top = 401
+  end
 end

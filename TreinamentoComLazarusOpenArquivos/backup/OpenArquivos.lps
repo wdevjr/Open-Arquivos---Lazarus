@@ -20,10 +20,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnPrinc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="1527"/>
-        <CursorPos Y="1529"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="1231"/>
+        <CursorPos X="54" Y="1249"/>
         <UsageCount Value="130"/>
+        <Loaded Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="undm.pas"/>
@@ -32,8 +33,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
         <UnitName Value="UnDM"/>
-        <TopLine Value="444"/>
-        <CursorPos X="56" Y="483"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="462"/>
+        <CursorPos X="40" Y="453"/>
         <UsageCount Value="130"/>
         <Loaded Value="True"/>
       </Unit2>
@@ -56,12 +58,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnLogin"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="42" Y="16"/>
         <UsageCount Value="122"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="unabertura.pas"/>
@@ -70,9 +69,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnAbertura"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="30" Y="31"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="12" Y="5"/>
         <UsageCount Value="121"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit5>
       <Unit6>
         <Filename Value="undlgdescricao.pas"/>
@@ -139,12 +140,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="UnConsultaEspecial"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="53"/>
         <CursorPos X="20" Y="62"/>
         <UsageCount Value="41"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit11>
       <Unit12>
         <Filename Value="uncadastrousuarios.pas"/>
@@ -252,55 +251,23 @@
         <UsageCount Value="10"/>
       </Unit23>
     </Units>
-    <JumpHistory Count="12" HistoryIndex="11">
+    <JumpHistory Count="4" HistoryIndex="3">
       <Position1>
-        <Filename Value="undm.pas"/>
-        <Caret Line="337" Column="3" TopLine="333"/>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1529" TopLine="1527"/>
       </Position1>
       <Position2>
-        <Filename Value="undm.pas"/>
-        <Caret Line="338" Column="3" TopLine="334"/>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1311" Column="12" TopLine="1299"/>
       </Position2>
       <Position3>
-        <Filename Value="undm.pas"/>
-        <Caret Line="339" Column="3" TopLine="335"/>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1540" Column="64" TopLine="1532"/>
       </Position3>
       <Position4>
-        <Filename Value="undm.pas"/>
-        <Caret Line="10" Column="95"/>
+        <Filename Value="unprinc.pas"/>
+        <Caret Line="1536" Column="39" TopLine="1530"/>
       </Position4>
-      <Position5>
-        <Filename Value="undm.pas"/>
-        <Caret Line="10" Column="66"/>
-      </Position5>
-      <Position6>
-        <Filename Value="unconsultaespecial.pas"/>
-        <Caret Line="13" Column="29"/>
-      </Position6>
-      <Position7>
-        <Filename Value="unconsultaespecial.pas"/>
-        <Caret Line="96" Column="7" TopLine="78"/>
-      </Position7>
-      <Position8>
-        <Filename Value="undm.pas"/>
-        <Caret Line="480" Column="35" TopLine="471"/>
-      </Position8>
-      <Position9>
-        <Filename Value="undm.pas"/>
-        <Caret Line="481" Column="35" TopLine="472"/>
-      </Position9>
-      <Position10>
-        <Filename Value="undm.pas"/>
-        <Caret Line="482" Column="35" TopLine="473"/>
-      </Position10>
-      <Position11>
-        <Filename Value="undm.pas"/>
-        <Caret Line="483" Column="35" TopLine="474"/>
-      </Position11>
-      <Position12>
-        <Filename Value="unconsultaespecial.pas"/>
-        <Caret Line="100" Column="40" TopLine="82"/>
-      </Position12>
     </JumpHistory>
     <CustomSessionData Count="2">
       <Item0 Name="SVN active" Value="-1"/>

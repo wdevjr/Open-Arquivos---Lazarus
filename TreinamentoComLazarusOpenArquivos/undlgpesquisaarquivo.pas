@@ -385,7 +385,7 @@ end;
 
 procedure TFrmDlgPesquisa.SpeedButton3Click(Sender: TObject);
 begin
-    try
+  try
     try
       if (FrmLogin.TODOS = 0) then
       begin
